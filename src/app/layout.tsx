@@ -6,7 +6,7 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Webleaders – Professional Web Saytlar va CRM Yaratish Xizmati',
+  title: 'Webleaders – Professional Web Saytlar va ilovalar Yaratish Xizmati',
   description:
     'Webleaders — biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari va brend imidjini mustahkamlovchi yechimlar. Tajribali jamoamiz bilan siz ham raqamli dunyoda o‘z o‘rningizni egallang!',
   keywords: [
@@ -28,7 +28,7 @@ export const metadata = {
   ],
   metadataBase: new URL('https://webleaders.uz'),
   openGraph: {
-    title: 'Webleaders – Veb Sayt va CRM Yaratish',
+    title: 'Webleaders – Web Sayt va Ilovalar yaratish xizmati!',
     description: 'Tajribali jamoa bilan biznesingizga mos zamonaviy web yechimlar.',
     url: 'https://webleaders.uz',
     siteName: 'Webleaders',
@@ -45,8 +45,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Webleaders – IT va Web Solutions',
-    description: 'Biznesingizga professional veb sayt va CRM kerakmi? Bizga murojaat qiling.',
+    title: 'Webleaders – IT Solutions',
+    description: 'Biznesingizga professional IT xizmati kerakmi? Bizga murojaat qiling.',
     images: ['/og-image.jpg'],
   },
   icons: {
