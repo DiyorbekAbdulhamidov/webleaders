@@ -6,7 +6,7 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Webleaders – Professional Web Saytlar va ilovalar Yaratish Xizmati',
+  title: 'Webleaders – Professional Web Saytlar va Ilovalar yaratish xizmati',
   description:
     'Webleaders — biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari va brend imidjini mustahkamlovchi yechimlar. Tajribali jamoamiz bilan siz ham raqamli dunyoda o‘z o‘rningizni egallang!',
   keywords: [

@@ -23,7 +23,7 @@ export default function Contact() {
           Aloqa
         </h2>
         <p className="text-gray-400 mb-8 text-base sm:text-lg leading-relaxed">
-          Biznesingiz uchun yechim kerakmi? Nomeringizni qoldiring yoki to‘g‘ridan-to‘g‘ri bizga qo‘ng‘iroq qiling.
+          Biznesingiz uchun yechim kerakmi? Raqamingizni qoldiring yoki to‘g‘ridan-to‘g‘ri bizga qo‘ng‘iroq qiling.
         </p>
 
         <form onSubmit={handleSubmit} className="grid gap-6">

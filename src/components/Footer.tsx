@@ -68,13 +68,13 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-4">Bizni kuzating</h3>
           <div className="flex gap-4 text-gray-400">
-            <a href="#" className="hover:text-white transition duration-200">
+            <a href="https://www.instagram.com/webleaders.uz/" className="hover:text-white transition duration-200">
               <Instagram className="w-5 h-5" />
             </a>
             <a href="#" className="hover:text-white transition duration-200">
               <Facebook className="w-5 h-5" />
             </a>
-            <a href="#" className="hover:text-white transition duration-200">
+            <a href="https://www.linkedin.com/company/106364349/" className="hover:text-white transition duration-200">
               <Linkedin className="w-5 h-5" />
             </a>
           </div>
