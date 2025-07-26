@@ -1,8 +1,8 @@
 // app/layout.tsx
 import './globals.css'
-import { Inter } from 'next/font/google';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Inter } from 'next/font/google'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,9 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uz">
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <Header />
-        <main className="min-h-screen px-4 md:px-20 pt-20 bg-white text-gray-800">
+        <main className="min-h-screen px-4 md:px-0 pt-0 bg-white text-gray-800">
           {children}
         </main>
         <Footer />

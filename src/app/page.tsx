@@ -1,10 +1,16 @@
+import WhyChooseUs from '@/components/MyChooseUs';
+import ServicesSection from '../components/ServiceSection';
+import HeroVideo from '@/components/HeroVideo';
+import AboutSection from '@/components/About-us';
+
 export default function Home() {
   return (
-    <div className="text-center">
-      <h1 className="text-4xl font-bold mb-4">Webleaders IT Solutions</h1>
-      <p className="text-lg text-gray-600">
-        Biznesingiz uchun zamonaviy va ishonchli web xizmatlar.
-      </p>
-    </div>
+    <>
+      <HeroVideo />
+      <ServicesSection />
+      <WhyChooseUs />
+      <AboutSection />
+
+    </>
   )
 }
