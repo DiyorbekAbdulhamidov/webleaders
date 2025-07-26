@@ -83,7 +83,7 @@ export default function Footer() {
 
       {/* Pastki chiziq */}
       <div className="mt-12 text-center text-gray-500 text-sm border-t border-white/10 pt-6">
-        © 2025 Webleaders. Barcha huquqlar himoyalangan.
+        © 2025 Webleaders. Barcha huquqlar himoyalangan, Xizmatlar litzeniyalangan.
       </div>
     </footer>
   )
