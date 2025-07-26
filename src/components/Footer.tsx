@@ -1,3 +1,4 @@
+'use client'
 
 import {
   Phone,
@@ -16,7 +17,7 @@ export default function Footer() {
         <div>
           <h2 className="text-2xl font-bold mb-4">Webleaders</h2>
           <p className="text-gray-400 text-sm leading-relaxed">
-            Biz – raqamli yechimlar bo‘yicha yetakchi IT kompaniyamiz. Websaytlar,
+            Biz – raqamli yechimlar bo&#39;yicha yetakchi IT kompaniyamiz. Websaytlar,
             CRM tizimlar va brendingda sizning ishonchli hamkoringiz.
           </p>
         </div>
@@ -35,7 +36,7 @@ export default function Footer() {
               <a href="#team" className="hover:text-white transition">Jamoa</a>
             </li>
             <li>
-              <a href="#contact" className="hover:text-white transition">Bog‘lanish</a>
+              <a href="#contact" className="hover:text-white transition">Bog&#39;lanish</a>
             </li>
           </ul>
         </div>
@@ -58,7 +59,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-green-400" />
-              O'zbekiston, Toshkent
+              O&#39;zbekiston, Toshkent
             </li>
           </ul>
         </div>
