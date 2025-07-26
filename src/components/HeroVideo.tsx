@@ -26,7 +26,7 @@ export default function HeroVideo() {
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-6xl mx-auto px-6 text-center">
           <h2
-            className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight"
+            className="mt-10 text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight"
             data-aos="fade-down"
             data-aos-delay="100"
           >
@@ -45,7 +45,7 @@ export default function HeroVideo() {
             data-aos-delay="500"
           >
             <Link
-              href="/contact"
+              href="#contact"
               className="px-6 py-3 bg-green-500 text-black rounded-md font-semibold hover:bg-green-400 transition"
             >
               Biz bilan bog‘lanish
