@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
@@ -10,20 +12,47 @@ export default function Contact() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitted(true)
-    setForm({ name: '', phone: '', message: '' })
+
+    try {
+      await fetch('/api/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+
+      toast.success(" Xabaringiz yuborildi! Tez orada siz bilan bog‘lanamiz.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      })
+
+      setForm({ name: '', phone: '', message: '' })
+    } catch (error) {
+      toast.error("❌ Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      })
+    }
   }
 
   return (
     <section id="contact" className="bg-neutral-950 text-white px-4 py-24 sm:px-10 md:px-16 lg:px-24 xl:px-32">
       <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-10 md:p-14 backdrop-blur-xl transition">
-        <h2 className="text-4xl sm:text-5xl font-display font-semibold tracking-tight mb-4">
-          Aloqa
-        </h2>
+        <h2 className="text-4xl sm:text-5xl font-display font-semibold tracking-tight mb-4">Aloqa</h2>
         <p className="text-gray-400 mb-8 text-base sm:text-lg leading-relaxed">
-          Biznesingiz uchun yechim kerakmi? Raqamingizni qoldiring yoki to‘g‘ridan-to‘g‘ri bizga qo‘ng‘iroq qiling.
+          Biznesingiz uchun yechim kerakmi? Nomeringizni qoldiring yoki to‘g‘ridan-to‘g‘ri bizga qo‘ng‘iroq qiling.
         </p>
 
         <form onSubmit={handleSubmit} className="grid gap-6">
@@ -81,13 +110,9 @@ export default function Contact() {
             </a>
           </div>
         </form>
-
-        {submitted && (
-          <p className="text-green-400 mt-6 text-sm sm:text-base">
-            ✅ Xabaringiz muvaffaqiyatli yuborildi. Tez orada siz bilan bog‘lanamiz.
-          </p>
-        )}
       </div>
+
+      <ToastContainer />
     </section>
   )
 }
