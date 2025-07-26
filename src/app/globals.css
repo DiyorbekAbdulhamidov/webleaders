@@ -1,7 +1,48 @@
 @import "tailwindcss";
+@import 'aos/dist/aos.css';
+
 
 
 body {
 body {
     font-family: Inter, sans-serif;
 }}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out;
+}
+/* globals.css */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 185, 129, 0.4); /* Tailwind green-400 */
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(16, 185, 129, 0.7);
+}
+

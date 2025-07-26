@@ -5,7 +5,7 @@ import { CheckCircle } from 'lucide-react'
 
 export default function Services() {
   return (
-    <section className="w-full bg-black text-white py-24 px-6 md:px-20">
+    <section id="services" className="w-full bg-black text-white py-24 px-6 md:px-20">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Xizmatlarimiz</h2>
         <p className="text-lg text-gray-300 mb-12">

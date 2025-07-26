@@ -1,69 +1,87 @@
-// components/Header.tsx
 'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, PhoneCall } from 'lucide-react'
 import logo from '../../public/logo.png'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const toggleMenu = () => setIsOpen(!isOpen)
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   const navLinks = [
-    { href: '/services', label: 'Xizmatlar' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/pricing', label: 'Narxlar' },
-    { href: '/contact', label: 'Aloqa' },
+    { href: 'services', label: 'Xizmatlar' },
+    { href: 'portfolio', label: 'Portfolio' },
+    { href: 'pricing', label: 'Narxlar' },
+    { href: 'contact', label: 'Aloqa' },
   ]
 
   return (
-    <header className="fixed top-0 w-full bg-none text-white shadow-md z-50">
+    <header className="fixed top-0 z-50 w-full bg-black/60 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link href="/">
-          <Image src={logo} alt="Webleaders Logo" width={50} height={0} priority />
+        <Link href="/" className="flex items-center space-x-2">
+          <Image src={logo} alt="Webleaders logo" width={40} height={40} priority />
+          <span className="text-xl font-semibold text-white tracking-tight">Webleaders</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-8">
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center space-x-8">
           {navLinks.map((link) => (
-            <Link
+            <button
               key={link.href}
-              href={link.href}
-              className="relative font-semibold hover:text-blue-400 transition-colors duration-200"
+              onClick={() => scrollToSection(link.href)}
+              className="relative text-white/90 font-medium transition hover:text-green-400 group"
             >
               {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-            </Link>
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full"></span>
+            </button>
           ))}
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="ml-6 bg-green-400 text-black font-semibold px-4 py-2 rounded-xl hover:bg-green-500 transition flex items-center gap-1"
+          >
+            <PhoneCall size={18} /> Telefon qilish
+          </button>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="lg:hidden p-2 text-white hover:text-blue-400 focus:outline-none"
-        >
+        {/* Mobile Menu Toggle */}
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white hover:text-green-400 transition">
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Nav */}
       {isOpen && (
-        <div className="lg:hidden bg-black">
-          <div className="flex flex-col items-start space-y-4 px-6 py-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="w-full text-lg font-medium text-white hover:text-blue-400"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+        <div className="lg:hidden bg-black/90 border-t border-white/10 px-6 py-4 backdrop-blur space-y-4">
+          {navLinks.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => {
+                scrollToSection(link.href)
+                setIsOpen(false)
+              }}
+              className="text-white/90 text-base font-medium hover:text-green-400 transition w-full text-left"
+            >
+              {link.label}
+            </button>
+          ))}
+          <button
+            onClick={() => {
+              scrollToSection('contact')
+              setIsOpen(false)
+            }}
+            className="bg-green-400 text-black font-semibold text-center py-2 rounded-xl hover:bg-green-500 transition w-full"
+          >
+            Telefon qilish
+          </button>
         </div>
       )}
     </header>

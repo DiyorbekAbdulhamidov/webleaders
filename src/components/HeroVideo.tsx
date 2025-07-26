@@ -25,13 +25,25 @@ export default function HeroVideo() {
       {/* Kontent */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
+          <h2
+            className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight"
+            data-aos="fade-down"
+            data-aos-delay="100"
+          >
             Bizning IT yechimlarimiz bilan <br /> raqobatdan oldinda bo‘ling
           </h2>
-          <p className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto">
+          <p
+            className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
             Webleaders kompaniyasi zamonaviy web-saytlar, mobil ilovalar va SEO xizmatlarini taklif etadi.
           </p>
-          <div className="flex justify-center flex-wrap gap-4">
+          <div
+            className="flex justify-center flex-wrap gap-4"
+            data-aos="zoom-in"
+            data-aos-delay="500"
+          >
             <Link
               href="/contact"
               className="px-6 py-3 bg-green-500 text-black rounded-md font-semibold hover:bg-green-400 transition"
