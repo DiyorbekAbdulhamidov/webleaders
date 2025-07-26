@@ -8,9 +8,9 @@ import WhyChooseUs from '@/components/MyChooseUs'
 import ServicesSection from '../components/ServiceSection'
 import HeroVideo from '@/components/HeroVideo'
 import HowWeWork from '@/components/HowWeWork'
-import Projects from '@/components/Projects'
 import Contact from '@/components/Contact'
 import PricingPage from '@/components/PricingPage'
+import Projects from '@/components/Projects'
 
 export default function Home() {
   useEffect(() => {
