@@ -4,9 +4,11 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
+
 export const metadata = {
   title: 'Webleaders – Professional Web Saytlar va CRM Yaratish Xizmati',
-  description: 'Webleaders — biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari va brend imidjini mustahkamlovchi yechimlar. Tajribali jamoamiz bilan siz ham raqamli dunyoda o‘z o‘rningizni egallang!',
+  description:
+    'Webleaders — biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari va brend imidjini mustahkamlovchi yechimlar. Tajribali jamoamiz bilan siz ham raqamli dunyoda o‘z o‘rningizni egallang!',
   keywords: [
     'veb sayt yaratish',
     'CRM tizimi',
@@ -24,6 +26,7 @@ export const metadata = {
     'freelancer web developers',
     'Uzbekistan web kompaniya'
   ],
+  metadataBase: new URL('https://webleaders.uz'),
   openGraph: {
     title: 'Webleaders – Veb Sayt va CRM Yaratish',
     description: 'Tajribali jamoa bilan biznesingizga mos zamonaviy web yechimlar.',
@@ -46,9 +49,17 @@ export const metadata = {
     description: 'Biznesingizga professional veb sayt va CRM kerakmi? Bizga murojaat qiling.',
     images: ['/og-image.jpg'],
   },
-  metadataBase: new URL('https://webleaders.uz'),
-};
-
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
+}
 
 export default function RootLayout({
   children,

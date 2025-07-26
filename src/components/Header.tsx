@@ -24,14 +24,19 @@ export default function Header() {
   ]
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-black/60 backdrop-blur border-b border-white/10">
+    <header className="fixed top-0 z-50 mb-4 w-full bg-black/60 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <Image src={logo} alt="Webleaders logo" width={40} height={40} priority />
-          <span className="text-xl font-semibold text-white tracking-tight">Webleaders</span>
-        </Link>
+        <Link href="/" className="flex items-center h-14 overflow-hidden">
+          <Image
+            src={logo}
+            alt="Webleaders logo"
+            style={{ width: '180px', height: '180' }}
+            className="-my-3 transition-all duration-300"
+            priority
+          />
 
+        </Link>
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center space-x-8">
           {navLinks.map((link) => (
