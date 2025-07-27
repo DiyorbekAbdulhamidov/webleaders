@@ -27,6 +27,9 @@ export default function Home() {
       <div data-aos="fade-in">
         <HeroVideo />
       </div>
+      <HowWeWork />
+      <div >
+      </div>
 
       <div >
         <ServicesSection />
@@ -34,10 +37,6 @@ export default function Home() {
 
       <div >
         <WhyChooseUs />
-      </div>
-
-      <div >
-        <HowWeWork />
       </div>
 
       <div >
