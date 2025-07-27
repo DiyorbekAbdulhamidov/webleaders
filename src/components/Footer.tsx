@@ -13,7 +13,6 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white px-6 py-20 border-t border-white/10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-        {/* Kompaniya haqida */}
         <div>
           <h2 className="text-2xl font-bold mb-4">Webleaders</h2>
           <p className="text-gray-400 text-sm leading-relaxed">
@@ -22,7 +21,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Sayt bo‘limlari */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Sayt bo‘limlari</h3>
           <ul className="space-y-2 text-gray-300 text-sm">
@@ -41,7 +39,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Aloqa */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Aloqa</h3>
           <ul className="space-y-3 text-gray-300 text-sm">
@@ -51,7 +48,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-green-400" />
-              +998 20 000 00 00
+              +998 77 777 77 77
             </li>
             <li className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-green-400" />
@@ -64,7 +61,6 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Ijtimoiy tarmoqlar */}
         <div>
           <h3 className="text-lg font-semibold mb-4">Bizni kuzating</h3>
           <div className="flex gap-4 text-gray-400">
@@ -81,7 +77,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Pastki chiziq */}
       <div className="mt-12 text-center text-gray-500 text-sm border-t border-white/10 pt-6">
         © 2025 Webleaders. Barcha huquqlar himoyalangan, Xizmatlar litzeniyalangan.
       </div>

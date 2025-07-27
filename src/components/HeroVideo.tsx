@@ -6,7 +6,6 @@ import Link from 'next/link'
 export default function HeroVideo() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
-      {/* Video fon */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
@@ -19,10 +18,8 @@ export default function HeroVideo() {
         Sizning brauzeringiz video tegini qo‘llab‑quvvatlamaydi.
       </video>
 
-      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/60" />
 
-      {/* Kontent */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-6xl mx-auto px-6 text-center">
           <h2
