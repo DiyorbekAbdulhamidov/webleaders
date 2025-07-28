@@ -1,20 +1,42 @@
 'use client'
 
 import { useState } from 'react'
+import Cleave from 'cleave.js/react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', phone: '', message: '' })
-  const [submitted, setSubmitted] = useState(false)
+  const [form, setForm] = useState({
+    name: '',
+    phone: '+998 ',
+    message: ''
+  })
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+
+    if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
+    if (name === 'message' && value.length > 500) return
+
+    setForm({ ...form, [name]: value })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setSubmitting(true)
+
+    const digitsOnly = form.phone.replace(/\D/g, '')
+    if (digitsOnly.length !== 12) {
+      toast.error('❌ Telefon raqam to‘liq kiritilmadi.', {
+        position: 'bottom-right',
+        theme: 'dark',
+      })
+      setSubmitting(false)
+      return
+    }
 
     try {
       await fetch('/api/send-message', {
@@ -23,28 +45,20 @@ export default function Contact() {
         body: JSON.stringify(form),
       })
 
-      toast.success(" Xabaringiz yuborildi! Tez orada siz bilan bog‘lanamiz.", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
+      toast.success('Xabaringiz yuborildi! Tez orada siz bilan bog‘lanamiz.', {
+        position: 'bottom-right',
+        theme: 'dark',
       })
 
-      setForm({ name: '', phone: '', message: '' })
+      setForm({ name: '', phone: '+998 ', message: '' })
     } catch (error) {
-      toast.error("❌ Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
+      toast.error('Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.', {
+        position: 'bottom-right',
+        theme: 'dark',
       })
     }
+
+    setSubmitting(false)
   }
 
   return (
@@ -71,19 +85,25 @@ export default function Contact() {
 
           <div>
             <label className="block mb-2 text-sm text-gray-300">Telefon raqamingiz</label>
-            <input
-              type="tel"
-              name="phone"
-              placeholder="+998 90 123 45 67"
+            <Cleave
+              options={{
+                prefix: '+998',
+                blocks: [4, 2, 3, 2, 2],
+                delimiters: [' ', ' ', '-', '-', ''],
+                numericOnly: true,
+              }}
               value={form.phone}
+              name="phone"
               onChange={handleChange}
-              required
               className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
+              placeholder="+998 33 123-45-67"
             />
           </div>
 
           <div>
-            <label className="block mb-2 text-sm text-gray-300">Xabaringiz</label>
+            <label className="block mb-2 text-sm text-gray-300">
+              Xabaringiz <span className="text-xs text-gray-500">({form.message.length}/500)</span>
+            </label>
             <textarea
               name="message"
               rows={5}
@@ -98,9 +118,10 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4 mt-2">
             <button
               type="submit"
-              className="flex-1 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl py-3 transition text-center"
+              disabled={submitting}
+              className="flex-1 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl py-3 transition text-center disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Yuborish
+              {submitting ? '⏳ Yuborilmoqda...' : 'Yuborish'}
             </button>
             <a
               href="tel:+998200127707"
