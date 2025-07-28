@@ -2,6 +2,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { Analytics } from "@vercel/analytics/react"
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -71,6 +73,7 @@ export default function RootLayout({
       <body className={`${inter.className} overflow-x-hidden bg-white text-gray-800`}>
         <Header />
         <main className="min-h-screen">{children}</main>
+        <Analytics />
         <Footer />
       </body>
     </html>
