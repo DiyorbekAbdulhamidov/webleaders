@@ -1,6 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
+import { ToastContainer, toast } from 'react-toastify'
+import { motion, AnimatePresence } from 'framer-motion'
+import 'react-toastify/dist/ReactToastify.css'
 
 const plans = [
   {
@@ -42,6 +46,39 @@ const plans = [
 ]
 
 export default function PricingPage() {
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('+998')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/send-price', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, plan: selectedPlan }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        toast.success('Buyurtma muvaffaqiyatli yuborildi!')
+        setName('')
+        setPhone('+998')
+        setSelectedPlan(null)
+      } else {
+        toast.error('❌ Xatolik yuz berdi. Qaytadan urinib ko‘ring.')
+      }
+    } catch (err) {
+      console.error('Xatolik:', err)
+      toast.error('❌ Server bilan ulanishda xatolik.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div id="pricing" className="min-h-screen bg-neutral-950 text-white px-6 py-24">
       <div className="max-w-5xl mx-auto text-center mb-16">
@@ -71,12 +108,79 @@ export default function PricingPage() {
                 ))}
               </ul>
             </div>
-            <button className="mt-8 w-full py-3 bg-green-400 text-black font-semibold rounded-xl hover:bg-green-500 transition">
+            <button
+              onClick={() => setSelectedPlan(plan.title)}
+              className="mt-8 w-full py-3 bg-green-400 text-black font-semibold rounded-xl hover:bg-green-500 transition"
+            >
               Buyurtma berish
             </button>
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {selectedPlan && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 50 }}
+              transition={{ duration: 0.3 }}
+              className="bg-neutral-900 text-white rounded-2xl p-6 w-full max-w-md shadow-2xl"
+            >
+              <h3 className="text-xl font-bold mb-4">Buyurtma: {selectedPlan}</h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Ismingiz"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full border border-gray-600 bg-neutral-800 text-white px-4 py-2 rounded-lg"
+                />
+                <input
+                  type="tel"
+                  placeholder="Telefon raqam"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  className="w-full border border-gray-600 bg-neutral-800 text-white px-4 py-2 rounded-lg"
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition"
+                  >
+                    {loading ? 'Yuborilmoqda...' : 'Yuborish'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPlan(null)}
+                    className="flex-1 bg-gray-700 text-white py-2 rounded-lg font-semibold hover:bg-gray-600 transition"
+                  >
+                    Bekor qilish
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        newestOnTop
+        pauseOnHover
+        closeOnClick
+      />
     </div>
   )
 }
