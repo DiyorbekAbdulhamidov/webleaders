@@ -174,7 +174,7 @@ export default function PricingPage() {
       </AnimatePresence>
 
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={3000}
         theme="dark"
         newestOnTop
