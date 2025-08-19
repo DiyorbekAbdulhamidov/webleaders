@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const text = `
 📦 Yangi buyurtma:
 👤 Ism: ${name}
-📞 Telefon raqam: ${phone}
+📞 Telefon raqami: ${phone}
 💰 Tanlangan reja: ${plan}
     `
 
