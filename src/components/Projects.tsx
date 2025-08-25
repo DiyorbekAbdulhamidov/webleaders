@@ -11,14 +11,19 @@ type Project = {
 
 const projects: Project[] = [
   {
-    name: 'Telmee',
-    category: 'Telefon sotish va sotib olish platformasi',
-    images: ['/projects/telmee2.png', '/projects/telmee1.png', '/projects/telmee1.png', '/projects/telmee4.png'],
+    name: 'Dono-dance',
+    category: 'Raqs markazi uchun landing sahifa',
+    images: ['/projects/dance1.png', '/projects/dance2.png', '/projects/dance3.png', '/projects/dance4.png'],
   },
   {
     name: 'Zarnigor Wedding CRM',
     category: 'Zarnigor Wedding saloni ichki tizimini boshqarish uchun',
     images: ['/projects/zarnigor1.png', '/projects/zarnigor2.png', '/projects/zarnigor3.png', '/projects/zarnigor4.png'],
+  },
+  {
+    name: 'Telmee',
+    category: 'Telefon sotish va sotib olish platformasi',
+    images: ['/projects/telmee2.png', '/projects/telmee1.png', '/projects/telmee1.png', '/projects/telmee4.png'],
   },
   {
     name: 'Jetour Uzbekistan',
