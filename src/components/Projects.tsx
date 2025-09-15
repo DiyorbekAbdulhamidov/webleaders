@@ -15,7 +15,6 @@ const projects: Project[] = [
     category: 'Raqs markazi uchun landing sahifa',
     images: ['/projects/dance1.png', '/projects/dance2.png', '/projects/dance3.png', '/projects/dance4.png'],
   },
-  // 
   {
     name: 'Zarnigor Wedding CRM',
     category: 'Zarnigor Wedding saloni ichki tizimini boshqarish uchun',
