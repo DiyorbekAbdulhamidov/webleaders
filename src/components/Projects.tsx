@@ -11,6 +11,11 @@ type Project = {
 
 const projects: Project[] = [
   {
+    name: 'GoGermany-Consulting Agency',
+    category: 'Consulting agentligi uchun web-sahifa',
+    images: ['/projects/ger(1).png', '/projects/ger(2).png', '/projects/ger(3).png', '/projects/ger(4).png'],
+  },
+  {
     name: 'Dono-dance',
     category: 'Raqs markazi uchun landing sahifa',
     images: ['/projects/dance1.png', '/projects/dance2.png', '/projects/dance3.png', '/projects/dance4.png'],
