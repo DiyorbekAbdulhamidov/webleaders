@@ -19,4 +19,3 @@ declare module 'cleave.js/react' {
 
   export default Cleave
 }
-// 
