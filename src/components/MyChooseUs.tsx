@@ -169,7 +169,7 @@ export default function WhyChooseUs() {
             viewport={{ once: true }}
             className="text-gray-400 text-xl max-w-2xl mx-auto"
           >
-            Bozorda minglab "IT-kompaniyalar" bor. Lekin natija beradiganlari sanoqli.
+            Bozorda minglab &quot;IT-kompaniyalar&quot; bor. Lekin natija beradiganlari sanoqli.
           </motion.p>
         </div>
 

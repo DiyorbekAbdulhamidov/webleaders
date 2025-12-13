@@ -102,8 +102,8 @@ export default function ServicesSection() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 text-lg"
           >
-            Oddiy saytdan tortib, murakkab sun'iy intellekt tizimlarigacha.
-            Sizning g'oyangizni raqamli reallikka aylantiramiz.
+            Oddiy saytdan tortib, murakkab sun&apos;iy intellekt tizimlarigacha.
+            Sizning g&apos;oyangizni raqamli reallikka aylantiramiz.
           </motion.p>
         </div>
 
