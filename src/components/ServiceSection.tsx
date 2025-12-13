@@ -1,38 +1,158 @@
 'use client'
 
-import { services } from '@/data/services'
+import React from 'react'
+import { motion, Variants } from 'framer-motion'
+import {
+  MonitorSmartphone,
+  Smartphone,
+  LayoutDashboard,
+  SearchCheck,
+  ShoppingCart,
+  LifeBuoy,
+  ArrowUpRight
+} from 'lucide-react'
+
+// Ma'lumotlar massivi
+const services = [
+  {
+    icon: MonitorSmartphone,
+    title: 'Zamonaviy Web-saytlar',
+    desc: 'Responsive va tez ishlovchi landing page hamda korporativ saytlar orqali brendingizni kuchaytiring.'
+  },
+  {
+    icon: Smartphone,
+    title: 'Mobil Ilovalar',
+    desc: 'Android va iOS uchun maxsus dasturlar (Flutter/Swift) orqali mijozlaringiz telefonidan joy oling.'
+  },
+  {
+    icon: LayoutDashboard,
+    title: 'CRM va ERP Tizimlar',
+    desc: 'Biznes jarayonlarini avtomatlashtirish, ombor va savdoni nazorat qilish uchun murakkab tizimlar.'
+  },
+  {
+    icon: SearchCheck,
+    title: 'SEO va Marketing',
+    desc: 'Google qidiruvida birinchi o‘ringa chiqish va to‘g‘ri target reklama orqali mijozlar oqimini oshirish.'
+  },
+  {
+    icon: ShoppingCart,
+    title: 'E-commerce (Internet Do‘kon)',
+    desc: 'Telegram bot va web-sayt orqali 24/7 savdo qiluvchi to‘lov tizimiga ulangan onlayn do‘konlar.'
+  },
+  {
+    icon: LifeBuoy,
+    title: 'Texnik Support',
+    desc: 'Loyihangiz to‘xtab qolmasligi uchun serverlar nazorati va doimiy texnik xizmat ko‘rsatish.'
+  }
+]
 
 export default function ServicesSection() {
-  return (
-    <section id="services" className="py-20 bg-black text-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 text-green-400">
-          Xizmatlarimiz
-        </h2>
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
 
-        <div className="space-y-16">
+  const cardVariants: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  }
+
+  return (
+    <section id="services" className="relative py-24 bg-black text-white overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-20 max-w-3xl mx-auto">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-sm font-semibold uppercase tracking-wider mb-4 inline-block"
+          >
+            Bizning Xizmatlar
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6"
+          >
+            Biznesingiz uchun <br className="hidden md:block" />
+            <span className="text-green-500">Kompleks Yechimlar</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-gray-400 text-lg"
+          >
+            Oddiy saytdan tortib, murakkab sun'iy intellekt tizimlarigacha.
+            Sizning g'oyangizni raqamli reallikka aylantiramiz.
+          </motion.p>
+        </div>
+
+        {/* Services Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {services.map((service, index) => {
             const Icon = service.icon
-            const isEven = index % 2 === 0
-
             return (
-              <div
+              <motion.div
                 key={index}
-                className={`flex flex-col md:flex-row items-center gap-6 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
+                variants={cardVariants}
+                className="group relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/[0.05] hover:border-green-500/50 transition-all duration-300 overflow-hidden"
               >
-                <div className="flex-shrink-0">
-                  <Icon className="w-12 h-12 text-green-400" />
+                {/* Hover Glow Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 via-transparent to-transparent group-hover:from-green-500/10 transition-all duration-500" />
+
+                {/* Header: Icon & Arrow */}
+                <div className="flex justify-between items-start mb-8 relative z-10">
+                  <div className="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(74,222,128,0.1)] group-hover:shadow-[0_0_20px_rgba(74,222,128,0.4)]">
+                    <Icon strokeWidth={1.5} className="w-7 h-7" />
+                  </div>
+
+                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/30 group-hover:text-white group-hover:border-white/30 transition-all cursor-pointer">
+                    <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
                 </div>
 
-                <div className="md:w-3/4 text-center md:text-left">
-                  <h3 className="text-2xl font-semibold mb-2 text-white">{service.title}</h3>
-                  <p className="text-gray-400 text-base">{service.desc}</p>
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300">
+                    {service.desc}
+                  </p>
                 </div>
-              </div>
+
+                {/* Bottom Line Animation */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

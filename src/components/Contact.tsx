@@ -3,24 +3,22 @@
 import { useState } from 'react'
 import Cleave from 'cleave.js/react'
 import { ToastContainer, toast } from 'react-toastify'
+import { motion } from 'framer-motion'
+import { MapPin, Phone, Mail, Send, Loader2 } from 'lucide-react'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function Contact() {
   const [form, setForm] = useState({
     name: '',
-    phone: '+998 ',
+    phone: '+998',
     message: ''
   })
   const [submitting, setSubmitting] = useState(false)
+  const [focused, setFocused] = useState<string | null>(null)
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target
-
     if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
-    if (name === 'message' && value.length > 500) return
-
     setForm({ ...form, [name]: value })
   }
 
@@ -29,109 +27,188 @@ export default function Contact() {
     setSubmitting(true)
 
     const digitsOnly = form.phone.replace(/\D/g, '')
-    if (digitsOnly.length !== 12) {
-      toast.error('❌ Telefon raqam to‘liq kiritilmadi.', {
-        position: 'bottom-right',
-        theme: 'dark',
-      })
+    if (digitsOnly.length < 12) {
+      toast.error('❌ Telefon raqam noto‘g‘ri formatda!', { theme: 'dark' })
       setSubmitting(false)
       return
     }
 
     try {
-      await fetch('/api/send-message', {
+      // 1. Simulyatsiya o'rniga REAL SO'ROV yuboramiz
+      const res = await fetch('/api/send-message', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(form),
       })
 
-      toast.success('Xabaringiz yuborildi! Tez orada siz bilan bog‘lanamiz.', {
-        position: 'bottom-right',
-        theme: 'dark',
-      })
+      const data = await res.json()
 
-      setForm({ name: '', phone: '+998 ', message: '' })
+      if (data.success) {
+        toast.success('🚀 Xabar muvaffaqiyatli yuborildi!', { theme: 'dark' })
+        setForm({ name: '', phone: '+998', message: '' })
+      } else {
+        toast.error('❌ Xatolik: ' + data.message, { theme: 'dark' })
+      }
     } catch (error) {
-      toast.error('Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.', {
-        position: 'bottom-right',
-        theme: 'dark',
-      })
+      toast.error('❌ Server bilan bog‘lanib bo‘lmadi', { theme: 'dark' })
+    } finally {
+      setSubmitting(false)
     }
-
-    setSubmitting(false)
   }
 
   return (
-    <section id="contact" className="bg-neutral-950 text-white px-4 py-24 sm:px-10 md:px-16 lg:px-24 xl:px-32">
-      <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-10 md:p-14 backdrop-blur-xl transition">
-        <h2 className="text-4xl sm:text-5xl font-display font-semibold tracking-tight mb-4">Aloqa</h2>
-        <p className="text-gray-400 mb-8 text-base sm:text-lg leading-relaxed">
-          Biznesingiz uchun yechim kerakmi? Raqamingizni qoldiring yoki to‘g‘ridan-to‘g‘ri bizga qo‘ng‘iroq qiling.
-        </p>
+    <section id="contact" className="relative bg-black text-white py-24 overflow-hidden">
+      {/* Orqa fon bezaklari */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-900/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
 
-        <form onSubmit={handleSubmit} className="grid gap-6">
-          <div>
-            <label className="block mb-2 text-sm text-gray-300">Ismingiz</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Ali Valiyev"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-            />
-          </div>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          <div>
-            <label className="block mb-2 text-sm text-gray-300">Telefon raqamingiz</label>
-            <Cleave
-              options={{
-                prefix: '+998',
-                blocks: [4, 2, 3, 2, 2],
-                delimiters: [' ', ' ', '-', '-', ''],
-                numericOnly: true,
-              }}
-              value={form.phone}
-              name="phone"
-              onChange={handleChange}
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-              placeholder="+998 33 123-45-67"
-            />
-          </div>
+          {/* Chap taraf: Ma'lumotlar */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-green-400 font-bold tracking-widest uppercase text-sm mb-4 block">
+              Aloqa
+            </span>
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              G‘oyalar <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
+                Reallikka Aylanadi
+              </span>
+            </h2>
+            <p className="text-gray-400 text-lg mb-12 max-w-md">
+              Sizda loyiha bormi? Yoki shunchaki maslahatlashmoqchimisiz?
+              Biz har doim ochiqmiz.
+            </p>
 
-          <div>
-            <label className="block mb-2 text-sm text-gray-300">
-              Xabaringiz <span className="text-xs text-gray-500">({form.message.length}/500)</span>
-            </label>
-            <textarea
-              name="message"
-              rows={5}
-              placeholder="Loyiham haqida maslahat olishni xohlayman..."
-              value={form.message}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition resize-none"
-            />
-          </div>
+            <div className="space-y-8">
+              <div className="flex items-start gap-5 group cursor-pointer">
+                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Telefon</h4>
+                  <a href="tel:+998200127707" className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+                    +998 20 012 77 07
+                  </a>
+                </div>
+              </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-2">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="flex-1 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-xl py-3 transition text-center disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {submitting ? '⏳ Yuborilmoqda...' : 'Yuborish'}
-            </button>
-            <a
-              href="tel:+998200127707"
-              className="flex-1 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold rounded-xl py-3 text-center transition"
-            >
-              📞 Telefon qilish
-            </a>
-          </div>
-        </form>
+              <div className="flex items-start gap-5 group cursor-pointer">
+                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Manzil</h4>
+                  <p className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+                    Toshkent sh., Yashnobod tumani
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-5 group cursor-pointer">
+                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Email</h4>
+                  <a href="mailto:info@webleaders.uz" className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+                    info@webleaders.uz
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* O'ng taraf: Forma */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-blue-500/20 blur-3xl opacity-30 -z-10" />
+
+            <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
+              <h3 className="text-2xl font-bold mb-8">So‘rov qoldirish</h3>
+
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">Ismingiz</label>
+                  <div className={`relative transition-all duration-300 ${focused === 'name' ? 'scale-[1.02]' : ''}`}>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Diyorbek Abdulhamidov"
+                      value={form.name}
+                      onChange={handleChange}
+                      onFocus={() => setFocused('name')}
+                      onBlur={() => setFocused(null)}
+                      required
+                      className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 ${focused === 'name' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
+                  <div className={`relative transition-all duration-300 ${focused === 'phone' ? 'scale-[1.02]' : ''}`}>
+                    <Cleave
+                      options={{ prefix: '+998', blocks: [4, 2, 3, 2, 2], delimiters: [' ', ' ', '-', '-', ''], numericOnly: true }}
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      onFocus={() => setFocused('phone')}
+                      onBlur={() => setFocused(null)}
+                      className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 ${focused === 'phone' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">
+                    Xabar <span className="text-[10px] lowercase text-gray-600">({form.message.length}/500)</span>
+                  </label>
+                  <div className={`relative transition-all duration-300 ${focused === 'message' ? 'scale-[1.02]' : ''}`}>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      placeholder="Loyiha haqida qisqacha..."
+                      value={form.message}
+                      onChange={handleChange}
+                      onFocus={() => setFocused('message')}
+                      onBlur={() => setFocused(null)}
+                      required
+                      className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 resize-none ${focused === 'message' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-green-500 text-black font-bold text-lg rounded-xl py-4 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+                >
+                  {submitting ? (
+                    <><Loader2 className="animate-spin" /> Yuborilmoqda...</>
+                  ) : (
+                    <>Yuborish <Send size={18} /></>
+                  )}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
       </div>
+      <ToastContainer position="bottom-right" theme="dark" />
     </section>
   )
 }
