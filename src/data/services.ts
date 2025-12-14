@@ -10,7 +10,7 @@ import {
 export const services = [
   {
     icon: MonitorSmartphone,
-    title: 'Zamonaviy web-sayt',
+    title: 'Zamonaviy web-saytlar',
     desc: 'Responsive va tez ishlovchi web-saytlar orqali brendingizni kuchaytiring va foydalanuvchilarga qulaylik yarating.'
   },
   {
