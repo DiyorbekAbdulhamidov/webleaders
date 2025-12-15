@@ -35,7 +35,7 @@ export const services = [
   },
   {
     icon: LifeBuoy,
-    title: 'Texnik qo‘llab-quvvatlash',
+    title: 'Texnk qo‘llab-quvvatlash',
     desc: 'Saytingiz va ilovalaringiz uzluksiz ishlashi uchun 24/7 texnik yordam va monitoring.'
   },
 ]
