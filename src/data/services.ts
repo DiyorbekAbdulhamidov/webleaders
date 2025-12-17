@@ -39,4 +39,3 @@ export const services = [
     desc: 'Saytingiz va ilovalaringiz uzluksiz ishlashi uchun 24/7 texnik yordam va monitoring.'
   },
 ]
-// 
