@@ -16,25 +16,53 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false)
   const [focused, setFocused] = useState<string | null>(null)
 
+  // Maksimal belgi limiti
+  const MESSAGE_LIMIT = 200
+
   const handleChange = (e: any) => {
     const { name, value } = e.target
+
+    // 1. Ism validatsiyasi (faqat harflar)
     if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
+
+    // 2. Xabar limiti validatsiyasi (200 tadan oshirmaslik)
+    if (name === 'message') {
+      if (value.length > MESSAGE_LIMIT) return
+    }
+
     setForm({ ...form, [name]: value })
   }
+
+  // Telefon raqamni tozalash (faqat raqamlar qoladi)
+  const getRawPhone = (phone: string) => phone.replace(/\D/g, '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
 
-    const digitsOnly = form.phone.replace(/\D/g, '')
-    if (digitsOnly.length < 12) {
-      toast.error('❌ Telefon raqam noto‘g‘ri formatda!', { theme: 'dark' })
+    // Validatsiya: Ism bo'sh emasligi
+    if (!form.name.trim()) {
+      toast.error('Iltimos, ismingizni kiriting', { theme: 'dark' })
+      setSubmitting(false)
+      return
+    }
+
+    // Validatsiya: Telefon raqam (998 + 9 ta raqam = 12 ta)
+    const rawPhone = getRawPhone(form.phone)
+    if (rawPhone.length < 12) {
+      toast.error('❌ Telefon raqam to‘liq kiritilmadi!', { theme: 'dark' })
+      setSubmitting(false)
+      return
+    }
+
+    // Validatsiya: Xabar bo'sh emasligi
+    if (!form.message.trim()) {
+      toast.error('Iltimos, xabar yozing', { theme: 'dark' })
       setSubmitting(false)
       return
     }
 
     try {
-      // 1. Simulyatsiya o'rniga REAL SO'ROV yuboramiz
       const res = await fetch('/api/send-message', {
         method: 'POST',
         headers: {
@@ -56,6 +84,14 @@ export default function Contact() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  // Xabar uzunligiga qarab rangni o'zgartirish
+  const getCounterColor = () => {
+    const length = form.message.length
+    if (length >= MESSAGE_LIMIT) return 'text-red-500 font-bold'
+    if (length >= MESSAGE_LIMIT - 20) return 'text-yellow-500' // Oxirgi 20 ta qolganda sariq
+    return 'text-gray-600'
   }
 
   return (
@@ -89,41 +125,29 @@ export default function Contact() {
             </p>
 
             <div className="space-y-8">
-              <div className="flex items-start gap-5 group cursor-pointer">
-                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
-                  <Phone size={24} />
+              {[
+                { icon: Phone, label: 'Telefon', value: '+998 20 012 77 07', href: 'tel:+998200127707' },
+                { icon: MapPin, label: 'Manzil', value: 'Toshkent sh., Yashnobod tumani', href: null },
+                { icon: Mail, label: 'Email', value: 'info@webleaders.uz', href: 'mailto:info@webleaders.uz' }
+              ].map((item, index) => (
+                <div key={index} className="flex items-start gap-5 group cursor-pointer">
+                  <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
+                    <item.icon size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">{item.label}</h4>
+                    {item.href ? (
+                      <a href={item.href} className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
+                        {item.value}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Telefon</h4>
-                  <a href="tel:+998200127707" className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
-                    +998 20 012 77 07
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5 group cursor-pointer">
-                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Manzil</h4>
-                  <p className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
-                    Toshkent sh., Yashnobod tumani
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5 group cursor-pointer">
-                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 border border-white/10">
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider">Email</h4>
-                  <a href="mailto:info@webleaders.uz" className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">
-                    info@webleaders.uz
-                  </a>
-                </div>
-              </div>
+              ))}
             </div>
           </motion.div>
 
@@ -141,6 +165,7 @@ export default function Contact() {
               <h3 className="text-2xl font-bold mb-8">So‘rov qoldirish</h3>
 
               <div className="space-y-6">
+                {/* Ism */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">Ismingiz</label>
                   <div className={`relative transition-all duration-300 ${focused === 'name' ? 'scale-[1.02]' : ''}`}>
@@ -152,12 +177,13 @@ export default function Contact() {
                       onChange={handleChange}
                       onFocus={() => setFocused('name')}
                       onBlur={() => setFocused(null)}
-                      required
+                      autoComplete="name"
                       className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 ${focused === 'name' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
                     />
                   </div>
                 </div>
 
+                {/* Telefon */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
                   <div className={`relative transition-all duration-300 ${focused === 'phone' ? 'scale-[1.02]' : ''}`}>
@@ -168,26 +194,34 @@ export default function Contact() {
                       onChange={handleChange}
                       onFocus={() => setFocused('phone')}
                       onBlur={() => setFocused(null)}
+                      inputMode="tel"
                       className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 ${focused === 'phone' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
                     />
                   </div>
                 </div>
 
+                {/* Xabar (Textarea) */}
                 <div className="space-y-2">
-                  <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">
-                    Xabar <span className="text-[10px] lowercase text-gray-600">({form.message.length}/500)</span>
-                  </label>
+                  <div className="flex justify-between ml-1">
+                    <label className="text-xs text-gray-500 uppercase tracking-wider">Xabar</label>
+                    <span className={`text-[10px] transition-colors duration-300 ${getCounterColor()}`}>
+                      ({form.message.length}/{MESSAGE_LIMIT})
+                    </span>
+                  </div>
+
                   <div className={`relative transition-all duration-300 ${focused === 'message' ? 'scale-[1.02]' : ''}`}>
                     <textarea
                       name="message"
                       rows={4}
+                      maxLength={MESSAGE_LIMIT} // HTML darajasida cheklov
                       placeholder="Loyiha haqida qisqacha..."
                       value={form.message}
                       onChange={handleChange}
                       onFocus={() => setFocused('message')}
                       onBlur={() => setFocused(null)}
-                      required
-                      className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 resize-none ${focused === 'message' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
+                      className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 resize-none ${focused === 'message' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' :
+                        form.message.length >= MESSAGE_LIMIT ? 'border-red-500/50' : 'border-white/10 hover:border-white/20'
+                        }`}
                     />
                   </div>
                 </div>
@@ -195,7 +229,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-green-500 text-black font-bold text-lg rounded-xl py-4 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+                  className="w-full bg-green-500 text-black font-bold text-lg rounded-xl py-4 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-4 active:scale-95"
                 >
                   {submitting ? (
                     <><Loader2 className="animate-spin" /> Yuborilmoqda...</>
