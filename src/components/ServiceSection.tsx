@@ -11,42 +11,21 @@ import {
   LifeBuoy,
   ArrowUpRight
 } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext' // <-- Import
 
-// Ma'lumotlar massivi
-const services = [
-  {
-    icon: MonitorSmartphone,
-    title: 'Zamonaviy Web-saytlar',
-    desc: 'Responsive va tez ishlovchi landing page hamda korporativ saytlar orqali brendingizni kuchaytiring.'
-  },
-  {
-    icon: Smartphone,
-    title: 'Mobil Ilovalar',
-    desc: 'Android va iOS uchun maxsus dasturlar (Flutter/Swift) orqali mijozlaringiz telefonidan joy oling.'
-  },
-  {
-    icon: LayoutDashboard,
-    title: 'CRM va ERP Tizimlar',
-    desc: 'Biznes jarayonlarini avtomatlashtirish, ombor va savdoni nazorat qilish uchun murakkab tizimlar.'
-  },
-  {
-    icon: SearchCheck,
-    title: 'SEO va Marketing',
-    desc: 'Google qidiruvida birinchi o‘ringa chiqish va to‘g‘ri target reklama orqali mijozlar oqimini oshirish.'
-  },
-  {
-    icon: ShoppingCart,
-    title: 'E-commerce (Internet Do‘kon)',
-    desc: 'Telegram bot va web-sayt orqali 24/7 savdo qiluvchi to‘lov tizimiga ulangan onlayn do‘konlar.'
-  },
-  {
-    icon: LifeBuoy,
-    title: 'Texnik Support',
-    desc: 'Loyihangiz to‘xtab qolmasligi uchun serverlar nazorati va doimiy texnik xizmat ko‘rsatish.'
-  }
+// Ikonkalar ro'yxati (Matndan alohida, chunki bular o'zgarmaydi)
+const icons = [
+  MonitorSmartphone,
+  Smartphone,
+  LayoutDashboard,
+  SearchCheck,
+  ShoppingCart,
+  LifeBuoy
 ]
 
 export default function ServicesSection() {
+  const { t } = useLanguage() // <-- Contextdan olish
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,7 +63,7 @@ export default function ServicesSection() {
             viewport={{ once: true }}
             className="px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-sm font-semibold uppercase tracking-wider mb-4 inline-block"
           >
-            Bizning Xizmatlar
+            {t.services.badge} {/* <-- Dinamik */}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -92,8 +71,8 @@ export default function ServicesSection() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6"
           >
-            Biznesingiz uchun <br className="hidden md:block" />
-            <span className="text-green-500">Kompleks Yechimlar</span>
+            {t.services.title} <br className="hidden md:block" />
+            <span className="text-green-500">{t.services.subtitle}</span> {/* <-- Dinamik */}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -102,8 +81,7 @@ export default function ServicesSection() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 text-lg"
           >
-            Oddiy saytdan tortib, murakkab sun&apos;iy intellekt tizimlarigacha.
-            Sizning g&apos;oyangizni raqamli reallikka aylantiramiz.
+            {t.services.desc} {/* <-- Dinamik */}
           </motion.p>
         </div>
 
@@ -115,8 +93,8 @@ export default function ServicesSection() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {services.map((service, index) => {
-            const Icon = service.icon
+          {t.services.list.map((service, index) => {
+            const Icon = icons[index] // Ikonkani indeks bo'yicha olamiz
             return (
               <motion.div
                 key={index}

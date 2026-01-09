@@ -7,14 +7,61 @@ import {
   Facebook,
   Instagram,
   Linkedin,
-  ArrowRight,
   Send
 } from 'lucide-react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext' // <--- TILLAR ULANDI
+
+// Contextda yo'q bo'lgan qo'shimcha matnlar uchun lokal tarjima
+const footerContent = {
+  UZ: {
+    desc: "Biznesingizni raqamli dunyoda yangi bosqichga olib chiquvchi innovatsion IT kompaniya. Sifat, tezlik va natija — bizning shiorimiz.",
+    menuTitle: "Menyu",
+    home: "Bosh sahifa",
+    team: "Jamoa",
+    newsletterTitle: "Yangiliklardan xabardor bo‘ling",
+    newsletterDesc: "Eng so‘nggi IT yangiliklar va aksiyalarimiz haqida birinchi bo‘lib biling.",
+    emailPlaceholder: "Email manzilingiz",
+    privacy: "Maxfiylik siyosati",
+    terms: "Foydalanish shartlari"
+  },
+  RU: {
+    desc: "Инновационная IT-компания, выводящая ваш бизнес на новый уровень в цифровом мире. Качество, скорость и результат — наш девиз.",
+    menuTitle: "Меню",
+    home: "Главная",
+    team: "Команда",
+    newsletterTitle: "Будьте в курсе новостей",
+    newsletterDesc: "Узнавайте первыми о последних новостях IT и наших акциях.",
+    emailPlaceholder: "Ваш Email",
+    privacy: "Политика конфиденциальности",
+    terms: "Условия использования"
+  },
+  EN: {
+    desc: "Innovative IT company taking your business to the next level in the digital world. Quality, speed, and results are our motto.",
+    menuTitle: "Menu",
+    home: "Home",
+    team: "Team",
+    newsletterTitle: "Stay updated",
+    newsletterDesc: "Be the first to know about the latest IT news and our promotions.",
+    emailPlaceholder: "Your Email",
+    privacy: "Privacy Policy",
+    terms: "Terms of Use"
+  }
+}
 
 export default function Footer() {
+  const { t, language } = useLanguage() // <--- TILLARNI CHAQIRIB OLDIK
+  const content = footerContent[language] // Lokal tarjimalarni tanlash
   const currentYear = new Date().getFullYear()
+
+  // Navigatsiya linklarini shakllantirish
+  const navLinks = [
+    { name: content.home, href: '#home' },
+    { name: t.nav.services, href: '#services' },
+    { name: t.nav.portfolio, href: '#projects' }, // Portfolio -> projects ID ga to'g'rilandi
+    { name: t.nav.pricing, href: '#pricing' },
+    { name: content.team, href: '#team' } // Jamoa bo'limi bo'lsa
+  ]
 
   return (
     <footer className="relative bg-black text-white pt-24 pb-12 border-t border-white/10 overflow-hidden">
@@ -33,8 +80,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-              Biznesingizni raqamli dunyoda yangi bosqichga olib chiquvchi innovatsion IT kompaniya.
-              Sifat, tezlik va natija — bizning shiorimiz.
+              {content.desc}
             </p>
             <div className="flex gap-4 pt-2">
               {[
@@ -57,13 +103,13 @@ export default function Footer() {
 
           {/* 2. NAVIGATION (2 cols) */}
           <div className="lg:col-span-2">
-            <h3 className="text-white font-bold mb-6">Menyu</h3>
+            <h3 className="text-white font-bold mb-6">{content.menuTitle}</h3>
             <ul className="space-y-4">
-              {['Bosh sahifa', 'Xizmatlar', 'Portfolio', 'Narxlar', 'Jamoa'].map((item, idx) => (
+              {navLinks.map((item, idx) => (
                 <li key={idx}>
-                  <Link href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
+                  <Link href={item.href} className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}
@@ -72,7 +118,7 @@ export default function Footer() {
 
           {/* 3. CONTACTS (3 cols) */}
           <div className="lg:col-span-3">
-            <h3 className="text-white font-bold mb-6">Bog‘lanish</h3>
+            <h3 className="text-white font-bold mb-6">{t.footer.contact}</h3>
             <ul className="space-y-5">
               <li>
                 <a href="tel:+998200127707" className="group flex items-start gap-3">
@@ -80,7 +126,7 @@ export default function Footer() {
                     <Phone size={16} />
                   </div>
                   <div>
-                    <span className="block text-xs text-gray-500 uppercase">Telefon</span>
+                    <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoPhone}</span>
                     <span className="text-gray-300 group-hover:text-white transition-colors">+998 20 012 77 07</span>
                   </div>
                 </a>
@@ -91,7 +137,7 @@ export default function Footer() {
                     <Mail size={16} />
                   </div>
                   <div>
-                    <span className="block text-xs text-gray-500 uppercase">Email</span>
+                    <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoEmail}</span>
                     <span className="text-gray-300 group-hover:text-white transition-colors">info@webleaders.uz</span>
                   </div>
                 </a>
@@ -101,8 +147,8 @@ export default function Footer() {
                   <MapPin size={16} />
                 </div>
                 <div>
-                  <span className="block text-xs text-gray-500 uppercase">Manzil</span>
-                  <span className="text-gray-300">Toshkent sh., Yashnobod tumani</span>
+                  <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoLoc}</span>
+                  <span className="text-gray-300">{t.footer.address}</span>
                 </div>
               </li>
             </ul>
@@ -110,14 +156,14 @@ export default function Footer() {
 
           {/* 4. NEWSLETTER (3 cols) */}
           <div className="lg:col-span-3">
-            <h3 className="text-white font-bold mb-6">Yangiliklardan xabardor bo‘ling</h3>
+            <h3 className="text-white font-bold mb-6">{content.newsletterTitle}</h3>
             <p className="text-gray-400 text-xs mb-4">
-              Eng so‘nggi IT yangiliklar va aksiyalarimiz haqida birinchi bo‘lib biling.
+              {content.newsletterDesc}
             </p>
             <form className="relative" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
-                placeholder="Email manzilingiz"
+                placeholder={content.emailPlaceholder}
                 className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-green-500 transition-all placeholder:text-gray-600"
               />
               <button
@@ -132,10 +178,10 @@ export default function Footer() {
 
         {/* COPYRIGHT */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>© {currentYear} Webleaders. Barcha huquqlar himoyalangan.</p>
+          <p>© {currentYear} Webleaders. {t.footer.rights}.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Maxfiylik siyosati</a>
-            <a href="#" className="hover:text-white transition-colors">Foydalanish shartlari</a>
+            <a href="#" className="hover:text-white transition-colors">{content.privacy}</a>
+            <a href="#" className="hover:text-white transition-colors">{content.terms}</a>
           </div>
         </div>
       </div>

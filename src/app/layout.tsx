@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Analytics } from "@vercel/analytics/react"
 import { ToastContainer } from 'react-toastify'
+import { LanguageProvider } from '@/context/LanguageContext'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -72,11 +73,13 @@ export default function RootLayout({
   return (
     <html lang="uz">
       <body className={`${inter.className} overflow-x-hidden bg-white text-gray-800`}>
-        <ToastContainer />
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Analytics />
-        <Footer />
+        <LanguageProvider>
+          <ToastContainer />
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Analytics />
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   )
