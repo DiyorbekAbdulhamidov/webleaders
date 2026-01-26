@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, PhoneCall, ChevronRight, Globe, ChevronDown } from 'lucide-react'
-import { useLanguage } from '@/context/LanguageContext' // <-- Import
+import { useLanguage } from '@/context/LanguageContext'
 
 const langOptions = [
   { code: 'UZ', label: "O'zbek" },
@@ -14,20 +14,30 @@ const langOptions = [
 ]
 
 export default function Header() {
-  const { language, setLanguage, t } = useLanguage() // <-- Contextdan olish
+  const { language, setLanguage, t } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const [imageError, setImageError] = useState(false)
 
+  // Scroll effekti
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20
-      if (isScrolled !== scrolled) setScrolled(isScrolled)
+      setScrolled(window.scrollY > 20)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [scrolled])
+  }, [])
+
+  // Mobil menyu ochilganda scrollni bloklash
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [isOpen])
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id)
@@ -40,7 +50,6 @@ export default function Header() {
     }
   }
 
-  // Navigatsiya linklari endi tarjima bilan keladi
   const navLinks = [
     { href: 'services', label: t.nav.services },
     { href: 'portfolio', label: t.nav.portfolio },
@@ -54,9 +63,9 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-300 py-4 ${scrolled
-            ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg'
-            : 'bg-transparent border-b border-transparent'
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled || isOpen
+          ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-lg py-3'
+          : 'bg-transparent border-b border-transparent py-5'
           }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6">
@@ -97,7 +106,7 @@ export default function Header() {
 
             <div className="w-[1px] h-6 bg-white/20 mx-2" />
 
-            {/* LANGUAGE SWITCHER */}
+            {/* Language Switcher (Desktop) */}
             <div className="relative">
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
@@ -121,7 +130,7 @@ export default function Header() {
                       <button
                         key={langOpt.code}
                         onClick={() => {
-                          setLanguage(langOpt.code as any) // Tilni o'zgartirish
+                          setLanguage(langOpt.code as any)
                           setIsLangMenuOpen(false)
                         }}
                         className={`px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors ${language === langOpt.code ? 'text-green-400 font-bold' : 'text-gray-400'
@@ -135,7 +144,7 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            {/* CTA BUTTON */}
+            {/* CTA Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -147,14 +156,18 @@ export default function Header() {
             </motion.button>
           </nav>
 
-          {/* MOBILE TOGGLE */}
-          <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden relative z-50 p-2 text-white hover:text-green-400 transition-colors">
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
+          {/* MOBILE TOGGLE BUTTON */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden relative z-[101] p-2 text-white hover:text-green-400 transition-colors"
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </motion.header>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -162,42 +175,61 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 lg:hidden"
+            className="fixed inset-0 z-[99] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center space-y-8 lg:hidden pt-20"
           >
-            {navLinks.map((link, i) => (
-              <motion.button
-                key={link.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i }}
-                onClick={() => scrollToSection(link.href)}
-                className="text-3xl font-black text-white hover:text-green-400 flex items-center gap-2 group uppercase tracking-tighter"
-              >
-                {link.label}
-                <ChevronRight className="opacity-0 -ml-8 group-hover:opacity-100 group-hover:ml-0 transition-all text-green-400" />
-              </motion.button>
-            ))}
-
-            <div className="w-20 h-[1px] bg-white/10 my-4" />
-
-            {/* Mobile Lang Switcher */}
-            <div className="flex gap-4">
-              {langOptions.map((langOpt, i) => (
+            {/* Menu Items */}
+            <div className="flex flex-col items-center gap-6 w-full">
+              {navLinks.map((link, i) => (
                 <motion.button
-                  key={langOpt.code}
+                  key={link.href}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + (i * 0.1) }}
-                  onClick={() => setLanguage(langOpt.code as any)}
-                  className={`px-4 py-2 rounded-full border text-sm font-bold transition-all ${language === langOpt.code
-                      ? 'border-green-500 text-green-500 bg-green-500/10'
-                      : 'border-white/20 text-gray-400'
-                    }`}
+                  transition={{ delay: 0.1 * i }}
+                  onClick={() => scrollToSection(link.href)}
+                  className="text-3xl font-black text-white hover:text-green-400 flex items-center gap-2 group uppercase tracking-tighter"
                 >
-                  {langOpt.code}
+                  {link.label}
+                  <ChevronRight className="opacity-0 -ml-8 group-hover:opacity-100 group-hover:ml-0 transition-all text-green-400" />
                 </motion.button>
               ))}
             </div>
+
+            <div className="w-20 h-[1px] bg-white/10 my-4" />
+
+            {/* Language Switcher (Mobile) */}
+            <div className="flex flex-col items-center gap-4">
+              <span className="text-gray-500 text-xs uppercase tracking-widest">Tilni tanlang</span>
+              <div className="flex gap-3">
+                {langOptions.map((langOpt, i) => (
+                  <motion.button
+                    key={langOpt.code}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + (i * 0.1) }}
+                    onClick={() => setLanguage(langOpt.code as any)}
+                    className={`px-5 py-2.5 rounded-full border text-sm font-bold transition-all ${language === langOpt.code
+                      ? 'border-green-500 text-green-500 bg-green-500/10'
+                      : 'border-white/20 text-gray-400'
+                      }`}
+                  >
+                    {langOpt.code}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile CTA */}
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              onClick={() => scrollToSection('contact')}
+              className="mt-8 px-8 py-4 bg-white text-black font-bold rounded-full flex items-center gap-2 active:scale-95 transition-transform"
+            >
+              <PhoneCall size={20} />
+              <span className="text-sm uppercase tracking-wider">{t.nav.btn}</span>
+            </motion.button>
+
           </motion.div>
         )}
       </AnimatePresence>

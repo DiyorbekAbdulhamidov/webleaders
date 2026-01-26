@@ -10,10 +10,10 @@ export default function HeroVideo() {
 
   return (
     <section
+      id="home"
       className="
         relative w-full overflow-hidden bg-black
-        h-[100svh]  /* Mobile browserlar uchun (address bar muammosi yo'q) */
-        flex items-center justify-center
+        h-[100svh] /* Mobil brauzerlar uchun to'liq balandlik */
       "
     >
       {/* Background video */}
@@ -39,12 +39,19 @@ export default function HeroVideo() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full h-full flex items-center justify-center">
+      <div
+        className="
+          relative z-10 w-full h-full 
+          flex flex-col items-center 
+          /* ASOSIY O'ZGARISH: Mobilda justify-start va padding beramiz, Desktopda markaz */
+          justify-start pt-32 sm:justify-center sm:pt-0
+        "
+      >
         <div
           className="
             mx-auto w-full max-w-[1200px] 2xl:max-w-[1400px]
             px-4 sm:px-6 lg:px-10
-            flex flex-col items-center text-center justify-center
+            flex flex-col items-center text-center
           "
         >
           {/* Badge */}
@@ -78,7 +85,7 @@ export default function HeroVideo() {
               transition={{ duration: 0.95, delay: 0.15, ease: 'easeOut' }}
               className="
                 font-semibold text-white tracking-tight
-                leading-[1.1] sm:leading-[0.92] /* Mobilda sal kengroq, desktopda zich */
+                leading-[1.1] sm:leading-[0.92]
                 break-words text-center
               "
               style={{
@@ -125,14 +132,13 @@ export default function HeroVideo() {
             {t.hero.desc}
           </motion.p>
 
-          {/* Buttons Container - FIX BU YERDA */}
+          {/* Buttons Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 28 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.6, type: 'spring', stiffness: 110 }}
             className="
               mt-10 sm:mt-14
-              /* Mobilda to'liq, Desktopda avtomatik */
               w-full sm:w-auto
               max-w-[90%] sm:max-w-none
               
@@ -141,7 +147,6 @@ export default function HeroVideo() {
               backdrop-blur-[40px]
               shadow-[0_20px_40px_rgba(0,0,0,0.4)]
               
-              /* Flex sozlamalari */
               flex flex-col sm:flex-row 
               items-center justify-center 
               gap-3 sm:gap-2
