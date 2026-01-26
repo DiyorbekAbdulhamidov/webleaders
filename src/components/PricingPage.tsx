@@ -8,16 +8,30 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/context/LanguageContext'
 import 'react-toastify/dist/ReactToastify.css'
 
+const sanitizeInput = (input: string) => {
+  return input.replace(/[<>&/"']/g, '')
+}
+
 export default function PricingPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('+998 ') // Bo'sh joy bilan boshlanadi
+  const [phone, setPhone] = useState('+998 ')
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [canSubmit, setCanSubmit] = useState(true)
 
   useEffect(() => {
     setMounted(true)
+    const lastSubmit = localStorage.getItem('lastSubmitTime')
+    if (lastSubmit) {
+      const timeDiff = Date.now() - parseInt(lastSubmit)
+      if (timeDiff < 60000) {
+        setCanSubmit(false)
+        const timeout = setTimeout(() => setCanSubmit(true), 60000 - timeDiff)
+        return () => clearTimeout(timeout)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -29,16 +43,13 @@ export default function PricingPage() {
     return () => { document.body.style.overflow = 'unset' }
   }, [selectedPlan])
 
-  // --- TELEFON RAQAM LOGIKASI ---
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value
 
-    // Agar foydalanuvchi hammasini o'chirib tashlasa ham +998 qolsin
     if (!val.startsWith('+998')) {
       val = '+998 '
     }
 
-    // Faqat raqam va probel va + belgisiga ruxsat
     if (/^[+0-9 ]*$/.test(val)) {
       setPhone(val)
     }
@@ -46,21 +57,26 @@ export default function PricingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!canSubmit) {
+      toast.warning('Iltimos, biroz kuting...', { theme: 'dark' })
+      return
+    }
+
     setLoading(true)
 
-    // 1. Ism validatsiyasi
-    if (name.length < 3) {
-      toast.error('Ismingizni to‘liq yozing', { theme: 'dark' })
+    const cleanName = sanitizeInput(name.trim())
+
+    if (cleanName.length < 3) {
+      toast.error(t.toast.nameError, { theme: 'dark' })
       setLoading(false)
       return
     }
 
-    // 2. Telefon validatsiyasi (Uzbekistan: 998 + 9 ta raqam = 12 ta raqam)
-    // Barcha bo'sh joylarni va + belgisini olib tashlab sanaymiz
-    const rawPhone = phone.replace(/\D/g, '') // Faqat raqamlarni qoldiradi
+    const rawPhone = phone.replace(/\D/g, '')
 
     if (rawPhone.length !== 12) {
-      toast.error('Telefon raqamni to‘liq kiriting (+998 90 123 45 67)', { theme: 'dark' })
+      toast.error(t.toast.phoneError, { theme: 'dark' })
       setLoading(false)
       return
     }
@@ -72,7 +88,7 @@ export default function PricingPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name,
+          name: cleanName,
           phone,
           plan: selectedPlan
         }),
@@ -81,17 +97,19 @@ export default function PricingPage() {
       const data = await res.json()
 
       if (res.ok && data.success) {
-        toast.success(`🎉 ${name}, arizangiz qabul qilindi!`, { theme: 'dark' })
+        toast.success(t.toast.success, { theme: 'dark' })
         setSelectedPlan(null)
         setName('')
         setPhone('+998 ')
+
+        localStorage.setItem('lastSubmitTime', Date.now().toString())
+        setCanSubmit(false)
+        setTimeout(() => setCanSubmit(true), 60000)
       } else {
-        // Agar backend 404 yoki 500 qaytarsa
-        toast.error('❌ Xatolik: Xabar yuborilmadi. Qaytadan urinib ko‘ring.', { theme: 'dark' })
-        console.error("API Error:", data)
+        toast.error(t.toast.error, { theme: 'dark' })
       }
     } catch (error) {
-      toast.error('❌ Server bilan bog‘lanib bo‘lmadi. Internetni tekshiring.', { theme: 'dark' })
+      toast.error(t.toast.error, { theme: 'dark' })
     } finally {
       setLoading(false)
     }
@@ -100,7 +118,6 @@ export default function PricingPage() {
   return (
     <section id="pricing" className="relative py-32 bg-black text-white overflow-hidden">
 
-      {/* Background Atmosphere */}
       <div className="absolute inset-0 bg-black">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-900/10 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] pointer-events-none" />
@@ -108,7 +125,6 @@ export default function PricingPage() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-        {/* HEADER */}
         <div className="text-center mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -141,7 +157,6 @@ export default function PricingPage() {
           </motion.p>
         </div>
 
-        {/* PRICING CARDS */}
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {t.pricing.plans.map((plan, idx) => (
             <motion.div
@@ -165,10 +180,24 @@ export default function PricingPage() {
               <div>
                 <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">{plan.title}</h3>
                 <p className="text-gray-400 text-sm mb-8 h-10">{plan.desc}</p>
-                <div className="flex items-baseline gap-1 mb-8 pb-8 border-b border-white/10">
+
+                <div className="flex items-baseline gap-2 mb-8 pb-8 border-b border-white/10">
+                  {language !== 'UZ' && (
+                    <span className="text-xl text-gray-500 font-medium">
+                      {language === 'RU' ? 'от' : 'from'}
+                    </span>
+                  )}
+
                   <span className="text-5xl font-bold text-white tracking-tighter">{plan.price}</span>
                   <span className="text-sm font-medium text-gray-500">{plan.currency}</span>
+
+                  {language === 'UZ' && (
+                    <span className="text-xl text-gray-500 font-medium">
+                      dan
+                    </span>
+                  )}
                 </div>
+
                 <ul className="space-y-5 mb-10">
                   {plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start gap-4 text-sm text-gray-300 group-hover:text-white transition-colors">
@@ -242,20 +271,19 @@ export default function PricingPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">{t.pricing.formPhone}</label>
-                      {/* --- YANGILANGAN INPUT --- */}
                       <input
                         type="tel"
                         value={phone}
                         onChange={handlePhoneChange}
                         placeholder="+998 90 123 45 67"
-                        maxLength={17} // +998 (4) + space (1) + 9 digits + spaces = taxminan
+                        maxLength={17}
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-green-500/50 focus:bg-white/10 transition-all"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || !canSubmit}
                       className="w-full py-5 mt-4 bg-green-500 text-black font-bold rounded-2xl uppercase tracking-widest hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {loading ? <Loader2 className="animate-spin" /> : t.pricing.btnSubmit}

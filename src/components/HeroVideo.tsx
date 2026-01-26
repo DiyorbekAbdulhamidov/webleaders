@@ -16,7 +16,6 @@ export default function HeroVideo() {
         h-[100svh] /* Mobil brauzerlar uchun to'liq balandlik */
       "
     >
-      {/* Background video */}
       <div className="absolute inset-0 z-0">
         <video
           className="
@@ -32,13 +31,11 @@ export default function HeroVideo() {
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
 
-        {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/90" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_115%)]" />
         <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
-      {/* Content */}
       <div
         className="
           relative z-10 w-full h-full 
@@ -54,7 +51,6 @@ export default function HeroVideo() {
             flex flex-col items-center text-center
           "
         >
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -16, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -76,7 +72,6 @@ export default function HeroVideo() {
             </span>
           </motion.div>
 
-          {/* Title */}
           <h1 className="flex flex-col items-center justify-center w-full">
             <motion.span
               key={t.hero.title1}
@@ -115,7 +110,6 @@ export default function HeroVideo() {
             </motion.span>
           </h1>
 
-          {/* Description */}
           <motion.p
             key={t.hero.desc}
             initial={{ opacity: 0, y: 16 }}
@@ -132,7 +126,6 @@ export default function HeroVideo() {
             {t.hero.desc}
           </motion.p>
 
-          {/* Buttons Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 28 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -199,7 +192,6 @@ export default function HeroVideo() {
         </div>
       </div>
 
-      {/* Glow */}
       <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-[1] flex justify-center">
         <div className="w-[520px] h-[320px] sm:w-[700px] sm:h-[420px] lg:w-[900px] lg:h-[520px] bg-green-500/10 rounded-full blur-[150px]" />
       </div>

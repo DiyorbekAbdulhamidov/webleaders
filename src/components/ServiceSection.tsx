@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { motion, Variants } from 'framer-motion'
 import {
   MonitorSmartphone,
@@ -11,9 +10,8 @@ import {
   LifeBuoy,
   ArrowUpRight
 } from 'lucide-react'
-import { useLanguage } from '@/context/LanguageContext' // <-- Import
+import { useLanguage } from '@/context/LanguageContext'
 
-// Ikonkalar ro'yxati (Matndan alohida, chunki bular o'zgarmaydi)
 const icons = [
   MonitorSmartphone,
   Smartphone,
@@ -24,7 +22,7 @@ const icons = [
 ]
 
 export default function ServicesSection() {
-  const { t } = useLanguage() // <-- Contextdan olish
+  const { t } = useLanguage()
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -72,7 +70,7 @@ export default function ServicesSection() {
             className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6"
           >
             {t.services.title} <br className="hidden md:block" />
-            <span className="text-green-500">{t.services.subtitle}</span> {/* <-- Dinamik */}
+            <span className="text-green-500">{t.services.subtitle}</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -81,7 +79,7 @@ export default function ServicesSection() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 text-lg"
           >
-            {t.services.desc} {/* <-- Dinamik */}
+            {t.services.desc}
           </motion.p>
         </div>
 

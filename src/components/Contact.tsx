@@ -1,15 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Cleave from 'cleave.js/react'
 import { ToastContainer, toast } from 'react-toastify'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Send, Loader2 } from 'lucide-react'
-import { useLanguage } from '@/context/LanguageContext' // <--- TILLARNI ULANDIK
+import { useLanguage } from '@/context/LanguageContext'
 import 'react-toastify/dist/ReactToastify.css'
 
+const sanitizeInput = (input: string) => {
+  return input.replace(/[<>&/"']/g, '')
+}
+
 export default function Contact() {
-  const { t } = useLanguage() // <--- TILLARNI CHAQIRIB OLDIK
+  const { t } = useLanguage()
 
   const [form, setForm] = useState({
     name: '',
@@ -18,17 +22,27 @@ export default function Contact() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [focused, setFocused] = useState<string | null>(null)
+  const [canSubmit, setCanSubmit] = useState(true)
 
-  // Maksimal belgi limiti
   const MESSAGE_LIMIT = 200
+
+  useEffect(() => {
+    const lastSubmit = localStorage.getItem('lastSubmitTime')
+    if (lastSubmit) {
+      const timeDiff = Date.now() - parseInt(lastSubmit)
+      if (timeDiff < 60000) {
+        setCanSubmit(false)
+        const timeout = setTimeout(() => setCanSubmit(true), 60000 - timeDiff)
+        return () => clearTimeout(timeout)
+      }
+    }
+  }, [])
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
 
-    // 1. Ism validatsiyasi (faqat harflar)
     if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
 
-    // 2. Xabar limiti validatsiyasi (200 tadan oshirmaslik)
     if (name === 'message') {
       if (value.length > MESSAGE_LIMIT) return
     }
@@ -36,82 +50,87 @@ export default function Contact() {
     setForm({ ...form, [name]: value })
   }
 
-  // Telefon raqamni tozalash (faqat raqamlar qoladi)
   const getRawPhone = (phone: string) => phone.replace(/\D/g, '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!canSubmit) {
+      toast.warning('Iltimos, biroz kuting...', { theme: 'dark' })
+      return
+    }
+
     setSubmitting(true)
 
-    // Validatsiya: Ism bo'sh emasligi
-    if (form.name.length < 3) {
-      toast.error(t.toast.nameError, { theme: 'dark' }) // <--- TARJIMA
+    const cleanName = sanitizeInput(form.name.trim())
+    const cleanMessage = sanitizeInput(form.message.trim())
+
+    if (cleanName.length < 3) {
+      toast.error(t.toast.nameError, { theme: 'dark' })
       setSubmitting(false)
       return
     }
 
-    // Validatsiya: Telefon raqam (998 + 9 ta raqam = 12 ta)
     const rawPhone = getRawPhone(form.phone)
     if (rawPhone.length < 12) {
-      toast.error(t.toast.phoneError, { theme: 'dark' }) // <--- TARJIMA
+      toast.error(t.toast.phoneError, { theme: 'dark' })
       setSubmitting(false)
       return
     }
 
-    // Validatsiya: Xabar bo'sh emasligi
-    if (form.message.length < 3) {
-      toast.error(t.toast.msgError, { theme: 'dark' }) // <--- TARJIMA
+    if (cleanMessage.length < 3) {
+      toast.error(t.toast.msgError, { theme: 'dark' })
       setSubmitting(false)
       return
     }
 
     try {
-      // Backendga moslash (/api/contact)
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: form.name,
+          name: cleanName,
           phone: form.phone,
-          plan: `XABAR: ${form.message}` // Backend "plan" kutgani uchun xabarni shunga joylaymiz
+          plan: `XABAR: ${cleanMessage}`
         }),
       })
 
       const data = await res.json()
 
       if (res.ok && data.success) {
-        toast.success(t.toast.success, { theme: 'dark' }) // <--- TARJIMA
+        toast.success(t.toast.success, { theme: 'dark' })
         setForm({ name: '', phone: '+998', message: '' })
+
+        localStorage.setItem('lastSubmitTime', Date.now().toString())
+        setCanSubmit(false)
+        setTimeout(() => setCanSubmit(true), 60000)
       } else {
-        toast.error(t.toast.error, { theme: 'dark' }) // <--- TARJIMA
+        toast.error(t.toast.error, { theme: 'dark' })
       }
     } catch (error) {
-      toast.error(t.toast.error, { theme: 'dark' }) // <--- TARJIMA
+      toast.error(t.toast.error, { theme: 'dark' })
     } finally {
       setSubmitting(false)
     }
   }
 
-  // Xabar uzunligiga qarab rangni o'zgartirish
   const getCounterColor = () => {
     const length = form.message.length
     if (length >= MESSAGE_LIMIT) return 'text-red-500 font-bold'
-    if (length >= MESSAGE_LIMIT - 20) return 'text-yellow-500' // Oxirgi 20 ta qolganda sariq
+    if (length >= MESSAGE_LIMIT - 20) return 'text-yellow-500'
     return 'text-gray-600'
   }
 
   return (
     <section id="contact" className="relative bg-black text-white py-24 overflow-hidden">
-      {/* Orqa fon bezaklari */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-900/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          {/* Chap taraf: Ma'lumotlar */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -119,12 +138,12 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
           >
             <span className="text-green-400 font-bold tracking-widest uppercase text-sm mb-4 block">
-              {t.contactSection.badge} {/* Aloqa */}
+              {t.contactSection.badge}
             </span>
             <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              {t.contactSection.title} <br /> {/* G‘oyalar */}
+              {t.contactSection.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
-                {t.contactSection.subtitle} {/* Reallikka Aylanadi */}
+                {t.contactSection.subtitle}
               </span>
             </h2>
             <p className="text-gray-400 text-lg mb-12 max-w-md">
@@ -158,7 +177,6 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          {/* O'ng taraf: Forma */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -169,10 +187,9 @@ export default function Contact() {
             <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-blue-500/20 blur-3xl opacity-30 -z-10" />
 
             <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
-              <h3 className="text-2xl font-bold mb-8">{t.contactSection.formTitle}</h3> {/* So‘rov qoldirish */}
+              <h3 className="text-2xl font-bold mb-8">{t.contactSection.formTitle}</h3>
 
               <div className="space-y-6">
-                {/* Ism */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">{t.contactSection.inputName}</label>
                   <div className={`relative transition-all duration-300 ${focused === 'name' ? 'scale-[1.02]' : ''}`}>
@@ -190,7 +207,6 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* Telefon */}
                 <div className="space-y-2">
                   <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">{t.contactSection.inputPhone}</label>
                   <div className={`relative transition-all duration-300 ${focused === 'phone' ? 'scale-[1.02]' : ''}`}>
@@ -207,7 +223,6 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* Xabar (Textarea) */}
                 <div className="space-y-2">
                   <div className="flex justify-between ml-1">
                     <label className="text-xs text-gray-500 uppercase tracking-wider">{t.contactSection.inputMsg}</label>
@@ -220,7 +235,7 @@ export default function Contact() {
                     <textarea
                       name="message"
                       rows={4}
-                      maxLength={MESSAGE_LIMIT} // HTML darajasida cheklov
+                      maxLength={MESSAGE_LIMIT}
                       placeholder={t.contactSection.placeholderMsg}
                       value={form.message}
                       onChange={handleChange}
@@ -235,7 +250,7 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || !canSubmit}
                   className="w-full bg-green-500 text-black font-bold text-lg rounded-xl py-4 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-4 active:scale-95"
                 >
                   {submitting ? (

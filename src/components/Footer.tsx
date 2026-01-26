@@ -10,9 +10,8 @@ import {
   Send
 } from 'lucide-react'
 import Link from 'next/link'
-import { useLanguage } from '@/context/LanguageContext' // <--- TILLAR ULANDI
+import { useLanguage } from '@/context/LanguageContext'
 
-// Contextda yo'q bo'lgan qo'shimcha matnlar uchun lokal tarjima
 const footerContent = {
   UZ: {
     desc: "Biznesingizni raqamli dunyoda yangi bosqichga olib chiquvchi innovatsion IT kompaniya. Sifat, tezlik va natija — bizning shiorimiz.",
@@ -50,17 +49,17 @@ const footerContent = {
 }
 
 export default function Footer() {
-  const { t, language } = useLanguage() // <--- TILLARNI CHAQIRIB OLDIK
-  const content = footerContent[language] // Lokal tarjimalarni tanlash
+  const { t, language } = useLanguage()
+  const content = footerContent[language]
   const currentYear = new Date().getFullYear()
 
   // Navigatsiya linklarini shakllantirish
   const navLinks = [
     { name: content.home, href: '#home' },
     { name: t.nav.services, href: '#services' },
-    { name: t.nav.portfolio, href: '#projects' }, // Portfolio -> projects ID ga to'g'rilandi
+    { name: t.nav.portfolio, href: '#projects' },
     { name: t.nav.pricing, href: '#pricing' },
-    { name: content.team, href: '#team' } // Jamoa bo'limi bo'lsa
+    { name: content.team, href: '#team' }
   ]
 
   return (

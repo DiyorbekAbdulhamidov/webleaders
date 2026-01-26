@@ -5,21 +5,17 @@ import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-mot
 import { ShieldCheck, Smartphone, Users, Rocket, Timer, Handshake, Star, CheckCircle2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 
-// Ikonkalar (Yangi ro'yxatga moslab)
 const icons = [
-  ShieldCheck, // Seniorlar
-  Smartphone,  // Mobile First
-  Users,       // Sotadigan Dizayn
-  Rocket,      // 0.5 Soniya
-  Timer,       // Temir Intizom
-  Handshake    // Tashlab qo'ymaymiz
+  ShieldCheck, Smartphone,
+  Users,
+  Rocket,
+  Timer,
+  Handshake
 ]
 
-// --- ULTRA GLASS CARD ---
 const GlassCard = ({ item, index, Icon }: { item: any, index: number, Icon: any }) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  // 3D Tilt Logic (Juda yumshoq va silliq)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -59,23 +55,18 @@ const GlassCard = ({ item, index, Icon }: { item: any, index: number, Icon: any 
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       className="relative h-full group"
     >
-      {/* CARD BODY: iOS 26 Glassmorphism */}
       <div className="relative h-full bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-[2rem] p-8 flex flex-col justify-between overflow-hidden transition-all duration-500 hover:bg-white/[0.06] hover:border-white/[0.15] shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]">
 
-        {/* Noise Texture (Juda nozik) */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
-        {/* Internal Glow Spot (Yashil) */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-green-500/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-green-500/30 transition-all duration-700" />
 
         <div className="relative z-10 flex flex-col h-full" style={{ transform: "translateZ(20px)" }}>
 
-          {/* Header: Icon & Title */}
           <div className="flex items-start justify-between mb-6">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-white group-hover:scale-110 group-hover:border-green-500/50 group-hover:text-green-400 transition-all duration-500 shadow-inner">
               <Icon size={28} strokeWidth={1.5} />
             </div>
-            {/* Top right decorative dot */}
             <div className="w-2 h-2 rounded-full bg-white/10 group-hover:bg-green-500/80 transition-colors duration-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
           </div>
 
@@ -88,7 +79,6 @@ const GlassCard = ({ item, index, Icon }: { item: any, index: number, Icon: any 
           </p>
         </div>
 
-        {/* Bottom shine effect on hover */}
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
       </div>
     </motion.div>
