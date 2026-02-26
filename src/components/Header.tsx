@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, PhoneCall, ChevronRight, Globe, ChevronDown } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
+import { usePathname } from 'next/navigation'
 
 const langOptions = [
   { code: 'UZ', label: "O'zbek" },
@@ -19,6 +20,9 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const pathname = usePathname();
+
+  if (pathname === "/ramadan") return null;
 
   // Scroll effekti
   useEffect(() => {

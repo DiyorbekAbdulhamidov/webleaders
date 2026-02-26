@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
+import { usePathname } from 'next/navigation'
 
 const footerContent = {
   UZ: {
@@ -52,6 +53,10 @@ export default function Footer() {
   const { t, language } = useLanguage()
   const content = footerContent[language]
   const currentYear = new Date().getFullYear()
+
+  const pathname = usePathname();
+
+  if (pathname === "/ramadan") return null;
 
   // Navigatsiya linklarini shakllantirish
   const navLinks = [
