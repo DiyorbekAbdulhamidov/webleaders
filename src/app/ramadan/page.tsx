@@ -104,10 +104,6 @@ export default function EduCenterUniversalPremium() {
 
             <div className="absolute inset-2 md:inset-4 border border-[#00ff7f]/30 rounded-[1rem] md:rounded-[2rem] pointer-events-none" />
 
-            {/* <div className="w-24 h-24 md:w-40 md:h-40 relative mb-4 md:mb-8 flex items-center justify-center">
-              <Image src="/image.png" alt="Moon" fill className="object-contain drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] md:drop-shadow-[0_0_40px_rgba(212,175,55,0.8)]" />
-            </div> */}
-
             <h2 className={`${montserrat.className} text-xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#FFF7D6] via-[#d4af37] to-[#8a6d00] tracking-widest uppercase mb-2 md:mb-4`} style={{ WebkitTextStroke: "1px rgba(212,175,55,0.2)" }}>
               Ramazon Aksiyasi
             </h2>
