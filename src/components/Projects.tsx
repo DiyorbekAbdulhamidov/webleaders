@@ -8,8 +8,12 @@ import { X, ExternalLink, ArrowUpRight, Grid3X3, Zap } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 
 const staticData: Record<string, { images: string[], techStack: string[] }> = {
+  hilaledu: {
+    techStack: ['Next.js', 'SEO', 'Shadcn UI'],
+    images: ['/projects/hilal1.png', '/projects/hilal2.png', '/projects/hilal3.png', '/projects/hilal4.png']
+  },
   toybron: {
-    techStack: ['AI / ML', 'Big Data', 'Next.js 14'],
+    techStack: ['AI / ML', 'Big Data', 'Next.js 16'],
     images: ['/projects/toybron1.png', '/projects/toybron2.png', '/projects/toybron3.png', '/projects/toybron4.png']
   },
   lutsente: {
@@ -69,7 +73,7 @@ export default function Projects() {
     : null
 
   return (
-    <section id="portfolio" className="relative py-20 bg-black text-white overflow-hidden">
+    <section id="projects" className="relative py-20 bg-black text-white overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
