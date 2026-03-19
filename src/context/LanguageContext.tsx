@@ -134,6 +134,13 @@ const translations = {
           isFeatured: true
         },
         {
+          id: 'hilaledu',
+          name: 'Hilal Edu',
+          category: 'Educational Platform',
+          desc: 'Zamonaviy bilim maskani uchun ko‘p sahifali va foydalanuvchi uchun qulay ta\'lim platformasi.',
+          isFeatured: false
+        },
+        {
           id: 'lutsente',
           name: 'Lutsente',
           category: 'Premium Corporate Website',
@@ -336,6 +343,13 @@ const translations = {
           isFeatured: true
         },
         {
+          id: 'hilaledu',
+          name: 'Hilal Edu',
+          category: 'Educational Platform',
+          desc: 'Многостраничная и удобная образовательная платформа для современного центра знаний.',
+          isFeatured: false
+        },
+        {
           id: 'lutsente',
           name: 'Lutsente',
           category: 'Premium Corporate Website',
@@ -536,6 +550,13 @@ const translations = {
           category: 'AI Marketplace & Super-CRM',
           desc: 'Unique in Uzbekistan. AI manages warehouse and POS. The future is here.',
           isFeatured: true
+        },
+        {
+          id: 'hilaledu',
+          name: 'Hilal Edu',
+          category: 'Educational Platform',
+          desc: 'A multi-page and user-friendly educational platform for a modern learning center.',
+          isFeatured: false
         },
         {
           id: 'lutsente',
