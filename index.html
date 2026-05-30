@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELIOS - 3D Particle Vortex</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .ui-layer {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body class="text-white font-sans selection:bg-green-500/30">
+
+  <div id="canvas-container"></div>
+
+  <div class="ui-layer flex flex-col justify-between h-screen p-8 md:p-12">
+
+    <header class="flex justify-between items-center">
+      <div class="text-xs tracking-[0.4em] font-bold text-green-400 flex items-center gap-2">
+        <span class="animate-pulse">●</span> HELIOS
+      </div>
+      <button
+        class="interactive text-[10px] md:text-xs border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition duration-300 tracking-widest font-medium">
+        VIEW LIVE DEMO
+      </button>
+    </header>
+
+    <main class="text-center max-w-2xl mx-auto my-auto flex flex-col items-center">
+      <h1
+        class="text-6xl md:text-9xl font-extralight tracking-[0.25em] mb-4 uppercase drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+        HELIOS
+      </h1>
+      <p class="text-[10px] md:text-xs tracking-[0.2em] text-gray-400 uppercase mb-10 max-w-md leading-relaxed">
+        Designing the operator console for a <br class="hidden md:block"> fusion reactor.
+      </p>
+      <button
+        class="interactive px-8 py-3.5 border border-green-500/40 bg-green-950/20 text-green-400 text-xs tracking-[0.2em] rounded-full hover:bg-green-500 hover:text-black hover:scale-105 transition duration-300 uppercase font-semibold shadow-[0_0_20px_rgba(34,197,94,0.15)]">
+        Begin Briefing +
+      </button>
+    </main>
+
+    <footer class="text-center text-[9px] tracking-[0.4em] text-gray-500 uppercase animate-bounce">
+      Scroll to Enter
+    </footer>
+  </div>
+
+  <script>
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+
+    // Kamera sozlamalari
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 4;
+
+    // Render sozlamalari
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Galaktika (Girdob) parametrlari
+    const count = 35000; // Zarralar soni
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const colorInside = new THREE.Color('#22c55e'); // Och yashil (Markaz)
+    const colorOutside = new THREE.Color('#022c22'); // To'q yashil (Chetlar)
+
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+
+      // Matematik spiral formulasi
+      const radius = Math.random() * 3.5;
+      const spinAngle = radius * 3.0;
+      const branchAngle = ((i % 3) / 3) * Math.PI * 2; // 3 ta spiral tarmog'i
+
+      // Zarralarni tarqatib yuborish (Xaos effekti)
+      const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.4;
+      const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.2;
+      const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.4;
+
+      positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+      positions[i3 + 1] = randomY;
+      positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+      // Ranglarni markazdan chetga qarab qoraytirish
+      const mixedColor = colorInside.clone();
+      mixedColor.lerp(colorOutside, radius / 3.5);
+
+      colors[i3] = mixedColor.r;
+      colors[i3 + 1] = mixedColor.g;
+      colors[i3 + 2] = mixedColor.b;
+    }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    // Zarralarning ko'rinishi (Material)
+    const material = new THREE.PointsMaterial({
+      size: 0.015,
+      sizeAttenuation: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true
+    });
+
+    // Mesh yaratish va sahnaga qo'shish
+    const points = new THREE.Points(geometry, material);
+    points.rotation.x = 0.9; // Galaktikani rasmdaqa qilib sal qiyshaytiramiz
+    scene.add(points);
+
+    // Sichqoncha harakatini tutib olish
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', (event) => {
+      mouseX = (event.clientX / window.innerWidth) - 0.5;
+      mouseY = (event.clientY / window.innerHeight) - 0.5;
+    });
+
+    // Har bir kadrda animatsiya qilish (Loop)
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      const elapsedTime = clock.getElapsedTime();
+
+      // Girdobni o'z o'qi atrofida aylantirish
+      points.rotation.y = elapsedTime * 0.04;
+
+      // Sichqoncha qimirlaganda galaktika ham unga ergashadi (Parallax)
+      points.rotation.x = 0.9 + (mouseY * 0.3);
+      points.rotation.z = mouseX * 0.3;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Ekran o'lchami o'zgarganda moslashtirish (Responsive)
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+
+</html>
