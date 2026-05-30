@@ -7,7 +7,8 @@ import {
   Facebook,
   Instagram,
   Linkedin,
-  Send
+  Send,
+  Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
@@ -53,12 +54,10 @@ export default function Footer() {
   const { t, language } = useLanguage()
   const content = footerContent[language]
   const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
 
-  const pathname = usePathname();
+  if (pathname === "/ramadan") return null
 
-  if (pathname === "/ramadan") return null;
-
-  // Navigatsiya linklarini shakllantirish
   const navLinks = [
     { name: content.home, href: '#home' },
     { name: t.nav.services, href: '#services' },
@@ -68,25 +67,27 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative bg-black text-white pt-24 pb-12 border-t border-white/10 overflow-hidden">
+    <footer className="relative bg-black text-white pt-24 pb-12 border-t border-white/[0.06] overflow-hidden">
 
-      {/* Bottom Glow Effect */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-green-900/20 rounded-full blur-[120px] pointer-events-none" />
+      {/* Premium Ambient Light Layer */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-green-950/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
 
-          {/* 1. BRAND & ABOUT (4 cols) */}
-          <div className="lg:col-span-4 space-y-6">
-            <Link href="/" className="inline-block">
-              <span className="text-3xl font-bold tracking-tighter text-white">
-                WEB<span className="text-green-500">LEADERS</span>
+        {/* Optimized Grid System to stop mid-screen wrapping issues */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-10 xl:gap-8 mb-16">
+
+          {/* 1. BRAND & ABOUT */}
+          <div className="xl:col-span-4 space-y-5">
+            <Link href="/" className="inline-block group">
+              <span className="text-2xl font-black tracking-tighter text-white transition-transform duration-300 block group-hover:scale-[1.01]">
+                WEB<span className="text-green-500 shadow-[0_0_20px_rgba(34,197,94,0.2)]">LEADERS</span>
               </span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed max-w-sm font-light tracking-wide">
               {content.desc}
             </p>
-            <div className="flex gap-4 pt-2">
+            <div className="flex gap-3 pt-2">
               {[
                 { icon: Instagram, href: "https://www.instagram.com/webleaders.uz/" },
                 { icon: Facebook, href: "#" },
@@ -97,22 +98,25 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-500 hover:border-green-500 transition-all duration-300"
+                  className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-black hover:bg-green-500 hover:border-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all duration-300"
                 >
-                  <social.icon size={18} />
+                  <social.icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* 2. NAVIGATION (2 cols) */}
-          <div className="lg:col-span-2">
-            <h3 className="text-white font-bold mb-6">{content.menuTitle}</h3>
-            <ul className="space-y-4">
+          {/* 2. NAVIGATION */}
+          <div className="xl:col-span-2">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 flex items-center gap-1.5">
+              <Sparkles size={10} className="text-green-400" />
+              {content.menuTitle}
+            </h3>
+            <ul className="space-y-3.5">
               {navLinks.map((item, idx) => (
                 <li key={idx}>
-                  <Link href={item.href} className="text-gray-400 hover:text-green-400 text-sm transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Link href={item.href} className="text-gray-400 hover:text-green-400 text-sm font-light transition-colors flex items-center gap-2 group">
+                    <span className="w-1 h-1 rounded-full bg-green-500 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200" />
                     {item.name}
                   </Link>
                 </li>
@@ -120,74 +124,93 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 3. CONTACTS (3 cols) */}
-          <div className="lg:col-span-3">
-            <h3 className="text-white font-bold mb-6">{t.footer.contact}</h3>
-            <ul className="space-y-5">
+          {/* 3. CONTACTS */}
+          <div className="xl:col-span-3">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">
+              {t.footer.contact}
+            </h3>
+            <ul className="space-y-4">
+
+              {/* Phone */}
               <li>
-                <a href="tel:+998200127707" className="group flex items-start gap-3">
-                  <div className="mt-1 p-2 rounded-lg bg-white/5 text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all">
-                    <Phone size={16} />
+                <a href="tel:+998200127707" className="group flex items-center gap-3.5 min-w-0 w-full">
+                  <div className="p-2 rounded-xl bg-white/5 text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 flex-shrink-0 border border-white/5">
+                    <Phone size={14} />
                   </div>
-                  <div>
-                    <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoPhone}</span>
-                    <span className="text-gray-300 group-hover:text-white transition-colors">+998 20 012 77 07</span>
+                  <div className="min-w-0 flex-1">
+                    <span className="block text-[9px] font-mono font-bold text-gray-500 uppercase tracking-wider">{t.contactSection.infoPhone}</span>
+                    <span className="text-sm font-semibold text-gray-300 group-hover:text-green-400 transition-colors block truncate whitespace-nowrap font-mono">
+                      +998 20 012 77 07
+                    </span>
                   </div>
                 </a>
               </li>
+
+              {/* Email */}
               <li>
-                <a href="mailto:info@webleaders.uz" className="group flex items-start gap-3">
-                  <div className="mt-1 p-2 rounded-lg bg-white/5 text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all">
-                    <Mail size={16} />
+                <a href="mailto:info@webleaders.uz" className="group flex items-center gap-3.5 min-w-0 w-full">
+                  <div className="p-2 rounded-xl bg-white/5 text-green-400 group-hover:bg-green-500 group-hover:text-black transition-all duration-300 flex-shrink-0 border border-white/5">
+                    <Mail size={14} />
                   </div>
-                  <div>
-                    <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoEmail}</span>
-                    <span className="text-gray-300 group-hover:text-white transition-colors">info@webleaders.uz</span>
+                  <div className="min-w-0 flex-1">
+                    <span className="block text-[9px] font-mono font-bold text-gray-500 uppercase tracking-wider">{t.contactSection.infoEmail}</span>
+                    <span className="text-sm font-semibold text-gray-300 group-hover:text-green-400 transition-colors block truncate whitespace-nowrap">
+                      info@webleaders.uz
+                    </span>
                   </div>
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="mt-1 p-2 rounded-lg bg-white/5 text-green-400">
-                  <MapPin size={16} />
+
+              {/* Location */}
+              <li className="flex items-center gap-3.5 min-w-0 w-full group">
+                <div className="p-2 rounded-xl bg-white/5 text-green-400 group-hover:border-green-500/20 transition-all duration-300 flex-shrink-0 border border-white/5">
+                  <MapPin size={14} />
                 </div>
-                <div>
-                  <span className="block text-xs text-gray-500 uppercase">{t.contactSection.infoLoc}</span>
-                  <span className="text-gray-300">{t.footer.address}</span>
+                <div className="min-w-0 flex-1">
+                  <span className="block text-[9px] font-mono font-bold text-gray-500 uppercase tracking-wider">{t.contactSection.infoLoc}</span>
+                  <span className="text-sm font-medium text-gray-300 block truncate whitespace-nowrap">
+                    {t.footer.address}
+                  </span>
                 </div>
               </li>
+
             </ul>
           </div>
 
-          {/* 4. NEWSLETTER (3 cols) */}
-          <div className="lg:col-span-3">
-            <h3 className="text-white font-bold mb-6">{content.newsletterTitle}</h3>
-            <p className="text-gray-400 text-xs mb-4">
+          {/* 4. NEWSLETTER */}
+          <div className="xl:col-span-3">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">
+              {content.newsletterTitle}
+            </h3>
+            <p className="text-gray-400 text-xs mb-4 font-light leading-relaxed">
               {content.newsletterDesc}
             </p>
-            <form className="relative" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative w-full max-w-sm" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder={content.emailPlaceholder}
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-green-500 transition-all placeholder:text-gray-600"
+                className="w-full bg-white/[0.02] border border-white/[0.08] rounded-xl py-3 pl-4 pr-12 text-xs text-white focus:outline-none focus:border-green-500 focus:bg-white/[0.04] transition-all placeholder:text-gray-700 font-light"
               />
               <button
-                className="absolute right-1.5 top-1.5 p-2 bg-green-500 text-black rounded-lg hover:bg-green-400 transition-colors"
+                className="absolute right-1.5 top-1.5 p-2 bg-green-500 text-black rounded-lg hover:bg-green-400 transition-colors shadow-md active:scale-95"
                 aria-label="Subscribe"
               >
-                <Send size={16} />
+                <Send size={13} />
               </button>
             </form>
           </div>
+
         </div>
 
-        {/* COPYRIGHT */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+        {/* COPYRIGHT LAYER */}
+        <div className="pt-8 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-gray-500 font-mono">
           <p>© {currentYear} Webleaders. {t.footer.rights}.</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 font-sans font-light">
             <a href="#" className="hover:text-white transition-colors">{content.privacy}</a>
             <a href="#" className="hover:text-white transition-colors">{content.terms}</a>
           </div>
         </div>
+
       </div>
     </footer>
   )

@@ -4,22 +4,21 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Analytics } from "@vercel/analytics/react"
-import { ToastContainer } from 'react-toastify'
 import { LanguageProvider } from '@/context/LanguageContext'
-import 'react-toastify/dist/ReactToastify.css'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Webleaders – Professional Web Saytlar va Ilovalar yaratish xizmati',
+    default: 'Webleaders – Professional Web Saytlar va Ilovalar Yaratish',
     template: '%s | Webleaders'
   },
-  description: 'Biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari va SMM xizmatlari. Toshkentda professional web studiya. Sifat, tezlik va xavfsizlik kafolati.',
+  description: 'Biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari, mukammal Telegram botlar va SMM xizmatlari. Toshkentda professional web studiya. Sifat va tezlik kafolati.',
   keywords: [
     'veb sayt yaratish', 'sayt ochish narxlari', 'CRM tizimi', 'internet magazin ochish',
     'landing page', 'vizitka sayt', 'web studiya toshkent', 'IT xizmatlari',
-    'web developers Uzbekistan', 'seo optimizatsiya', 'telegram bot yaratish', 'Webleaders'
+    'web developers Uzbekistan', 'seo optimizatsiya', 'telegram bot yaratish', 'Webleaders',
+    'it kompaniya toshkent', 'avtomatlashtirish'
   ],
   authors: [{ name: 'Webleaders Team', url: 'https://webleaders.uz' }],
   creator: 'Webleaders Web Studio',
@@ -28,9 +27,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.png',
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: 'Webleaders – Raqamli Yechimlar Markazi',
-    description: 'Biznesingizni keyingi bosqichga olib chiquvchi innovatsion IT yechimlar.',
+    description: 'Biznesingizni keyingi bosqichga olib chiquvchi innovatsion va professional IT yechimlar.',
     url: 'https://webleaders.uz',
     siteName: 'Webleaders',
     images: [
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Webleaders IT Company',
+        alt: 'Webleaders IT Company Office and Solutions',
       },
     ],
     locale: 'uz_UZ',
@@ -46,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Webleaders – IT Solutions',
+    title: 'Webleaders – Professional IT Solutions',
     description: 'Biznesingizga professional IT xizmati kerakmi? Bizga murojaat qiling.',
     images: ['/og-image.png'],
   },
@@ -61,12 +65,17 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-
+  verification: {
+    // Google Search Console va Yandex Webmaster kodlarini shu yerga yozasiz
+    google: 'google-site-verification-code-here',
+    yandex: 'yandex-verification-code-here',
+  },
   other: {
     'geo.region': 'UZ-TO',
     'geo.placename': 'Tashkent',
     'geo.position': '41.2995;69.2401',
-    'ICBM': '41.2995, 69.2401'
+    'ICBM': '41.2995, 69.2401',
+    'format-detection': 'telephone=no'
   }
 }
 
@@ -77,15 +86,20 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
+// --- 📊 SCHEMA.ORG LOCAL BUSINESS & ORG OPTIMIZATION ---
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'ProfessionalService', // IT Agency uchun aniqroq tip
   name: 'Webleaders',
+  image: 'https://webleaders.uz/og-image.png',
+  '@id': 'https://webleaders.uz/#organization',
   url: 'https://webleaders.uz',
+  telephone: '+998-20-012-77-07',
+  priceRange: '$$',
   logo: 'https://webleaders.uz/logo.png',
   sameAs: [
     'https://www.instagram.com/webleaders.uz/',
-    'https://www.linkedin.com/company/webleaders/',
+    'https://www.linkedin.com/company/106364349/',
     'https://t.me/webleaders_uz'
   ],
   contactPoint: {
@@ -102,6 +116,11 @@ const jsonLd = {
     addressRegion: 'Toshkent shahri',
     postalCode: '100000',
     addressCountry: 'UZ'
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 41.2995,
+    longitude: 69.2401
   }
 }
 
@@ -113,31 +132,25 @@ export default function RootLayout({
   return (
     <html lang="uz" className="scroll-smooth">
       <head>
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        {/* Next.js tavsiyasiga ko'ra xavfsiz standartlar */}
         <meta name="referrer" content="strict-origin-when-cross-origin" />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
 
-
       <body className={`${inter.className} bg-[#0a0a0a] text-white overflow-x-hidden antialiased selection:bg-green-500 selection:text-black`}>
         <LanguageProvider>
-          <ToastContainer
-            position="bottom-right"
-            theme="dark"
-            toastStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '12px' }}
-          />
+          {/* ToastContainer olib tashlandi, chunki har bir formaning o'zida render qilinishi optimalroq */}
 
           <Header />
           <main className="min-h-screen relative z-10">
             {children}
           </main>
-          <Analytics />
           <Footer />
+
+          <Analytics />
         </LanguageProvider>
       </body>
     </html>

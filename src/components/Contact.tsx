@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Send, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
-import 'react-toastify/dist/ReactToastify.css'
+// import 'react-toastify/dist/ReactToastify.css'
 
 const sanitizeInput = (input: string) => {
   return input.replace(/[<>&/"']/g, '')
