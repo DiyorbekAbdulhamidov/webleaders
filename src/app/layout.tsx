@@ -10,15 +10,24 @@ const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Webleaders – Professional Web Saytlar va Ilovalar Yaratish',
+    default: 'Webleaders — Korporativ Dasturiy Muhandislik va Raqamli Transformatsiya',
     template: '%s | Webleaders'
   },
-  description: 'Biznesingiz uchun zamonaviy veb saytlar, CRM tizimlari, mukammal Telegram botlar va SMM xizmatlari. Toshkentda professional web studiya. Sifat va tezlik kafolati.',
+  description: 'Yirik korxonalar va korporativ sektor uchun yuqori yuklamalarga chidamli (high-load) ekotizimlar, ERP/CRM platformalari va strategik raqamli infratuzilmalarni loyihalashtirish hamda integratsiya qilish.',
+  referrer: 'strict-origin-when-cross-origin',
   keywords: [
-    'veb sayt yaratish', 'sayt ochish narxlari', 'CRM tizimi', 'internet magazin ochish',
-    'landing page', 'vizitka sayt', 'web studiya toshkent', 'IT xizmatlari',
-    'web developers Uzbekistan', 'seo optimizatsiya', 'telegram bot yaratish', 'Webleaders',
-    'it kompaniya toshkent', 'avtomatlashtirish'
+    'dasturiy ta’minot ishlab chiqish',
+    'korporativ tizimlar muhandisligi',
+    'ERP integratsiyasi',
+    'CRM tizimlari toshkent',
+    'high load platformalar',
+    'raqamli transformatsiya',
+    'biznes jarayonlarini avtomatlashtirish',
+    'enterprise software uzbekistan',
+    'it konsalting toshkent',
+    'Next.js korporativ yechimlar',
+    'kiberxavfsizlik auditi',
+    'operatsion samaradorlik'
   ],
   authors: [{ name: 'Webleaders Team', url: 'https://webleaders.uz' }],
   creator: 'Webleaders Web Studio',
@@ -33,8 +42,8 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Webleaders – Raqamli Yechimlar Markazi',
-    description: 'Biznesingizni keyingi bosqichga olib chiquvchi innovatsion va professional IT yechimlar.',
+    title: 'Webleaders — Biznes uchun Barqaror Raqamli Infratuzilma',
+    description: 'Operatsion samaradorlikni oshirish, resurslarni optimallashtirish va bozorda dominantlikni ta’minlovchi korporativ dasturiy yechimlar.',
     url: 'https://webleaders.uz',
     siteName: 'Webleaders',
     images: [
@@ -42,7 +51,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Webleaders IT Company Office and Solutions',
+        alt: 'Webleaders Enterprise Digital Solutions Architecture',
       },
     ],
     locale: 'uz_UZ',
@@ -50,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Webleaders – Professional IT Solutions',
-    description: 'Biznesingizga professional IT xizmati kerakmi? Bizga murojaat qiling.',
+    title: 'Webleaders — Enterprise Software Engineering',
+    description: 'Korporativ jarayonlarni avtomatlashtirish va biznesning raqamli yetukligini ta’minlovchi muhandislik yechimlari.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -66,7 +75,6 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Google Search Console va Yandex Webmaster kodlarini shu yerga yozasiz
     google: 'google-site-verification-code-here',
     yandex: 'yandex-verification-code-here',
   },
@@ -86,10 +94,9 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
-// --- 📊 SCHEMA.ORG LOCAL BUSINESS & ORG OPTIMIZATION ---
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService', // IT Agency uchun aniqroq tip
+  '@type': 'ProfessionalService',
   name: 'Webleaders',
   image: 'https://webleaders.uz/og-image.png',
   '@id': 'https://webleaders.uz/#organization',
@@ -130,28 +137,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="uz" className="scroll-smooth">
-      <head>
-        {/* Next.js tavsiyasiga ko'ra xavfsiz standartlar */}
-        <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <html lang="uz" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${inter.className} bg-[#0a0a0a] text-white antialiased selection:bg-green-500 selection:text-black`}>
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
 
-      <body className={`${inter.className} bg-[#0a0a0a] text-white overflow-x-hidden antialiased selection:bg-green-500 selection:text-black`}>
         <LanguageProvider>
-          {/* ToastContainer olib tashlandi, chunki har bir formaning o'zida render qilinishi optimalroq */}
-
           <Header />
-          <main className="min-h-screen relative z-10">
+          <main className="min-h-screen relative z-10 overflow-x-hidden">
             {children}
           </main>
           <Footer />
-
           <Analytics />
         </LanguageProvider>
+
       </body>
     </html>
   )
