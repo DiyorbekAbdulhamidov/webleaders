@@ -1,19 +1,35 @@
 {
-  "projects": [],
-  "drafts": {
-    "957124681": {
+  "projects": [
+    {
+      "slug": "bekzod-chorshanbiyev",
+      "name": "Bekzod Chorshanbiyev",
+      "category": {
+        "UZ": "Landing Page",
+        "RU": "Landing Page",
+        "EN": "Landing Page"
+      },
+      "desc": {
+        "UZ": "Vebinar uchun landing sahifa",
+        "RU": "Vebinar uchun landing sahifa",
+        "EN": "Vebinar uchun landing sahifa"
+      },
+      "longDesc": {
+        "UZ": "Vebinar uchun landing sahifa",
+        "RU": "Vebinar uchun landing sahifa",
+        "EN": "Vebinar uchun landing sahifa"
+      },
+      "tech": [
+        "Next.js",
+        "Tailwind"
+      ],
       "images": [
         "/uploads/tg-1784914425293-wu7jv.jpg",
         "/uploads/tg-1784914427634-pxz8q.jpg"
       ],
-      "name": "Bekzod Chorshanbiyev",
-      "category": "Landing Page",
-      "desc": "Vebinar uchun landing sahifa",
       "url": "https://bekzod-chorshanbiyev.vercel.app/",
-      "tech": [
-        "Next.js",
-        "Tailwind"
-      ]
+      "year": 2026,
+      "featured": true
     }
-  }
+  ],
+  "drafts": {}
 }
