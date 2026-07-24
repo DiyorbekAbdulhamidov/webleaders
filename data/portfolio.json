@@ -2,7 +2,11 @@
   "projects": [],
   "drafts": {
     "957124681": {
-      "images": []
+      "images": [],
+      "name": "Bekzod Chorshanbiyev",
+      "category": "Landing Page",
+      "desc": "Vebinar uchun landing sahifa",
+      "url": "https://bekzod-chorshanbiyev.vercel.app/"
     }
   }
 }
