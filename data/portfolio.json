@@ -6,7 +6,11 @@
       "name": "Bekzod Chorshanbiyev",
       "category": "Landing Page",
       "desc": "Vebinar uchun landing sahifa",
-      "url": "https://bekzod-chorshanbiyev.vercel.app/"
+      "url": "https://bekzod-chorshanbiyev.vercel.app/",
+      "tech": [
+        "Next.js",
+        "Tailwind"
+      ]
     }
   }
 }
