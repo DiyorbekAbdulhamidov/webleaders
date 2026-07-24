@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { readPortfolio, writePortfolio, saveImage, type DraftProject } from '@/lib/portfolio-store'
+import { readPortfolio, writePortfolio, saveImage, diagnostics, type DraftProject } from '@/lib/portfolio-store'
 import type { Project } from '@/data/projects'
 
 /**
@@ -244,7 +244,12 @@ export async function POST(req: Request) {
 
       data.projects = [project, ...data.projects.filter(p => p.slug !== slug)]
       delete data.drafts[chatKey]
-      await writePortfolio(data, `feat: add portfolio project ${slug} via telegram bot`)
+      const saved = await writePortfolio(data, `feat: add portfolio project ${slug} via telegram bot`)
+
+      if (!saved) {
+        await reply(chatId, `❌ Saqlashda xatolik: ma'lumotlar omboriga yozib bo'lmadi.\n\nVercel'da <code>GITHUB_TOKEN</code> (Contents: write huquqi bilan) va <code>GITHUB_REPO</code> to'g'ri sozlanganini tekshiring.`)
+        return NextResponse.json({ ok: true })
+      }
 
       await reply(chatId, `🎉 <b>${project.name}</b> saytga qo'shildi!\n\n🔗 https://webleaders.uz/portfolio/${slug}\n\nSayt 1-2 daqiqa ichida yangilanadi.`)
       return NextResponse.json({ ok: true })
@@ -316,7 +321,17 @@ export async function POST(req: Request) {
   }
 }
 
-// Health check
-export async function GET() {
+// Health check + diagnostika (?diag=1 — faqat webhook secret bilan)
+export async function GET(req: Request) {
+  const url = new URL(req.url)
+  if (url.searchParams.get('diag') === '1') {
+    const secret = process.env.TELEGRAM_WEBHOOK_SECRET
+    const provided = url.searchParams.get('key') || req.headers.get('x-diag-key')
+    if (secret && provided !== secret) {
+      return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
+    }
+    const diag = await diagnostics()
+    return NextResponse.json({ ok: true, ...diag })
+  }
   return NextResponse.json({ ok: true, service: 'webleaders-telegram-portfolio-bot' })
 }

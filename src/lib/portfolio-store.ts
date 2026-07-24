@@ -71,7 +71,45 @@ async function githubWriteFile(filePath: string, contentBase64: string, message:
     content: contentBase64,
     ...(existing ? { sha: existing.sha } : {})
   })
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '')
+    console.error(`[portfolio-store] GitHub write failed ${res.status}: ${detail.slice(0, 200)}`)
+  }
   return res.ok
+}
+
+/**
+ * Sozlamalar to'g'riligini tekshirish (sirlarni ochmasdan).
+ * GET /api/telegram?diag=1 orqali chaqiriladi.
+ */
+export async function diagnostics(): Promise<Record<string, unknown>> {
+  const mode = githubConfigured() ? 'github' : 'filesystem'
+  const out: Record<string, unknown> = {
+    mode,
+    hasToken: Boolean(process.env.GITHUB_TOKEN),
+    hasRepo: Boolean(process.env.GITHUB_REPO),
+    repo: process.env.GITHUB_REPO || null
+  }
+  if (githubConfigured()) {
+    // O'qish testi
+    const readRes = await githubRequest('GET', `contents/${DATA_FILE}`).catch(() => null)
+    out.readStatus = readRes ? readRes.status : 'network-error'
+    // Yozish testi: faylni o'zgarishsiz qayta yozamiz (huquqni tekshirish uchun)
+    const file = await githubReadFile(DATA_FILE).catch(() => null)
+    if (file) {
+      const wr = await githubRequest('PUT', `contents/${DATA_FILE}`, {
+        message: 'chore: portfolio-store write permission self-check',
+        content: Buffer.from(file.content, 'utf-8').toString('base64'),
+        sha: file.sha
+      }).catch(() => null)
+      out.writeStatus = wr ? wr.status : 'network-error'
+      out.canWrite = wr ? wr.ok : false
+    } else {
+      out.writeStatus = 'read-failed'
+      out.canWrite = false
+    }
+  }
+  return out
 }
 
 // ---------- Fayl tizimi helpers ----------
