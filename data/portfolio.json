@@ -1,16 +1,4 @@
 {
   "projects": [],
-  "drafts": {
-    "957124681": {
-      "images": [],
-      "name": "Claude Test",
-      "category": "E-commerce",
-      "desc": "Bu vaqtinchalik test loyihasi — hozir ochiriladi.",
-      "tech": [
-        "Next.js",
-        "Tailwind"
-      ],
-      "url": "https://webleaders.uz"
-    }
-  }
+  "drafts": {}
 }
