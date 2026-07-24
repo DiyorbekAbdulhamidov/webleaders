@@ -17,29 +17,6 @@ export interface Project {
 
 export const staticProjects: Project[] = [
   {
-    slug: 'toybron',
-    name: 'ToyBron AI Ecosystem',
-    category: {
-      UZ: 'AI Marketplace & Super-CRM',
-      RU: 'AI Marketplace & Super-CRM',
-      EN: 'AI Marketplace & Super-CRM'
-    },
-    desc: {
-      UZ: 'Sun’iy intellektga asoslangan ekotizim. Operatsion, moliyaviy va logistika jarayonlarini to‘liq avtomatlashtirish.',
-      RU: 'Экосистема на базе искусственного интеллекта. Полная автоматизация операционных, финансовых и логистических процессов.',
-      EN: 'Ecosystem based on artificial intelligence. Full automation of operational, financial, and logistical processes.'
-    },
-    longDesc: {
-      UZ: 'ToyBron — to‘yxonalar va tadbir xizmatlari bozorini raqamlashtiruvchi AI-ekotizim. Platformada bron qilish, narxlash, moliyaviy hisobot va mijozlar bilan ishlash jarayonlari yagona Super-CRM ichida avtomatlashtirilgan. Sun’iy intellekt tavsiyalar tizimi mijozga eng mos to‘yxonani tanlashda yordam beradi, biznes egalariga esa bandlik prognozi va daromad analitikasini taqdim etadi.',
-      RU: 'ToyBron — AI-экосистема, цифровизирующая рынок банкетных залов и event-услуг. Бронирование, ценообразование, финансовая отчётность и работа с клиентами автоматизированы в едином Super-CRM. Рекомендательная система на базе ИИ помогает клиентам выбрать подходящий зал, а владельцам бизнеса даёт прогноз загрузки и аналитику доходов.',
-      EN: 'ToyBron is an AI ecosystem digitalizing the banquet hall and event services market. Booking, pricing, financial reporting and client management are automated within a single Super-CRM. An AI recommendation engine helps clients pick the right venue while giving business owners occupancy forecasts and revenue analytics.'
-    },
-    tech: ['Next.js 16', 'AI / ML', 'Big Data', 'PostgreSQL', 'Telegram Bot'],
-    images: ['/projects/toybron1.png', '/projects/toybron2.png', '/projects/toybron3.png', '/projects/toybron4.png'],
-    year: 2025,
-    featured: true
-  },
-  {
     slug: 'hilaledu',
     name: 'Hilal Edu',
     category: {
@@ -60,6 +37,30 @@ export const staticProjects: Project[] = [
     tech: ['Next.js', 'SEO', 'Shadcn UI', 'Tailwind CSS'],
     images: ['/projects/hilal1.png', '/projects/hilal2.png', '/projects/hilal3.png', '/projects/hilal4.png'],
     url: 'https://hilaledu.uz',
+    year: 2025,
+    featured: true
+  },
+  {
+    slug: 'toybron',
+    name: 'ToyBron AI Ecosystem',
+    category: {
+      UZ: 'AI Marketplace & Super-CRM',
+      RU: 'AI Marketplace & Super-CRM',
+      EN: 'AI Marketplace & Super-CRM'
+    },
+    desc: {
+      UZ: 'Sun’iy intellektga asoslangan ekotizim. Operatsion, moliyaviy va logistika jarayonlarini to‘liq avtomatlashtirish.',
+      RU: 'Экосистема на базе искусственного интеллекта. Полная автоматизация операционных, финансовых и логистических процессов.',
+      EN: 'Ecosystem based on artificial intelligence. Full automation of operational, financial, and logistical processes.'
+    },
+    longDesc: {
+      UZ: 'ToyBron — to‘yxonalar va tadbir xizmatlari bozorini raqamlashtiruvchi AI-ekotizim. Platformada bron qilish, narxlash, moliyaviy hisobot va mijozlar bilan ishlash jarayonlari yagona Super-CRM ichida avtomatlashtirilgan. Sun’iy intellekt tavsiyalar tizimi mijozga eng mos to‘yxonani tanlashda yordam beradi, biznes egalariga esa bandlik prognozi va daromad analitikasini taqdim etadi.',
+      RU: 'ToyBron — AI-экосистема, цифровизирующая рынок банкетных залов и event-услуг. Бронирование, ценообразование, финансовая отчётность и работа с клиентами автоматизированы в едином Super-CRM. Рекомендательная система на базе ИИ помогает клиентам выбрать подходящий зал, а владельцам бизнеса даёт прогноз загрузки и аналитику доходов.',
+      EN: 'ToyBron is an AI ecosystem digitalizing the banquet hall and event services market. Booking, pricing, financial reporting and client management are automated within a single Super-CRM. An AI recommendation engine helps clients pick the right venue while giving business owners occupancy forecasts and revenue analytics.'
+    },
+    tech: ['Next.js 16', 'AI / ML', 'Big Data', 'PostgreSQL', 'Telegram Bot'],
+    images: ['/projects/toybron1.png', '/projects/toybron2.png', '/projects/toybron3.png', '/projects/toybron4.png'],
+    url: 'https://toybron.vercel.app/',
     year: 2025,
     featured: true
   },
@@ -155,7 +156,7 @@ export const staticProjects: Project[] = [
     },
     tech: ['Vue.js', 'Laravel', 'MySQL', 'CRM'],
     images: ['/projects/zarnigor1.png', '/projects/zarnigor2.png', '/projects/zarnigor3.png', '/projects/zarnigor4.png'],
-    url: 'https://zarnigor.uz',
+    url: 'https://wedding-homes-crm.vercel.app/',
     year: 2024,
     featured: true
   },
@@ -179,7 +180,9 @@ export const staticProjects: Project[] = [
     },
     tech: ['React', 'Tailwind CSS', 'UX/UI'],
     images: ['/projects/ger(1).png', '/projects/ger(2).png', '/projects/ger(3).png', '/projects/ger(4).png'],
-    year: 2024
+    url: 'https://gogermany-nu.vercel.app/',
+    year: 2024,
+
   },
   {
     slug: 'jetour',
@@ -201,6 +204,7 @@ export const staticProjects: Project[] = [
     },
     tech: ['Next.js', 'Three.js', 'GSAP'],
     images: ['/projects/jetour1.png', '/projects/jetour2.png', '/projects/jetour3.png', '/projects/jetour4.png'],
+    url: 'https://jetour-app.vercel.app/',
     year: 2024
   },
   {
@@ -223,6 +227,7 @@ export const staticProjects: Project[] = [
     },
     tech: ['WordPress', 'PHP', 'Custom Theme'],
     images: ['/projects/dance1.png', '/projects/dance2.png', '/projects/dance3.png', '/projects/dance4.png'],
+    url: 'https://webleaders-project-dance.vercel.app/',
     year: 2023
   },
   {
@@ -245,6 +250,7 @@ export const staticProjects: Project[] = [
     },
     tech: ['MERN Stack', 'Socket.io', 'Real-time'],
     images: ['/projects/telmee1.png', '/projects/telmee2.png', '/projects/telmee3.png', '/projects/telmee4.png'],
+    url: 'https://telmee.uz/',
     year: 2023
   }
 ]
