@@ -22,7 +22,7 @@ export default function Footer() {
 
   const socials = [
     { icon: Instagram, href: 'https://www.instagram.com/webleaders.uz/', label: 'Instagram' },
-    { icon: Send, href: 'https://t.me/webleaders_uz', label: 'Telegram' },
+    { icon: Send, href: 'https://t.me/webleadersuz', label: 'Telegram' },
     { icon: Linkedin, href: 'https://www.linkedin.com/company/106364349/', label: 'LinkedIn' }
   ]
 
@@ -141,7 +141,7 @@ export default function Footer() {
                 <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <a
-                href="https://t.me/webleaders_uz"
+                href="https://t.me/webleadersuz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3.5 border border-white/10 text-white font-semibold text-xs uppercase tracking-widest rounded-xl hover:border-green-500/40 hover:bg-white/[0.03] transition-all"

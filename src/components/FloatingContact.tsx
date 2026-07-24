@@ -37,7 +37,7 @@ export default function FloatingContact() {
             className="flex flex-col gap-2.5"
           >
             <a
-              href="https://t.me/webleaders_uz"
+              href="https://t.me/webleadersuz"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 pl-4 pr-5 py-3 rounded-full bg-[#0d0d0d] border border-white/10 text-white text-sm font-semibold shadow-2xl hover:border-green-500/40 hover:bg-[#111] transition-all"

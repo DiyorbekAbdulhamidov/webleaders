@@ -5,7 +5,7 @@ import FAQSection from '@/components/FAQSection'
 export const metadata: Metadata = {
   title: 'Aloqa — Buyurtma Berish va Bepul Konsultatsiya',
   description:
-    'Webleaders bilan bog‘laning: +998 20 012 77 07, info@webleaders.uz, Telegram @webleaders_uz. Toshkent sh., Yashnobod tumani. Loyihangizni 15 daqiqada muhokama qilamiz — bepul konsultatsiya.',
+    'Webleaders bilan bog‘laning: +998 20 012 77 07, info@webleaders.uz, Telegram @webleadersuz. Toshkent sh., Yashnobod tumani. Loyihangizni 15 daqiqada muhokama qilamiz — bepul konsultatsiya.',
   alternates: { canonical: '/contact' },
   openGraph: {
     title: 'Aloqa — Webleaders',

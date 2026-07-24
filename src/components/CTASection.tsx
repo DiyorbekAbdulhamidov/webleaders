@@ -49,7 +49,7 @@ export default function CTASection() {
                 {t.cta.btnCall}
               </a>
               <a
-                href="https://t.me/webleaders_uz"
+                href="https://t.me/webleadersuz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-14 px-8 rounded-full border border-white/15 text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-white/5 hover:border-white/30 transition-all duration-300"

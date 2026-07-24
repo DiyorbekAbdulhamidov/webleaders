@@ -154,7 +154,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
             <div className="space-y-8">
               {[
                 { icon: Phone, label: t.contactSection.infoPhone, value: '+998 20 012 77 07', href: 'tel:+998200127707' },
-                { icon: Send, label: t.contactSection.infoTelegram, value: '@webleaders_uz', href: 'https://t.me/webleaders_uz' },
+                { icon: Send, label: t.contactSection.infoTelegram, value: '@webleadersuz', href: 'https://t.me/webleadersuz' },
                 { icon: MapPin, label: t.contactSection.infoLoc, value: 'Toshkent sh., Yashnobod tumani', href: null },
                 { icon: Mail, label: t.contactSection.infoEmail, value: 'info@webleaders.uz', href: 'mailto:info@webleaders.uz' }
               ].map((item, index) => (
