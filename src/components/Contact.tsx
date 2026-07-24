@@ -12,8 +12,9 @@ const sanitizeInput = (input: string) => {
   return input.replace(/[<>&/"']/g, '')
 }
 
-export default function Contact() {
+export default function Contact({ asPage = false }: { asPage?: boolean }) {
   const { t } = useLanguage()
+  const HeadingTag = asPage ? 'h1' : 'h2'
 
   const [form, setForm] = useState({
     name: '',
@@ -124,7 +125,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative bg-black text-white py-24 overflow-hidden">
+    <section id="contact" className={`relative bg-black text-white ${asPage ? 'pt-36 pb-24' : 'py-24'} overflow-hidden`}>
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-900/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -140,12 +141,12 @@ export default function Contact() {
             <span className="text-green-400 font-bold tracking-widest uppercase text-sm mb-4 block">
               {t.contactSection.badge}
             </span>
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <HeadingTag className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               {t.contactSection.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">
                 {t.contactSection.subtitle}
               </span>
-            </h2>
+            </HeadingTag>
             <p className="text-gray-400 text-lg mb-12 max-w-md">
               {t.contactSection.desc}
             </p>
@@ -153,6 +154,7 @@ export default function Contact() {
             <div className="space-y-8">
               {[
                 { icon: Phone, label: t.contactSection.infoPhone, value: '+998 20 012 77 07', href: 'tel:+998200127707' },
+                { icon: Send, label: t.contactSection.infoTelegram, value: '@webleaders_uz', href: 'https://t.me/webleaders_uz' },
                 { icon: MapPin, label: t.contactSection.infoLoc, value: 'Toshkent sh., Yashnobod tumani', href: null },
                 { icon: Mail, label: t.contactSection.infoEmail, value: 'info@webleaders.uz', href: 'mailto:info@webleaders.uz' }
               ].map((item, index) => (

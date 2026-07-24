@@ -174,8 +174,9 @@ function ThreeQuantumCoreEngine({ hoveredIndex, globalMouse }: EngineProps) {
 }
 
 // --- MAIN PRICING PAGE COMPONENT ---
-export default function PricingPage() {
+export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   const { t, language } = useLanguage()
+  const HeadingTag = asPage ? 'h1' : 'h2'
   const sectionRef = useRef<HTMLElement>(null)
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -273,7 +274,7 @@ export default function PricingPage() {
       }
     } catch {
       toast.error(t.toast.error, { theme: 'dark' })
-    } {
+    } finally {
       setLoading(false)
     }
   }
@@ -283,7 +284,7 @@ export default function PricingPage() {
       ref={sectionRef}
       onMouseMove={handleGlobalMouseMove}
       id="pricing"
-      className="relative py-32 bg-black text-white overflow-hidden"
+      className={`relative ${asPage ? 'pt-36 pb-32' : 'py-32'} bg-black text-white overflow-hidden`}
     >
 
       {/* 🔮 THREE.JS ACTIVE 8D QUANTUM CORES FIELD */}
@@ -307,16 +308,17 @@ export default function PricingPage() {
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-gray-400">{t.nav.pricing}</span>
           </motion.div>
 
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-none"
           >
-            {t.pricing.title} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-gray-300 to-green-600">{t.pricing.subtitle}</span>
-          </motion.h2>
+            <HeadingTag className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-none">
+              {t.pricing.title} <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-gray-300 to-green-600">{t.pricing.subtitle}</span>
+            </HeadingTag>
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -348,7 +350,7 @@ export default function PricingPage() {
               {plan.isPopular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-black border border-green-500/50 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.2)] flex items-center gap-2 z-20">
                   <Zap size={12} className="text-green-400 fill-green-400 animate-pulse" />
-                  <span className="text-[10px] font-bold tracking-widest text-white font-mono">ENG_OMMABOP</span>
+                  <span className="text-[10px] font-bold tracking-widest text-white font-mono">{t.pricing.popular}</span>
                 </div>
               )}
 
@@ -391,7 +393,7 @@ export default function PricingPage() {
                     : 'bg-white text-black hover:bg-gray-200'
                   }`}
               >
-                Tanlash
+                {t.pricing.btnSelect}
               </button>
             </motion.div>
           ))}

@@ -5,634 +5,604 @@ import { createContext, useContext, useState, ReactNode, useEffect } from 'react
 const translations = {
   UZ: {
     nav: {
-      services: 'Kompetensiyalar',
-      portfolio: 'Amaliyot',
-      pricing: 'Modellar',
-      contact: 'Hamkorlik',
-      btn: 'Tashabbus'
+      home: 'Bosh sahifa',
+      services: 'Xizmatlar',
+      portfolio: 'Portfolio',
+      pricing: 'Narxlar',
+      contact: 'Aloqa',
+      btn: 'Buyurtma berish'
     },
     hero: {
       badge: 'Webleaders — Raqamli Transformatsiya Bo‘yicha Strategik Hamkor',
-      title1: 'Biznes Jarayonlarini Optimallashtirish.',
-      title2: 'Raqamli Masshtablanish.',
-      desc: 'Vizual yechimlar — bu standart. Biz korporativ unumdorlikni oshirish, barqaror o‘sishni ta’minlash va bozor pozitsiyalarini mustahkamlashga qaratilgan yuqori texnologik infratuzilmalarni loyihalashtiramiz.',
-      btnPrimary: 'Tashabbusni Boshlash',
-      btnSecondary: 'Ekspertiza'
+      title1: 'Biznesingizni Onlaynda',
+      title2: 'Yetakchiga Aylantiramiz.',
+      desc: 'Sotuvga ishlaydigan saytlar, CRM tizimlar va mobil ilovalar. Zamonaviy dizayn, yuqori tezlik va Google’da yuqori o‘rinlar — bitta jamoadan.',
+      btnPrimary: 'Loyihani Boshlash',
+      btnSecondary: 'Ishlarimizni Ko‘rish',
+      stats: [
+        { value: '40+', label: 'Muvaffaqiyatli loyiha' },
+        { value: '5+', label: 'Yillik tajriba' },
+        { value: '3', label: 'Tilda xizmat' },
+        { value: '24/7', label: 'Texnik yordam' }
+      ]
     },
     services: {
-      badge: 'Xizmatlar Portfeli',
-      title: 'Korporativ Sektor Uchun',
+      badge: 'Xizmatlar',
+      title: 'Biznesingiz Uchun',
       subtitle: 'Kompleks Yechimlar',
-      desc: 'Strategik tahlildan to to‘liq integratsiyagacha. Biznesingizning raqamli yetukligini ta’minlovchi yuqori texnologik xizmatlar.',
+      desc: 'Strategik tahlildan to‘liq integratsiyagacha — biznesingizning raqamli o‘sishini ta’minlovchi xizmatlar.',
+      btnAll: 'Barcha xizmatlar',
       list: [
-        { title: 'Tranzaksion Platformalar', desc: 'Mijoz oqimini samarali boshqaruvchi, neuromarketing va ilg‘or veb-arxitektura asosidagi resurslar.' },
-        { title: 'Korporativ Ilovalar', desc: 'iOS va Android uchun mo‘ljallangan, yuqori unumdorlikka va kiberxavfsizlikka ega native dasturiy yechimlar.' },
-        { title: 'Tizimli Integratsiya (ERP)', desc: 'Operatsion samaradorlikni oshirish. Resurslar, moliya va xodimlarni yagona ma’lumotlar bazasiga birlashtirish.' },
-        { title: 'SEO Muhandisligi & Tahlil', desc: 'Qidiruv tizimlarida barqaror yetakchilik. Algoritmik tahlil va semantik optimizatsiya orqali organik o‘sish.' },
-        { title: 'E-Commerce Ekotizimlari', desc: 'Global savdo platformalari. Xalqaro to‘lov va logistika tizimlari bilan integratsiyalashgan to‘liq sikl.' },
-        { title: 'Infratuzilma & Xavfsizlik', desc: 'Tizimlar barqarorligini ta’minlash. Yuqori yuklamalarga chidamlilik va ma’lumotlarni bulutli himoya qilish.' }
+        { title: 'Veb-Sayt Yaratish', desc: 'Sotuvga yo‘naltirilgan landing va korporativ saytlar. Premium dizayn, yuqori tezlik va mijozni buyurtmaga yetaklovchi tuzilma.' },
+        { title: 'Mobil Ilovalar', desc: 'iOS va Android uchun yuqori unumdorlikka ega native va cross-platform ilovalar. Mijozlaringiz bilan doimiy aloqa kanali.' },
+        { title: 'CRM / ERP Tizimlar', desc: 'Biznes jarayonlarini avtomatlashtirish: mijozlar, moliya va xodimlar hisobini yagona tizimda boshqaring.' },
+        { title: 'SEO Optimizatsiya', desc: 'Google va Yandex’da yuqori o‘rinlar. Texnik audit, semantik yadro va kontent strategiyasi orqali barqaror organik trafik.' },
+        { title: 'E-Commerce', desc: 'Onlayn do‘kon va marketpleyslar. To‘lov tizimlari (Payme, Click, Uzum) va logistika integratsiyasi bilan to‘liq sikl.' },
+        { title: 'Texnik Qo‘llab-quvvatlash', desc: 'Saytingiz uzluksiz ishlashi uchun 24/7 monitoring, xavfsizlik yangilanishlari va doimiy rivojlantirish.' }
       ]
     },
     whyUs: {
-      badge: 'Sifat Boshqaruvi',
+      badge: 'Nega Biz',
       title: 'Nega Aynan',
       subtitle: 'Webleaders?',
-      desc: 'Havaskor yondashuvlar davri tugadi. Biz har bir yechim unumdorligi va dedlaynlarga rioya qilinishi uchun yuridik javobgarlikni zimmamizga olamiz.',
+      desc: 'Biz shunchaki sayt yasamaymiz — biznesingizga daromad keltiradigan raqamli vosita quramiz va natija uchun javobgarlikni olamiz.',
       list: [
-        { title: 'Ekspertlar Tarkibi', desc: 'Loyiha ustida faqat xalqaro standartlarga javob beradigan, 5+ yillik tajribaga ega Senior muhandislar ishlaydi.' },
-        { title: 'Mobile-First Standarti', desc: 'Trafikning asosiy qismi mobil qurilmalarda. Tizimlarimiz smartfonlarda native dasturlar kabi samarali ishlaydi.' },
-        { title: 'Natijaga Yo‘naltirilgan UI', desc: 'Dizayn — bu unumdorlik vositasi. Biz foydalanuvchini maqsadli harakatga chalg‘itmasdan yetaklovchi interfeyslar chizamiz.' },
-        { title: 'Maksimal Unumdorlik', desc: 'Tizim yuklanish tezligi — biznesning moliyaviy ko‘rsatkichi. Next.js texnologiyalari orqali lahzali yuklanish.' },
-        { title: 'Shartnomaviy SLA', desc: 'Intizom — korporativ madaniyatimiz asosi. Shartnoma shartlari buzilsa — moliyaviy kompensatsiya kafolatlanadi.' },
-        { title: 'Post-Loyiha Qo‘llab-quvvatlash', desc: 'Soddalashtirish va topshirish — bu start. Biz tizimni doimiy ravishda tahlil qilamiz va bozor talablariga moslaymiz.' }
+        { title: 'Tajribali Jamoa', desc: 'Loyihangiz ustida 5+ yillik tajribaga ega, xalqaro standartlarda ishlaydigan muhandislar ishlaydi.' },
+        { title: 'Mobile-First', desc: 'Trafikning 80% mobil qurilmalardan keladi. Saytlarimiz smartfonlarda native ilova kabi ishlaydi.' },
+        { title: 'Sotuvchi Dizayn', desc: 'Dizayn — bu daromad vositasi. Har bir element mijozni buyurtmaga yetaklaydigan qilib loyihalanadi.' },
+        { title: 'Maksimal Tezlik', desc: 'Sekundiga yuklanadigan sayt = yo‘qotilgan mijoz. Next.js texnologiyasi bilan lahzali yuklanish.' },
+        { title: 'Shartnoma va SLA', desc: 'Muddat va sifat shartnomada qayd etiladi. Shartlar buzilsa — moliyaviy kompensatsiya kafolatlanadi.' },
+        { title: 'Doimiy Qo‘llab-quvvatlash', desc: 'Topshirish — bu boshlanish. Saytingizni doimiy tahlil qilamiz va bozor talabiga moslab boramiz.' }
+      ]
+    },
+    process: {
+      badge: 'Ish Jarayoni',
+      title: 'G‘oyadan Natijagacha',
+      subtitle: '4 Bosqich',
+      desc: 'Shaffof jarayon: har bir bosqichda nima bo‘layotganini bilib turasiz.',
+      steps: [
+        { num: '01', title: 'Tahlil va Strategiya', desc: 'Biznesingiz, raqobatchilar va auditoriyani o‘rganamiz. Aniq texnik topshiriq va reja tuzamiz.' },
+        { num: '02', title: 'Dizayn', desc: 'Brendingizga mos, sotuvga yo‘naltirilgan UI/UX dizayn. Tasdiqlagunizcha qayta ishlaymiz.' },
+        { num: '03', title: 'Dasturlash', desc: 'Zamonaviy texnologiyalarda toza kod. Har hafta jarayon haqida hisobot berib boramiz.' },
+        { num: '04', title: 'Ishga Tushirish', desc: 'Test, SEO sozlash, domen va hosting. Ishga tushgandan keyin ham yoningizda qolamiz.' }
       ]
     },
     pricing: {
-      title: 'Raqamli Infratuzilmaga',
-      subtitle: 'Kiritiladigan Sarmoya',
-      desc: 'Bu operatsion xarajat emas — bu kompaniya kapitallashuvi va bozordagi ulushini oshirishga yo‘naltirilgan strategik investitsiyadir.',
-      modalTitle: 'Hamkorlikni Rasmiylashtirish',
-      modalDesc: 'Tanlangan muhandislik modeli bo‘yicha ekspert so‘rovini shakllantiring.',
+      badge: 'Narxlar',
+      title: 'Investitsiya',
+      subtitle: 'Rejalari',
+      desc: 'Yashirin to‘lovlarsiz, aniq narxlar. Har bir reja — biznesingiz o‘sishiga qaratilgan investitsiya.',
+      btnAll: 'Barcha narxlar',
+      modalTitle: 'Buyurtma Berish',
+      modalDesc: 'rejasi bo‘yicha so‘rov qoldiring — 15 daqiqada aloqaga chiqamiz.',
       formName: 'To‘liq Ismingiz',
-      formPhone: 'Aloqa Telefoningiz',
-      btnSubmit: 'So‘rovni Tasdiqlash',
+      formPhone: 'Telefon Raqamingiz',
+      btnSubmit: 'Yuborish',
       btnLoading: 'Yuborilmoqda...',
+      btnSelect: 'Tanlash',
+      popular: 'ENG OMMABOP',
       plans: [
         {
           title: 'Start',
           price: '1.5 mln',
           currency: "so'm",
-          desc: 'Shaxsiy brend yoki kichik biznes sub’ektlari uchun raqamli bozorda professional start.',
+          desc: 'Shaxsiy brend yoki kichik biznes uchun professional start.',
           isPopular: false,
           features: [
             'Premium UI Landing Page (1 sahifa)',
             'To‘liq Mobil Adaptatsiya',
-            'Ma’lumotlar Shlyuzi (Telegram/Email)',
+            'Telegram/Email’ga buyurtmalar',
             '3 Ish Kunida Ishga Tushirish',
-            '1 Oy Texnik Qo‘llab-quvvatlash SLA'
+            '1 Oy Texnik Qo‘llab-quvvatlash'
           ]
         },
         {
           title: 'Growth',
           price: '4.5 mln',
           currency: "so'm",
-          desc: 'Nufuzini oshirish va masshtablanishni ko‘zlagan korxonalar uchun optimallashgan yechim.',
+          desc: 'O‘sish va masshtablanishni ko‘zlagan korxonalar uchun.',
           isPopular: true,
           features: [
-            'Korporativ Platforma (5+ sahifa)',
-            'Boshqaruv Tizimi (CMS Integratsiyasi)',
-            'SEO Boshlang‘ich Optimizatsiyasi',
-            'Speed Optimization Unumdorlik Tizimi',
-            '3 oy VIP support + Domen & Hosting'
+            'Korporativ Sayt (5+ sahifa)',
+            'Boshqaruv Paneli (CMS)',
+            'SEO Optimizatsiya',
+            'Tezlik Optimizatsiyasi',
+            '3 Oy VIP Support + Domen & Hosting'
           ]
         },
         {
           title: 'Enterprise',
           price: '9.0 mln',
           currency: "so'm",
-          desc: 'Bozor liderlari, murakkab tizimlar va maksimal avtomatlashtirishni talab qiluvchi sub’ektlar uchun.',
+          desc: 'Murakkab tizimlar va maksimal avtomatlashtirish uchun.',
           isPopular: false,
           features: [
-            'Yirik E-Commerce yoki Katalog Tizimi',
-            'To‘lov Shlyuzlari Integratsiyasi',
-            'ERP/CRM Tizimlari Bilan Sinxronizatsiya',
-            'Ko‘p tilli Interfeys (Uz/Ru/En)',
-            '6 oy 24/7 Shaxsiy Menejer (SLA)'
+            'E-Commerce yoki Katalog Tizimi',
+            'To‘lov Tizimlari (Payme, Click)',
+            'CRM/ERP Integratsiyasi',
+            'Ko‘p Tilli Interfeys (Uz/Ru/En)',
+            '6 Oy 24/7 Shaxsiy Menejer'
           ]
         }
       ]
     },
+    faq: {
+      badge: 'Savol-Javob',
+      title: 'Ko‘p Beriladigan',
+      subtitle: 'Savollar',
+      items: [
+        { q: 'Sayt qancha vaqtda tayyor bo‘ladi?', a: 'Landing sahifa — 3-5 ish kuni, korporativ sayt — 2-3 hafta, murakkab tizimlar (CRM, e-commerce) — 1-2 oy. Aniq muddat texnik topshiriqdan keyin shartnomada belgilanadi.' },
+        { q: 'To‘lov qanday amalga oshiriladi?', a: 'Odatda 50% oldindan, 50% loyiha topshirilganda. Yirik loyihalarda bosqichma-bosqich to‘lov jadvali tuziladi. Naqd, pul o‘tkazma yoki bank hisobiga to‘lash mumkin.' },
+        { q: 'Domen va hosting kimning zimmasida?', a: 'Growth va Enterprise rejalarida birinchi yil domen va hosting bizdan sovg‘a. Keyingi yillarda ham sozlash va yangilashda to‘liq yordam beramiz.' },
+        { q: 'Sayt Google’da chiqadimi?', a: 'Ha. Barcha saytlarimiz SEO asoslari bilan topshiriladi: texnik optimizatsiya, meta-teglar, sitemap, tezlik. Growth va Enterprise rejalarida chuqur SEO ham kiradi.' },
+        { q: 'Tayyor saytga o‘zgartirish kirita olamanmi?', a: 'CMS boshqaruv paneli orqali matn, rasm va yangiliklarni o‘zingiz boshqarasiz. Murakkabroq o‘zgarishlar uchun support xizmatimiz doim yoningizda.' },
+        { q: 'Nega aynan sizni tanlashim kerak?', a: 'Biz natijaga ishlaymiz: portfolio’dagi har bir loyiha real biznesga xizmat qilmoqda. Shartnoma, aniq muddat va ishga tushgandan keyingi qo‘llab-quvvatlash — standartimiz.' }
+      ]
+    },
+    cta: {
+      title: 'Loyihangizni Muhokama Qilamizmi?',
+      desc: 'Bepul konsultatsiya oling — loyihangizni tahlil qilib, aniq narx va muddatni aytamiz. Majburiyatsiz.',
+      btn: 'Buyurtma Berish',
+      btnCall: 'Qo‘ng‘iroq Qilish',
+      telegram: 'Telegram’da yozish'
+    },
+    projects: {
+      badge: 'Portfolio',
+      title: 'Amalga Oshirilgan',
+      subtitle: 'Loyihalar',
+      desc: 'Har bir loyiha — real biznesga xizmat qilayotgan jonli mahsulot. Ko‘pchiligiga kirib ko‘rishingiz mumkin.',
+      btnView: 'Saytga Kirish',
+      btnDetails: 'Batafsil',
+      btnAll: 'Barcha loyihalar',
+      liveBadge: 'Jonli',
+      filterAll: 'Barchasi',
+      detail: {
+        overview: 'Loyiha Haqida',
+        stack: 'Texnologiyalar',
+        year: 'Yil',
+        category: 'Yo‘nalish',
+        visit: 'Saytga Kirish',
+        gallery: 'Galereya',
+        other: 'Boshqa Loyihalar',
+        back: 'Portfolio’ga qaytish',
+        orderSimilar: 'Shunga o‘xshash loyiha buyurtma qilish'
+      }
+    },
     contactSection: {
-      badge: 'Sinergiya',
-      title: 'Strategik Hamkorlik',
-      subtitle: 'Muloqoti',
-      desc: 'Masshtabli loyihangiz bormi yoki chuqur texnik audit kerakmi? Biz yangi chaqiriqlarga tayyormiz.',
-      infoPhone: 'Aloqa',
-      infoLoc: 'Ofis',
-      infoEmail: 'Pochta',
-      formTitle: 'So‘rov qoldirish',
+      badge: 'Aloqa',
+      title: 'Loyihangiz Bormi?',
+      subtitle: 'Gaplashamiz',
+      desc: 'Formani to‘ldiring — 15 daqiqa ichida aloqaga chiqamiz. Yoki to‘g‘ridan-to‘g‘ri qo‘ng‘iroq qiling.',
+      infoPhone: 'Telefon',
+      infoLoc: 'Manzil',
+      infoEmail: 'Email',
+      infoTelegram: 'Telegram',
+      formTitle: 'So‘rov Qoldirish',
       inputName: 'Ismingiz',
       inputPhone: 'Telefon',
-      inputMsg: 'So‘rov tafsilotlari',
-      placeholderMsg: 'Loyiha kontsepti yoki yechilishi kerak bo‘lgan muammolar haqida qisqacha...',
+      inputMsg: 'Loyiha haqida',
+      placeholderMsg: 'Loyihangiz haqida qisqacha yozing...',
       btnSubmit: 'Yuborish',
       btnLoading: 'Yuborilmoqda...'
     },
-    projects: {
-      title: 'Amalga',
-      subtitle: 'Oshirilgan Keyslar',
-      desc: 'Har bir loyiha — biz uchun muhandislik chaqirig‘i, hamkorimiz uchun esa bozordagi dominantlikdir.',
-      btnView: 'Saytni ko‘rish',
-      techTitle: 'Stak:',
-      aboutTitle: 'Keys haqida:',
-      list: [
-        {
-          id: 'toybron',
-          name: 'ToyBron AI Ecosystem',
-          category: 'AI Marketplace & Super-CRM',
-          desc: 'Sun’iy intellektga asoslangan ekotizim. Operatsion, moliyaviy va logistika jarayonlarini to‘liq avtomatlashtirish.',
-          isFeatured: true
-        },
-        {
-          id: 'hilaledu',
-          name: 'Hilal Edu',
-          category: 'Educational LMS Platform',
-          desc: 'Yuqori yuklamalarga chidamli, ta’lim jarayonlarini raqamlashtiruvchi kompleks ta’lim platformasi.',
-          isFeatured: false
-        },
-        {
-          id: 'lutsente',
-          name: 'Lutsente',
-          category: 'Premium Corporate Website',
-          desc: 'Xalqaro xoldingning raqamli nufuzi. Uch tilda to‘liq sinxronlashgan korporativ resurs.',
-          isFeatured: false
-        },
-        {
-          id: 'adizone',
-          name: 'Adizone Education',
-          category: 'Educational Platform',
-          desc: 'Ta’lim muassasalari zanjiri uchun ERP yechim. Talabalar va to‘lovlar hisobini to‘liq avtomatlashtirish.',
-          isFeatured: false
-        },
-        {
-          id: 'kochirish',
-          name: 'Kochirish Xizmati',
-          category: 'Logistics Landing Page',
-          desc: 'Logistika sohasida samarali yechim. Murakkab tarif kalkulyatori va real vaqtdagi buyurtmalar.',
-          isFeatured: false
-        },
-        {
-          id: 'gogermany',
-          name: 'GoGermany Consulting',
-          category: 'Consulting Agency Website',
-          desc: 'Konsalting xizmatlari uchun optimallashgan, Yevropa standartlari asosidagi raqamli platforma.',
-          isFeatured: false
-        },
-        {
-          id: 'zarnigor',
-          name: 'Zarnigor Wedding',
-          category: 'CRM & Booking System',
-          desc: 'Premium ijara industriyasi uchun ERP yechim. Bron tizimi va moliyaviy hisob-kitobni avtomatlashtirish.',
-          isFeatured: false
-        },
-        {
-          id: 'jetour',
-          name: 'Jetour Uzbekistan',
-          category: 'Avtosalon Promo Sayt',
-          desc: 'Premium avtobrend uchun promo-platforma. Dinamika va nufuzni vizual yetkazish.',
-          isFeatured: false
-        },
-        {
-          id: 'dono',
-          name: 'Dono-Dance',
-          category: 'Raqs Maktabi Platformasi',
-          desc: 'Raqamli o‘quv platformasi. Ota-onalar va o‘quvchilar uchun shaxsiy kabinetlar ekotizimi.',
-          isFeatured: false
-        },
-        {
-          id: 'telmee',
-          name: 'Telmee Market',
-          category: 'E-Commerce Platforma',
-          desc: 'Yuqori tezlikdagi marketpleys. B2C va P2P savdo modellarini qo‘llab-quvvatlovchi elektron tijorat yechimi.',
-          isFeatured: false
-        }
-      ]
-    },
     footer: {
-      rights: 'Webleaders. Barcha huquqlar qonun bilan himoyalangan',
+      rights: 'Barcha huquqlar himoyalangan',
       address: 'Toshkent sh., Yashnobod tumani',
       contact: 'Aloqa',
-      socials: 'Ijtimoiy resurslar'
+      socials: 'Ijtimoiy tarmoqlar',
+      desc: 'Biznesingizni raqamli dunyoda yangi bosqichga olib chiquvchi IT kompaniya. Sifat, tezlik va natija.',
+      menuTitle: 'Sahifalar'
     },
     toast: {
-      success: 'Muvaffaqiyatli qabul qilindi!',
-      error: 'Tizimda texnik uzilish yuz berdi.',
+      success: 'Muvaffaqiyatli yuborildi! Tez orada aloqaga chiqamiz.',
+      error: 'Xatolik yuz berdi. Qayta urinib ko‘ring.',
       nameError: 'To‘liq ismingizni kiriting',
       phoneError: 'Telefon raqam formati noto‘g‘ri',
-      msgError: 'Xabar tafsilotlari juda qisqa'
+      msgError: 'Xabar juda qisqa',
+      wait: 'Iltimos, biroz kuting...'
     }
   },
   RU: {
     nav: {
-      services: 'Компетенции',
-      portfolio: 'Практика',
-      pricing: 'Модели',
-      contact: 'Сотрудничество',
-      btn: 'Инициатива'
+      home: 'Главная',
+      services: 'Услуги',
+      portfolio: 'Портфолио',
+      pricing: 'Цены',
+      contact: 'Контакты',
+      btn: 'Заказать'
     },
     hero: {
       badge: 'Webleaders — Стратегический Партнер По Цифровой Трансформации',
-      title1: 'Оптимизация Бизнес-Процессов.',
-      title2: 'Цифровое Масштабирование.',
-      desc: 'Визуальные решения — это стандарт. Мы проектируем высокотехнологичные инфраструктуры, направленные на повышение корпоративной эффективности, обеспечение устойчивого роста и укрепление рыночных позиций.',
-      btnPrimary: 'Начать Инициативу',
-      btnSecondary: 'Экспертиза'
+      title1: 'Сделаем Ваш Бизнес',
+      title2: 'Лидером в Онлайне.',
+      desc: 'Продающие сайты, CRM-системы и мобильные приложения. Современный дизайн, высокая скорость и топ-позиции в Google — от одной команды.',
+      btnPrimary: 'Начать Проект',
+      btnSecondary: 'Смотреть Работы',
+      stats: [
+        { value: '40+', label: 'Успешных проектов' },
+        { value: '5+', label: 'Лет опыта' },
+        { value: '3', label: 'Языка сервиса' },
+        { value: '24/7', label: 'Тех. поддержка' }
+      ]
     },
     services: {
-      badge: 'Портфель Услуг',
+      badge: 'Услуги',
       title: 'Комплексные Решения',
-      subtitle: 'Для Корпоративного Сектора',
-      desc: 'От стратегического анализа до полной интеграции. Высокотехнологичные услуги, обеспечивающие цифровую зрелость вашего бизнеса.',
+      subtitle: 'Для Вашего Бизнеса',
+      desc: 'От стратегического анализа до полной интеграции — услуги, обеспечивающие цифровой рост вашего бизнеса.',
+      btnAll: 'Все услуги',
       list: [
-        { title: 'Транзакционные Платформы', desc: 'Ресурсы, эффективно управляющие потоком клиентов, на базе нейромаркетинга и передовой веб-архитектуры.' },
-        { title: 'Corporate-Приложения', desc: 'Нативные программные решения для iOS и Android, обладающие высокой производительностью и кибербезопасностью.' },
-        { title: 'Системная Интеграция (ERP)', desc: 'Повышение операционной эффективности. Объединение ресурсов, финансов и персонала в единую базу данных.' },
-        { title: 'SEO-Инжиниринг и Аналитика', desc: 'Стабильное лидерство в поисковых системах. Органический рост через алгоритмический анализ и семантическую оптимизацию.' },
-        { title: 'Экосистемы E-Commerce', desc: 'Глобальные торговые платформы. Полный цикл с интеграцией международных платежных и логистических систем.' },
-        { title: 'Инфраструктура и Безопасность', desc: 'Обеспечение стабильности систем. Устойчивость к высоким нагрузкам и облачная защита данных.' }
+        { title: 'Создание Сайтов', desc: 'Продающие лендинги и корпоративные сайты. Премиальный дизайн, высокая скорость и структура, ведущая клиента к заказу.' },
+        { title: 'Мобильные Приложения', desc: 'Высокопроизводительные native и cross-platform приложения для iOS и Android. Постоянный канал связи с клиентами.' },
+        { title: 'CRM / ERP Системы', desc: 'Автоматизация бизнес-процессов: управляйте клиентами, финансами и персоналом в единой системе.' },
+        { title: 'SEO Оптимизация', desc: 'Топ-позиции в Google и Яндекс. Стабильный органический трафик через технический аудит, семантику и контент-стратегию.' },
+        { title: 'E-Commerce', desc: 'Интернет-магазины и маркетплейсы. Полный цикл с интеграцией платежных систем (Payme, Click, Uzum) и логистики.' },
+        { title: 'Техническая Поддержка', desc: 'Мониторинг 24/7, обновления безопасности и постоянное развитие для бесперебойной работы сайта.' }
       ]
     },
     whyUs: {
-      badge: 'Управление Качеством',
+      badge: 'Почему Мы',
       title: 'Почему Именно',
       subtitle: 'Webleaders?',
-      desc: 'Эра любительских подходов завершена. Мы несем юридическую ответственность за производительность каждого решения и соблюдение дедлайнов.',
+      desc: 'Мы не просто делаем сайты — мы строим цифровой инструмент, приносящий доход вашему бизнесу, и берем ответственность за результат.',
       list: [
-        { title: 'Экспертный Состав', desc: 'Над проектом работают только Senior-инженеры с опытом более 5 лет, соответствующие международным стандартам.' },
-        { title: 'Стандарт Mobile-First', desc: 'Основная часть трафика приходится на мобильные устройства. Наши системы работают на смартфонах так же эффективно, как нативные приложения.' },
-        { title: 'UI, Ориентированный на Результат', desc: 'Дизайн — это инструмент производительности. Мы проектируем интерфейсы, ведущие пользователя к целевому действию, не отвлекая.' },
-        { title: 'Максимальная Скорость', desc: 'Скорость загрузки системы — финансовый показатель бизнеса. Мгновенная загрузка благодаря технологиям Next.js.' },
-        { title: 'Договорной SLA', desc: 'Дисциплина — основа нашей корпоративной культуры. Нарушение условий договора гарантирует финансовую компенсацию.' },
-        { title: 'Пост-Проектная Поддержка', desc: 'Сдача проекта — это лишь старт. Мы постоянно анализируем систему и адаптируем её под требования рынка.' }
+        { title: 'Опытная Команда', desc: 'Над проектом работают инженеры с опытом 5+ лет, работающие по международным стандартам.' },
+        { title: 'Mobile-First', desc: '80% трафика приходит с мобильных устройств. Наши сайты работают на смартфонах как native-приложения.' },
+        { title: 'Продающий Дизайн', desc: 'Дизайн — это инструмент дохода. Каждый элемент проектируется так, чтобы вести клиента к заказу.' },
+        { title: 'Максимальная Скорость', desc: 'Медленный сайт = потерянный клиент. Мгновенная загрузка благодаря технологии Next.js.' },
+        { title: 'Договор и SLA', desc: 'Сроки и качество фиксируются в договоре. Нарушение условий — гарантированная финансовая компенсация.' },
+        { title: 'Постоянная Поддержка', desc: 'Сдача проекта — это начало. Постоянно анализируем сайт и адаптируем под требования рынка.' }
+      ]
+    },
+    process: {
+      badge: 'Процесс',
+      title: 'От Идеи до Результата',
+      subtitle: '4 Этапа',
+      desc: 'Прозрачный процесс: вы всегда знаете, что происходит на каждом этапе.',
+      steps: [
+        { num: '01', title: 'Анализ и Стратегия', desc: 'Изучаем ваш бизнес, конкурентов и аудиторию. Составляем точное ТЗ и план.' },
+        { num: '02', title: 'Дизайн', desc: 'Продающий UI/UX дизайн в стиле вашего бренда. Дорабатываем до вашего утверждения.' },
+        { num: '03', title: 'Разработка', desc: 'Чистый код на современных технологиях. Еженедельные отчеты о ходе работ.' },
+        { num: '04', title: 'Запуск', desc: 'Тестирование, настройка SEO, домен и хостинг. Остаемся рядом и после запуска.' }
       ]
     },
     pricing: {
-      title: 'Инвестиции в Цифровую',
-      subtitle: 'Инфраструктуру',
-      desc: 'Это не операционные расходы — это стратегическая инвестиция, направленная на повышение капитализации компании и доли рынка.',
-      modalTitle: 'Оформление Сотрудничества',
-      modalDesc: 'Сформируйте экспертный запрос по выбранной инженерной модели.',
+      badge: 'Цены',
+      title: 'Инвестиционные',
+      subtitle: 'Планы',
+      desc: 'Прозрачные цены без скрытых платежей. Каждый план — инвестиция в рост вашего бизнеса.',
+      btnAll: 'Все цены',
+      modalTitle: 'Оформить Заказ',
+      modalDesc: '— оставьте заявку, свяжемся в течение 15 минут.',
       formName: 'Ваше Полное Имя',
       formPhone: 'Ваш Телефон',
-      btnSubmit: 'Подтвердить Запрос',
+      btnSubmit: 'Отправить',
       btnLoading: 'Отправка...',
+      btnSelect: 'Выбрать',
+      popular: 'ПОПУЛЯРНЫЙ',
       plans: [
         {
           title: 'Start',
           price: '1.5 млн',
-          currency: "сум",
-          desc: 'Профессиональный старт на цифровом рынке для личного бренда или субъектов малого бизнеса.',
+          currency: 'сум',
+          desc: 'Профессиональный старт для личного бренда или малого бизнеса.',
           isPopular: false,
           features: [
             'Premium UI Landing Page (1 страница)',
             'Полная мобильная адаптация',
-            'Шлюз данных (Telegram/Email API)',
+            'Заявки в Telegram/Email',
             'Запуск за 3 рабочих дня',
-            '1 месяц технической поддержки SLA'
+            '1 месяц технической поддержки'
           ]
         },
         {
           title: 'Growth',
           price: '4.5 млн',
-          currency: "сум",
-          desc: 'Оптимизированное решение для предприятий, нацеленных на повышение авторитета и масштабирование.',
+          currency: 'сум',
+          desc: 'Для компаний, нацеленных на рост и масштабирование.',
           isPopular: true,
           features: [
-            'Корпоративная платформа (5+ страниц)',
-            'Система управления контентом (CMS)',
-            'Базовая SEO-оптимизация',
-            'Система оптимизации скорости (Speed Engine)',
+            'Корпоративный сайт (5+ страниц)',
+            'Панель управления (CMS)',
+            'SEO Оптимизация',
+            'Оптимизация скорости',
             '3 месяца VIP-поддержки + Домен и хостинг'
           ]
         },
         {
           title: 'Enterprise',
           price: '9.0 млн',
-          currency: "сум",
-          desc: 'Для лидеров рынка, сложных систем и субъектов, требующих максимальной автоматизации.',
+          currency: 'сум',
+          desc: 'Для сложных систем и максимальной автоматизации.',
           isPopular: false,
           features: [
-            'Крупная E-Commerce или каталог-система',
-            'Интеграция платежных шлюзов',
-            'Синхронизация с ERP/CRM-системами',
+            'E-Commerce или каталог-система',
+            'Платежные системы (Payme, Click)',
+            'Интеграция CRM/ERP',
             'Мультиязычный интерфейс (Uz/Ru/En)',
-            '6 месяцев выделенного IT-менеджера (SLA)'
+            '6 месяцев 24/7 личный менеджер'
           ]
         }
       ]
     },
+    faq: {
+      badge: 'FAQ',
+      title: 'Часто Задаваемые',
+      subtitle: 'Вопросы',
+      items: [
+        { q: 'Сколько времени займет создание сайта?', a: 'Лендинг — 3-5 рабочих дней, корпоративный сайт — 2-3 недели, сложные системы (CRM, e-commerce) — 1-2 месяца. Точный срок фиксируется в договоре после ТЗ.' },
+        { q: 'Как происходит оплата?', a: 'Обычно 50% предоплата, 50% при сдаче проекта. Для крупных проектов составляется поэтапный график оплаты. Наличные, перевод или на счет компании.' },
+        { q: 'Кто занимается доменом и хостингом?', a: 'В планах Growth и Enterprise первый год домена и хостинга — в подарок. В последующие годы полностью помогаем с настройкой и продлением.' },
+        { q: 'Будет ли сайт в Google?', a: 'Да. Все наши сайты сдаются с основами SEO: техническая оптимизация, мета-теги, sitemap, скорость. В планах Growth и Enterprise включено углубленное SEO.' },
+        { q: 'Смогу ли я вносить изменения на сайт?', a: 'Через панель CMS вы сами управляете текстами, фото и новостями. Для более сложных изменений всегда доступна наша поддержка.' },
+        { q: 'Почему стоит выбрать именно вас?', a: 'Мы работаем на результат: каждый проект в портфолио обслуживает реальный бизнес. Договор, точные сроки и поддержка после запуска — наш стандарт.' }
+      ]
+    },
+    cta: {
+      title: 'Обсудим Ваш Проект?',
+      desc: 'Получите бесплатную консультацию — проанализируем проект, назовем точную цену и сроки. Без обязательств.',
+      btn: 'Оставить Заявку',
+      btnCall: 'Позвонить',
+      telegram: 'Написать в Telegram'
+    },
+    projects: {
+      badge: 'Портфолио',
+      title: 'Реализованные',
+      subtitle: 'Проекты',
+      desc: 'Каждый проект — живой продукт, обслуживающий реальный бизнес. Многие можно посетить прямо сейчас.',
+      btnView: 'Открыть Сайт',
+      btnDetails: 'Подробнее',
+      btnAll: 'Все проекты',
+      liveBadge: 'Live',
+      filterAll: 'Все',
+      detail: {
+        overview: 'О Проекте',
+        stack: 'Технологии',
+        year: 'Год',
+        category: 'Направление',
+        visit: 'Открыть Сайт',
+        gallery: 'Галерея',
+        other: 'Другие Проекты',
+        back: 'Назад в портфолио',
+        orderSimilar: 'Заказать похожий проект'
+      }
+    },
     contactSection: {
-      badge: 'Синергия',
-      title: 'Стратегическое',
-      subtitle: 'Сотрудничество',
-      desc: 'Есть масштабный проект или нужен глубокий технический аудит? Мы готовы к новым вызовам.',
-      infoPhone: 'Связь',
-      infoLoc: 'Офис',
-      infoEmail: 'Почта',
-      formTitle: 'Оставить заявку',
+      badge: 'Контакты',
+      title: 'Есть Проект?',
+      subtitle: 'Обсудим',
+      desc: 'Заполните форму — свяжемся в течение 15 минут. Или позвоните напрямую.',
+      infoPhone: 'Телефон',
+      infoLoc: 'Адрес',
+      infoEmail: 'Email',
+      infoTelegram: 'Telegram',
+      formTitle: 'Оставить Заявку',
       inputName: 'Ваше Имя',
       inputPhone: 'Телефон',
-      inputMsg: 'Детали запроса',
-      placeholderMsg: 'Кратко о концепте проекта или решаемых проблемах...',
+      inputMsg: 'О проекте',
+      placeholderMsg: 'Кратко опишите ваш проект...',
       btnSubmit: 'Отправить',
       btnLoading: 'Отправка...'
     },
-    projects: {
-      title: 'Реализованные',
-      subtitle: 'Кейсы',
-      desc: 'Каждый проект — для нас инженерный вызов, для нашего партнера — доминирование на рынке.',
-      btnView: 'Смотреть сайт',
-      techTitle: 'Стек:',
-      aboutTitle: 'О кейсе:',
-      list: [
-        {
-          id: 'toybron',
-          name: 'ToyBron AI Ecosystem',
-          category: 'AI Marketplace & Super-CRM',
-          desc: 'Экосистема на базе искусственного интеллекта. Полная автоматизация операционных, финансовых и логистических процессов.',
-          isFeatured: true
-        },
-        {
-          id: 'hilaledu',
-          name: 'Hilal Edu',
-          category: 'Образовательная LMS-платформа',
-          desc: 'Устойчивая к высоким нагрузкам комплексная образовательная платформа, цифровизирующая учебный процесс.',
-          isFeatured: false
-        },
-        {
-          id: 'lutsente',
-          name: 'Lutsente',
-          category: 'Премиальный корпоративный сайт',
-          desc: 'Цифровой авторитет международного холдинга. Полностью синхронизированный корпоративный ресурс на трех языках.',
-          isFeatured: false
-        },
-        {
-          id: 'adizone',
-          name: 'Adizone Education',
-          category: 'ERP-система автоматизации',
-          desc: 'ERP-решение для сетей учебных заведений. Полная автоматизация учета студентов и платежей.',
-          isFeatured: false
-        },
-        {
-          id: 'kochirish',
-          name: 'Kochirish Xizmati',
-          category: 'Логистический Landing Page',
-          desc: 'Эффективное решение в сфере логистики. Сложный тарифный калькулятор и заказы в реальном времени.',
-          isFeatured: false
-        },
-        {
-          id: 'gogermany',
-          name: 'GoGermany Consulting',
-          category: 'Портал международного консалтинга',
-          desc: 'Оптимизированная цифровая платформа для консалтинговых услуг на базе европейских стандартов.',
-          isFeatured: false
-        },
-        {
-          id: 'zarnigor',
-          name: 'Zarnigor Wedding',
-          category: 'CRM и система бронирования',
-          desc: 'ERP-решение для индустрии премиальной аренды. Автоматизация системы бронирования и финансового учета.',
-          isFeatured: false
-        },
-        {
-          id: 'jetour',
-          name: 'Jetour Uzbekistan',
-          category: 'Промо-сайт автобренда',
-          desc: 'Промо-платформа для автобренда премиум-класса. Визуальная передача динамики и статуса.',
-          isFeatured: false
-        },
-        {
-          id: 'dono',
-          name: 'Dono-Dance',
-          category: 'Платформа школы танцев',
-          desc: 'Цифровая учебная платформа. Экосистема личных кабинетов для родителей и учащихся.',
-          isFeatured: false
-        },
-        {
-          id: 'telmee',
-          name: 'Telmee Market',
-          category: 'Маркетплейс нового поколения',
-          desc: 'Высокоскоростной маркетплейс. Электронное торговое решение, поддерживающее модели B2C и P2P.',
-          isFeatured: false
-        }
-      ]
-    },
     footer: {
-      rights: 'Webleaders. Все права защищены законом.',
+      rights: 'Все права защищены',
       address: 'г. Ташкент, Яшнабадский р-н',
-      contact: 'Связь',
-      socials: 'Социальные сети'
+      contact: 'Контакты',
+      socials: 'Социальные сети',
+      desc: 'IT-компания, выводящая ваш бизнес на новый уровень в цифровом мире. Качество, скорость и результат.',
+      menuTitle: 'Страницы'
     },
     toast: {
-      success: 'Запрос успешно принят!',
-      error: 'Произошел технический сбой в системе.',
+      success: 'Успешно отправлено! Скоро свяжемся с вами.',
+      error: 'Произошла ошибка. Попробуйте еще раз.',
       nameError: 'Введите ваше полное имя',
       phoneError: 'Неверный формат номера телефона',
-      msgError: 'Детали сообщения слишком короткие'
+      msgError: 'Сообщение слишком короткое',
+      wait: 'Пожалуйста, подождите...'
     }
   },
   EN: {
     nav: {
-      services: 'Competencies',
-      portfolio: 'Practice',
-      pricing: 'Models',
-      contact: 'Synergy',
-      btn: 'Start'
+      home: 'Home',
+      services: 'Services',
+      portfolio: 'Portfolio',
+      pricing: 'Pricing',
+      contact: 'Contact',
+      btn: 'Order Now'
     },
     hero: {
       badge: 'Webleaders — Strategic Partner For Digital Transformation',
-      title1: 'Business Process Optimization.',
-      title2: 'Digital Scaling.',
-      desc: 'Visual solutions are the standard. We engineer high-tech infrastructures aimed at enhancing corporate productivity, ensuring sustainable growth, and strengthening market positions.',
-      btnPrimary: 'Initialize Evolution',
-      btnSecondary: 'Expertise'
+      title1: 'We Make Your Business',
+      title2: 'A Leader Online.',
+      desc: 'High-converting websites, CRM systems and mobile apps. Modern design, blazing speed and top Google rankings — from one team.',
+      btnPrimary: 'Start a Project',
+      btnSecondary: 'See Our Work',
+      stats: [
+        { value: '40+', label: 'Successful projects' },
+        { value: '5+', label: 'Years of experience' },
+        { value: '3', label: 'Service languages' },
+        { value: '24/7', label: 'Tech support' }
+      ]
     },
     services: {
-      badge: 'Service Portfolio',
+      badge: 'Services',
       title: 'Comprehensive Solutions',
-      subtitle: 'For The Corporate Sector',
-      desc: 'From strategic analysis to complete integration. High-tech services ensuring the digital maturity of your business.',
+      subtitle: 'For Your Business',
+      desc: 'From strategic analysis to complete integration — services that drive the digital growth of your business.',
+      btnAll: 'All services',
       list: [
-        { title: 'Transactional Platforms', desc: 'Resources effectively managing client flow, based on neuromarketing and advanced web architecture.' },
-        { title: 'Corporate Applications', desc: 'Native software solutions for iOS and Android, possessing high performance and cybersecurity.' },
-        { title: 'System Integration (ERP)', desc: 'Enhancing operational efficiency. Unifying resources, finances, and personnel into a single database.' },
-        { title: 'SEO-Engineering & Analytics', desc: 'Stable leadership in search systems. Organic growth through algorithmic analysis and semantic optimization.' },
-        { title: 'E-Commerce Ecosystems', desc: 'Global trading platforms. Full cycle with integration of international payment and logistics systems.' },
-        { title: 'Infrastructure & Security', desc: 'Ensuring system stability. Resistance to high loads and cloud data protection.' }
+        { title: 'Website Development', desc: 'High-converting landing pages and corporate websites. Premium design, top speed and a structure that leads clients to order.' },
+        { title: 'Mobile Applications', desc: 'High-performance native and cross-platform apps for iOS and Android. A permanent connection channel with your clients.' },
+        { title: 'CRM / ERP Systems', desc: 'Business process automation: manage clients, finances and staff in a single system.' },
+        { title: 'SEO Optimization', desc: 'Top positions in Google and Yandex. Stable organic traffic through technical audit, semantics and content strategy.' },
+        { title: 'E-Commerce', desc: 'Online stores and marketplaces. Full cycle with payment systems (Payme, Click, Uzum) and logistics integration.' },
+        { title: 'Technical Support', desc: '24/7 monitoring, security updates and continuous development to keep your site running flawlessly.' }
       ]
     },
     whyUs: {
-      badge: 'Quality Management',
+      badge: 'Why Us',
       title: 'Why Partners Choose',
-      subtitle: 'With Webleaders?',
-      desc: 'The era of amateur approaches is over. We assume legal liability for the performance of every solution and strict adherence to deadlines.',
+      subtitle: 'Webleaders?',
+      desc: 'We don\'t just build websites — we build digital tools that generate revenue for your business, and we take responsibility for the result.',
       list: [
-        { title: 'Expert Team', desc: 'Only Senior engineers with 5+ years of experience, meeting international standards, work on the project.' },
-        { title: 'Mobile-First Standard', desc: 'The majority of traffic is on mobile devices. Our systems work as efficiently on smartphones as native applications.' },
-        { title: 'Result-Oriented UI', desc: 'Design is a productivity tool. We design interfaces that guide the user to the target action without distraction.' },
-        { title: 'Maximum Performance', desc: 'System load speed is a financial indicator of business. Instant loading thanks to Next.js technologies.' },
-        { title: 'Contractual SLA', desc: 'Discipline is the foundation of our corporate culture. Violation of contract terms guarantees financial compensation.' },
-        { title: 'Post-Project Support', desc: 'Simplification and delivery is the start. We constantly analyze the system and adapt it to market requirements.' }
+        { title: 'Expert Team', desc: 'Engineers with 5+ years of experience working to international standards handle your project.' },
+        { title: 'Mobile-First', desc: '80% of traffic comes from mobile devices. Our sites work on smartphones like native apps.' },
+        { title: 'Design That Sells', desc: 'Design is a revenue tool. Every element is engineered to lead the client to order.' },
+        { title: 'Maximum Speed', desc: 'A slow site is a lost client. Instant loading thanks to Next.js technology.' },
+        { title: 'Contract & SLA', desc: 'Deadlines and quality are fixed in the contract. Violations guarantee financial compensation.' },
+        { title: 'Ongoing Support', desc: 'Delivery is just the start. We continuously analyze your site and adapt it to market demands.' }
+      ]
+    },
+    process: {
+      badge: 'Process',
+      title: 'From Idea to Result',
+      subtitle: 'In 4 Steps',
+      desc: 'A transparent process: you always know what\'s happening at every stage.',
+      steps: [
+        { num: '01', title: 'Analysis & Strategy', desc: 'We study your business, competitors and audience. We draft a precise brief and plan.' },
+        { num: '02', title: 'Design', desc: 'Conversion-focused UI/UX design in your brand style. We iterate until you approve.' },
+        { num: '03', title: 'Development', desc: 'Clean code on modern technologies. Weekly progress reports.' },
+        { num: '04', title: 'Launch', desc: 'Testing, SEO setup, domain and hosting. We stay by your side after launch.' }
       ]
     },
     pricing: {
-      title: 'Investment In Digital',
-      subtitle: 'Infrastructure',
-      desc: 'This is not an operational expense — it is a strategic investment aimed at multiplying company capitalization and market share.',
-      modalTitle: 'Formalize Synergy',
-      modalDesc: 'Submit an expert brief for your chosen software engineering model.',
+      badge: 'Pricing',
+      title: 'Investment',
+      subtitle: 'Plans',
+      desc: 'Transparent prices with no hidden fees. Every plan is an investment in your business growth.',
+      btnAll: 'All pricing',
+      modalTitle: 'Place an Order',
+      modalDesc: '— leave a request, we\'ll contact you within 15 minutes.',
       formName: 'Your Full Name',
       formPhone: 'Contact Phone',
-      btnSubmit: 'Confirm Request',
-      btnLoading: 'Transmitting secure data...',
+      btnSubmit: 'Submit',
+      btnLoading: 'Sending...',
+      btnSelect: 'Select',
+      popular: 'MOST POPULAR',
       plans: [
         {
           title: 'Start',
           price: '1.5 mln',
-          currency: "UZS",
-          desc: 'A robust digital launchpad optimized for emerging startups or personal brands.',
+          currency: 'UZS',
+          desc: 'A professional digital launchpad for personal brands or small businesses.',
           isPopular: false,
           features: [
             'Premium UI Landing Page (1 page)',
             'Flawless Mobile Responsive',
-            'Automated Lead Channels (Telegram/Email API)',
-            'Full deploy within 3 business days',
-            '1-Month guaranteed maintenance SLA'
+            'Leads to Telegram/Email',
+            'Launch within 3 business days',
+            '1 month of technical support'
           ]
         },
         {
           title: 'Growth',
           price: '4.5 mln',
-          currency: "UZS",
-          desc: 'Engineered for rapidly scaling businesses focused on capturing sector dominance.',
+          currency: 'UZS',
+          desc: 'For companies focused on growth and scaling.',
           isPopular: true,
           features: [
-            'Multi-Tier Corporate Core (5+ Pages)',
-            'Custom Secure Management Panel (CMS)',
-            'Advanced Core SEO Engine Framework',
-            'Full-Scale Speed Optimization Mechanics',
-            '3-Months VIP Support SLA + Free Domain & Hosting'
+            'Corporate Website (5+ pages)',
+            'Management Panel (CMS)',
+            'SEO Optimization',
+            'Speed Optimization',
+            '3 months VIP support + Domain & Hosting'
           ]
         },
         {
           title: 'Enterprise',
           price: '9.0 mln',
-          currency: "UZS",
-          desc: 'For enterprise market leaders demanding absolute automation and custom integrations.',
+          currency: 'UZS',
+          desc: 'For complex systems and maximum automation.',
           isPopular: false,
           features: [
-            'High-Scale E-Commerce Hub or Directory',
-            'Multi-Gateway Payment Rails Integration',
-            'Bi-Directional CRM & Warehouse ERP System',
-            'Full Multilingual Localization (Uz/Ru/En)',
-            'Dedicated Personal IT Director (24/7 SLA) for 6 Months'
+            'E-Commerce Hub or Directory',
+            'Payment Systems (Payme, Click)',
+            'CRM/ERP Integration',
+            'Multilingual Interface (Uz/Ru/En)',
+            '6 months of 24/7 dedicated manager'
           ]
         }
       ]
     },
-    contactSection: {
-      badge: 'Synergy',
-      title: 'Strategic Partnership',
-      subtitle: 'Dialogue',
-      desc: 'Have a mass-scale project or need a high-level technical audit? We are always ready to discuss.',
-      infoPhone: 'Communications Hub',
-      infoLoc: 'Office',
-      infoEmail: 'Mail',
-      formTitle: 'Submit Project Blueprint',
-      inputName: 'Your Name',
-      inputPhone: 'Phone',
-      inputMsg: 'Project Objectives',
-      placeholderMsg: 'Briefly define your product scope or business goals...',
-      btnSubmit: 'Transmit Request',
-      btnLoading: 'Sending...'
-    },
-    projects: {
-      title: 'Digital',
-      subtitle: 'Milestones Of Pride',
-      desc: 'To us, each case is not just codebase artifacts, but a story of our partners capturing market share.',
-      btnView: 'Visit Site',
-      techTitle: 'Stack:',
-      aboutTitle: 'Keys:',
-      list: [
-        {
-          id: 'toybron',
-          name: 'ToyBron AI Ecosystem',
-          category: 'AI Marketplace & Super-CRM',
-          desc: 'Ecosystem based on artificial intelligence. Full automation of operational, financial, and logistical processes.',
-          isFeatured: true
-        },
-        {
-          id: 'hilaledu',
-          name: 'Hilal Edu',
-          category: 'Educational LMS Platform',
-          desc: 'Highly scalable educational LMS engineered to digitalize academic operations mass-scale.',
-          isFeatured: false
-        },
-        {
-          id: 'lutsente',
-          name: 'Lutsente',
-          category: 'Premium Corporate Hub',
-          desc: 'Digital footprint of a multinational holding. Secure core synchronized across 3 international languages.',
-          isFeatured: false
-        },
-        {
-          id: 'adizone',
-          name: 'Adizone Education',
-          category: 'Educational Platform',
-          desc: 'ERP infrastructure for academy chains. Full automation of student management, billing, and certification.',
-          isFeatured: false
-        },
-        {
-          id: 'kochirish',
-          name: 'Move Service',
-          category: 'Logistics High-Converting Page',
-          desc: 'A leading logistics web core featuring a multi-variable tariff matrix and real-time fleet ordering.',
-          isFeatured: false
-        },
-        {
-          id: 'gogermany',
-          name: 'GoGermany Consulting',
-          category: 'International Consulting Portal',
-          desc: 'A high-conversion international consulting engine architected entirelly according to European visual styles.',
-          isFeatured: false
-        },
-        {
-          id: 'zarnigor',
-          name: 'Zarnigor Wedding',
-          category: 'Bespoke CRM & Booking',
-          desc: 'Bespoke ERP architecture for the luxury rental industry, featuring booking systems and automated ledgering.',
-          isFeatured: false
-        },
-        {
-          id: 'jetour',
-          name: 'Jetour Uzbekistan',
-          category: 'Automotive Digital Experience',
-          desc: 'Car brand showroom demo. Emotional frontend architecture delivering mechanical power and aesthetics.',
-          isFeatured: false
-        },
-        {
-          id: 'dono',
-          name: 'Dono-Dance',
-          category: 'Dance School Platform',
-          desc: 'Masofaviy educational infrastructure built with dedicated portals for students, parents, and billing managers.',
-          isFeatured: false
-        },
-        {
-          id: 'telmee',
-          name: 'Telmee Market',
-          category: 'Next-Gen E-Commerce Market',
-          desc: 'Highly optimized digital marketplace managing hybrid B2C and P2P transaction commerce rails.',
-          isFeatured: false
-        }
+    faq: {
+      badge: 'FAQ',
+      title: 'Frequently Asked',
+      subtitle: 'Questions',
+      items: [
+        { q: 'How long does it take to build a website?', a: 'A landing page takes 3-5 business days, a corporate site 2-3 weeks, complex systems (CRM, e-commerce) 1-2 months. The exact deadline is fixed in the contract after the brief.' },
+        { q: 'How does payment work?', a: 'Usually 50% upfront and 50% on delivery. For large projects we set up a milestone-based payment schedule. Cash, transfer or company account.' },
+        { q: 'Who handles the domain and hosting?', a: 'On Growth and Enterprise plans the first year of domain and hosting is on us. In following years we fully assist with setup and renewals.' },
+        { q: 'Will my site rank on Google?', a: 'Yes. All our sites ship with SEO fundamentals: technical optimization, meta tags, sitemap, speed. Growth and Enterprise plans include in-depth SEO.' },
+        { q: 'Can I edit the site myself?', a: 'Through the CMS panel you manage texts, images and news yourself. For more complex changes, our support team is always available.' },
+        { q: 'Why should I choose you?', a: 'We work for results: every project in our portfolio serves a real business. Contract, precise deadlines and post-launch support are our standard.' }
       ]
     },
+    cta: {
+      title: 'Let\'s Discuss Your Project?',
+      desc: 'Get a free consultation — we\'ll analyze your project and give you an exact price and timeline. No obligations.',
+      btn: 'Place an Order',
+      btnCall: 'Call Us',
+      telegram: 'Write on Telegram'
+    },
+    projects: {
+      badge: 'Portfolio',
+      title: 'Delivered',
+      subtitle: 'Projects',
+      desc: 'Every project is a live product serving a real business. You can visit most of them right now.',
+      btnView: 'Visit Site',
+      btnDetails: 'Details',
+      btnAll: 'All projects',
+      liveBadge: 'Live',
+      filterAll: 'All',
+      detail: {
+        overview: 'About the Project',
+        stack: 'Technologies',
+        year: 'Year',
+        category: 'Category',
+        visit: 'Visit Site',
+        gallery: 'Gallery',
+        other: 'Other Projects',
+        back: 'Back to portfolio',
+        orderSimilar: 'Order a similar project'
+      }
+    },
+    contactSection: {
+      badge: 'Contact',
+      title: 'Have a Project?',
+      subtitle: 'Let\'s Talk',
+      desc: 'Fill out the form — we\'ll get in touch within 15 minutes. Or call us directly.',
+      infoPhone: 'Phone',
+      infoLoc: 'Address',
+      infoEmail: 'Email',
+      infoTelegram: 'Telegram',
+      formTitle: 'Submit a Request',
+      inputName: 'Your Name',
+      inputPhone: 'Phone',
+      inputMsg: 'About the project',
+      placeholderMsg: 'Briefly describe your project...',
+      btnSubmit: 'Submit',
+      btnLoading: 'Sending...'
+    },
     footer: {
-      rights: 'Webleaders Web Studio. All rights reserved by law.',
+      rights: 'All rights reserved',
       address: 'Tashkent city, Yashnabad district',
       contact: 'Contact',
-      socials: 'Digital Footprints'
+      socials: 'Social networks',
+      desc: 'An IT company taking your business to the next level in the digital world. Quality, speed and results.',
+      menuTitle: 'Pages'
     },
     toast: {
-      success: 'Your brief was received successfully over secure connections!',
-      error: 'An error occurred!',
-      nameError: 'Enter full name',
-      phoneError: 'The contact configuration must match international telephone standards.',
-      msgError: 'Message is too short'
+      success: 'Sent successfully! We\'ll contact you soon.',
+      error: 'An error occurred. Please try again.',
+      nameError: 'Enter your full name',
+      phoneError: 'Invalid phone number format',
+      msgError: 'Message is too short',
+      wait: 'Please wait a moment...'
     }
   }
 }
 
-type LangType = 'UZ' | 'RU' | 'EN'
+export type LangType = 'UZ' | 'RU' | 'EN'
 
 interface LanguageContextType {
   language: LangType
@@ -659,16 +629,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('lang', lang)
   }
 
-  if (!mounted) {
-    return (
-      <LanguageContext.Provider value={{ language: 'UZ', setLanguage: handleSetLanguage, t: translations['UZ'] }}>
-        {children}
-      </LanguageContext.Provider>
-    )
-  }
+  const value = mounted
+    ? { language, setLanguage: handleSetLanguage, t: translations[language] }
+    : { language: 'UZ' as LangType, setLanguage: handleSetLanguage, t: translations.UZ }
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t: translations[language] }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   )

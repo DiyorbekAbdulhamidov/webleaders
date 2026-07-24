@@ -212,9 +212,10 @@ function Services3DCanvas({ hoveredIndex }: CanvasProps) {
   return <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none" />
 }
 
-export default function ServicesSection() {
+export default function ServicesSection({ asPage = false }: { asPage?: boolean }) {
   const { t } = useLanguage()
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const HeadingTag = asPage ? 'h1' : 'h2'
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -239,7 +240,7 @@ export default function ServicesSection() {
   }
 
   return (
-    <section id="services" className="relative py-24 bg-black text-white overflow-hidden">
+    <section id="services" className={`relative ${asPage ? 'pt-36 pb-24' : 'py-24'} bg-black text-white overflow-hidden`}>
 
       {/* 🌀 THE HIGH-END INTERACTIVE 3D ENGINE */}
       <Services3DCanvas hoveredIndex={hoveredIndex} />
@@ -260,15 +261,16 @@ export default function ServicesSection() {
           >
             {t.services.badge}
           </motion.span>
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6 tracking-tight"
           >
-            {t.services.title} <br className="hidden md:block" />
-            <span className="text-green-500">{t.services.subtitle}</span>
-          </motion.h2>
+            <HeadingTag className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6 tracking-tight">
+              {t.services.title} <br className="hidden md:block" />
+              <span className="text-green-500">{t.services.subtitle}</span>
+            </HeadingTag>
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
