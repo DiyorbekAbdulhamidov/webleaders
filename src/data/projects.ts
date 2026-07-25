@@ -254,4 +254,3 @@ export const staticProjects: Project[] = [
     year: 2023
   }
 ]
-// 
