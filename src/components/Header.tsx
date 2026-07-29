@@ -21,6 +21,13 @@ export default function Header() {
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const [imageError, setImageError] = useState(false)
   const pathname = usePathname()
+  const [prevPathname, setPrevPathname] = useState(pathname)
+
+  // Sahifa almashganda menyuni yopamiz (render paytida — effekt kaskadisiz)
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
+    setIsOpen(false)
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30)
@@ -33,11 +40,6 @@ export default function Header() {
     document.body.style.overflow = isOpen ? 'hidden' : 'unset'
     return () => { document.body.style.overflow = 'unset' }
   }, [isOpen])
-
-  // Sahifa almashganda menyuni yopamiz
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
 
   if (pathname === '/ramadan') return null
 
@@ -69,11 +71,9 @@ export default function Header() {
 
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled || isOpen
+      {/* Animatsiya CSS orqali — header JS kelmasidan ko'rinadi */}
+      <header
+        className={`wl-reveal-down fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled || isOpen
           ? 'bg-[#050505]/70 backdrop-blur-xl border-b border-white/[0.05] py-3'
           : 'bg-transparent border-b border-transparent py-5'
           }`}
@@ -88,7 +88,7 @@ export default function Header() {
                   src="/logo.png"
                   alt="Webleaders logo"
                   width={150}
-                  height={38}
+                  height={32}
                   className="object-contain transition-opacity duration-300 hover:opacity-80"
                   priority
                   onError={() => setImageError(true)}
@@ -181,7 +181,7 @@ export default function Header() {
             <span className={`w-6 h-[2px] bg-white rounded-full transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-[4px]' : ''}`} />
           </button>
         </div>
-      </motion.header>
+      </header>
 
       {/* MOBILE FULLSCREEN MENU */}
       <AnimatePresence>

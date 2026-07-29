@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import 'aos/dist/aos.css';
 
 :root {
   --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
@@ -42,6 +41,49 @@ h1, h2, h3 {
 }
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out;
+}
+
+/*
+  Hero animatsiyasi — sof CSS.
+  Muhim: birinchi ekran JS'ga bog'liq bo'lmasin. JS sekin kelsa ham
+  (mobil internet) matn darhol chiqadi, sahifa qora bo'lib qolmaydi.
+
+  Ataylab `opacity` animatsiya qilinmaydi — faqat siljish. Sahifa fon
+  rejimida yuklansa (Telegram/Instagram ichki brauzeri) animatsiya soati
+  yurmaydi; opacity ishlatilsa kontent 0 da qotib qolar edi.
+*/
+@keyframes wl-reveal {
+  from {
+    transform: translateY(22px);
+  }
+  to {
+    transform: none;
+  }
+}
+.wl-reveal {
+  animation: wl-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Header uchun — yuqoridan tushadi */
+@keyframes wl-reveal-down {
+  from {
+    transform: translateY(-14px);
+  }
+  to {
+    transform: none;
+  }
+}
+.wl-reveal-down {
+  animation: wl-reveal-down 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.wl-delay-1 { animation-delay: 0.12s; }
+.wl-delay-2 { animation-delay: 0.24s; }
+.wl-delay-3 { animation-delay: 0.36s; }
+.wl-delay-4 { animation-delay: 0.48s; }
+
+/* Grain tekstura — tashqi domenga (vercel.app) so'rov yubormaydi */
+.wl-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* Marquee (texnologiyalar lentasi) */
@@ -89,5 +131,10 @@ h1, h2, h3 {
   .animate-marquee,
   .animate-fade-in-up {
     animation: none;
+  }
+  .wl-reveal,
+  .wl-reveal-down {
+    animation: none;
+    transform: none;
   }
 }

@@ -12,10 +12,8 @@ const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500"] });
 export default function EduCenterUniversalPremium() {
   const [formData, setFormData] = useState({ name: "", phone: "", centerName: "" });
   const [status, setStatus] = useState("idle");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     // Asosiy sayt body elementining scrollini vaqtincha to'xtatib, bu sahifani to'liq ekranga yoyish hiylasi
     document.body.style.overflow = 'auto';
   }, []);
@@ -23,8 +21,9 @@ export default function EduCenterUniversalPremium() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-    if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "Lead");
+    const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+    if (typeof fbq === "function") {
+      fbq("track", "Lead");
     }
     try {
       const res = await fetch("/api/contact", {
@@ -41,7 +40,6 @@ export default function EduCenterUniversalPremium() {
     }
   };
 
-  if (!mounted) return null;
 
   return (
     // ASOSIY O'ZGARISH: fixed va z-[999999] berildi. Bu hamma global Navbar va Footer ustini yopadi.
@@ -74,17 +72,17 @@ export default function EduCenterUniversalPremium() {
         >
           <div className="px-3 py-1.5 md:px-4 md:py-2 border border-[#d4af37]/30 bg-[#d4af37]/5 rounded-full backdrop-blur-md mb-6 md:mb-8 inline-flex items-center gap-2 md:gap-3">
             <span className="text-[#d4af37] text-base md:text-xl">🌙</span>
-            <span className={`text-[#d4af37] font-bold text-[9px] md:text-sm tracking-[0.1em] md:tracking-[0.2em] uppercase ${montserrat.className}`}>O'quv Markazlari Uchun Maxsus</span>
+            <span className={`text-[#d4af37] font-bold text-[9px] md:text-sm tracking-[0.1em] md:tracking-[0.2em] uppercase ${montserrat.className}`}>O‘quv Markazlari Uchun Maxsus</span>
           </div>
 
           <h1 className={`${montserrat.className} text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-[5rem] font-black tracking-tighter mb-6 md:mb-8 text-white drop-shadow-2xl uppercase break-words w-full`}>
-            O'quvchilarni <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">Yo'qotishni</span> <br />
-            To'xtating.
+            O‘quvchilarni <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">Yo‘qotishni</span> <br />
+            To‘xtating.
           </h1>
 
           <p className="text-gray-400 text-sm sm:text-base md:text-xl font-light leading-relaxed mb-8 md:mb-12 max-w-xl">
-            Oddiy kanal yoki guruhlar yetarli emas. Markazingizning ishonchliligini oshiruvchi, kun-u tun mijozlar yig'uvchi <strong className="text-white font-medium">Premium Veb-sayt</strong> quramiz. Xohlang vizitka sayt, xohlang to'liq avtomatlashgan tizim.
+            Oddiy kanal yoki guruhlar yetarli emas. Markazingizning ishonchliligini oshiruvchi, kun-u tun mijozlar yig‘uvchi <strong className="text-white font-medium">Premium Veb-sayt</strong> quramiz. Xohlang vizitka sayt, xohlang to‘liq avtomatlashgan tizim.
           </p>
 
           <a href="#booking" className="w-full sm:w-auto group relative inline-flex items-center justify-center gap-3 md:gap-4 px-6 py-4 md:px-10 md:py-5 bg-white text-black font-black text-sm md:text-xl rounded-xl md:rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
@@ -111,12 +109,12 @@ export default function EduCenterUniversalPremium() {
             <p className={`${montserrat.className} text-white text-base md:text-2xl font-bold tracking-[0.15em] md:tracking-[0.2em] mb-4 md:mb-6`}>PREMIUM LENDING</p>
 
             <div className="relative mb-1 md:mb-2">
-              <span className={`${montserrat.className} text-gray-400 text-xl md:text-3xl font-black tracking-widest relative z-10`}>3 MLN SO'M</span>
+              <span className={`${montserrat.className} text-gray-400 text-xl md:text-3xl font-black tracking-widest relative z-10`}>3 MLN SO‘M</span>
               <div className="absolute top-1/2 left-[-10%] w-[120%] h-1 md:h-1.5 bg-red-600 -rotate-3 z-20 shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
             </div>
 
             <div className={`${montserrat.className} text-[2.5rem] sm:text-[3.5rem] md:text-[5.5rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-[#FFFFaa] via-[#FFD700] to-[#B8860B] leading-none tracking-tighter drop-shadow-[0_0_20px_rgba(255,215,0,0.4)] md:drop-shadow-[0_0_40px_rgba(255,215,0,0.6)] mb-6 md:mb-8`}>
-              1.2 MLN <span className="text-xl sm:text-2xl md:text-[2.5rem]">SO'M</span>
+              1.2 MLN <span className="text-xl sm:text-2xl md:text-[2.5rem]">SO‘M</span>
             </div>
 
             <p className={`${montserrat.className} text-white text-xs md:text-xl font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase bg-black px-6 md:px-8 py-2 md:py-3 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]`}>
@@ -133,17 +131,17 @@ export default function EduCenterUniversalPremium() {
             <div className="p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[#050505] border border-white/5 hover:border-[#00ff7f]/30 transition-colors">
               <LayoutTemplate className="text-[#d4af37] mb-4 md:mb-6" size={32} />
               <h3 className={`${montserrat.className} text-lg md:text-2xl font-black mb-2 md:mb-4 uppercase`}>Premium Dizayn</h3>
-              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Sizning markazingizni raqobatchilardan vizual jihatdan bir necha pog'ona baland ko'rsatadigan jiddiy va zamonaviy qiyofa.</p>
+              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Sizning markazingizni raqobatchilardan vizual jihatdan bir necha pog‘ona baland ko‘rsatadigan jiddiy va zamonaviy qiyofa.</p>
             </div>
             <div className="p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[#050505] border border-white/5 hover:border-[#00ff7f]/30 transition-colors">
               <Users className="text-[#00ff7f] mb-4 md:mb-6" size={32} />
-              <h3 className={`${montserrat.className} text-lg md:text-2xl font-black mb-2 md:mb-4 uppercase`}>24/7 Ro'yxatga olish</h3>
-              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Tungi soat 3 da saytga kirgan o'quvchi ham osongina ro'yxatdan o'tadi. Barcha ma'lumotlar to'g'ridan-to'g'ri telegramingizga tushadi.</p>
+              <h3 className={`${montserrat.className} text-lg md:text-2xl font-black mb-2 md:mb-4 uppercase`}>24/7 Ro‘yxatga olish</h3>
+              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Tungi soat 3 da saytga kirgan o‘quvchi ham osongina ro‘yxatdan o‘tadi. Barcha ma‘lumotlar to‘g‘ridan-to‘g‘ri telegramingizga tushadi.</p>
             </div>
             <div className="p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[#050505] border border-white/5 hover:border-[#00ff7f]/30 transition-colors">
               <Database className="text-[#d4af37] mb-4 md:mb-6" size={32} />
               <h3 className={`${montserrat.className} text-lg md:text-2xl font-black mb-2 md:mb-4 uppercase`}>CRM Integratsiya</h3>
-              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Xohishga ko'ra tizimni AmoCRM yoki boshqa bazalarga ulab beramiz. Katta markazlar uchun mukammal savdo ekotizimi.</p>
+              <p className="text-gray-400 font-light text-sm md:text-base leading-relaxed">Xohishga ko‘ra tizimni AmoCRM yoki boshqa bazalarga ulab beramiz. Katta markazlar uchun mukammal savdo ekotizimi.</p>
             </div>
           </div>
         </div>
@@ -157,7 +155,7 @@ export default function EduCenterUniversalPremium() {
               <h2 className={`${montserrat.className} text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 uppercase tracking-tight text-white leading-[1.1]`}>
                 Bizning Ishlar.
               </h2>
-              <p className="text-gray-500 text-sm sm:text-base md:text-xl font-light">Biz kichik brendlardan tortib, bozor gigantlarigacha xizmat ko'rsatamiz.</p>
+              <p className="text-gray-500 text-sm sm:text-base md:text-xl font-light">Biz kichik brendlardan tortib, bozor gigantlarigacha xizmat ko‘rsatamiz.</p>
             </div>
           </div>
 
@@ -166,13 +164,13 @@ export default function EduCenterUniversalPremium() {
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00ff7f]/5 to-transparent pointer-events-none" />
 
               <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/5 border border-white/10 rounded-full text-gray-300 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] w-max mb-6 md:mb-8 ${montserrat.className}`}>
-                🏆 Yirik Ta'lim Loyihasi
+                🏆 Yirik Ta’lim Loyihasi
               </div>
 
               <h3 className={`${montserrat.className} text-3xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 text-white tracking-tighter`}>HILAL EDU</h3>
 
               <p className="text-gray-400 text-sm md:text-lg leading-relaxed mb-6 md:mb-10">
-                O'rta Osiyodagi eng yirik ta'lim muassasalaridan biri. Mijoz talabidan kelib chiqib, to'liq avtomatlashgan, yuqori yuklanishlarga bardosh beruvchi kuchli arxitektura qurib berildi.
+                O‘rta Osiyodagi eng yirik ta‘lim muassasalaridan biri. Mijoz talabidan kelib chiqib, to‘liq avtomatlashgan, yuqori yuklanishlarga bardosh beruvchi kuchli arxitektura qurib berildi.
               </p>
 
               <div className="grid grid-cols-2 gap-4 md:gap-8 border-t border-white/5 pt-6 md:pt-8">
@@ -209,14 +207,14 @@ export default function EduCenterUniversalPremium() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff7f] to-[#00b359]">Tayyormi?</span>
             </h2>
             <p className="text-gray-400 text-sm md:text-xl leading-relaxed mb-8 md:mb-12 max-w-lg">
-              Aksiya doirasida atigi 30 ta loyiha olinadi. O'z joyingizni band qiling. Biz siz bilan bog'lanib, markazingizga qanday sayt (oddiy yoki CRM tizimli) mos kelishini aniqlaymiz.
+              Aksiya doirasida atigi 30 ta loyiha olinadi. O‘z joyingizni band qiling. Biz siz bilan bog‘lanib, markazingizga qanday sayt (oddiy yoki CRM tizimli) mos kelishini aniqlaymiz.
             </p>
 
             <div className="p-4 md:p-6 border border-white/10 bg-white/5 rounded-2xl flex items-start gap-4 md:gap-6 backdrop-blur-sm max-w-md">
               <TrendingUp className="text-[#d4af37] shrink-0 w-6 h-6 md:w-8 md:h-8 mt-1" />
               <div>
                 <p className={`${montserrat.className} text-white font-bold text-sm md:text-lg mb-1 md:mb-2 uppercase tracking-wide`}>Bepul Konsultatsiya</p>
-                <p className="text-gray-400 text-xs md:text-sm leading-relaxed">Ma'lumot qoldirish sizni hech narsaga majbur qilmaydi. Mutaxassislarimiz loyihangizni bepul tahlil qilib berishadi.</p>
+                <p className="text-gray-400 text-xs md:text-sm leading-relaxed">Ma‘lumot qoldirish sizni hech narsaga majbur qilmaydi. Mutaxassislarimiz loyihangizni bepul tahlil qilib berishadi.</p>
               </div>
             </div>
           </div>
@@ -237,7 +235,7 @@ export default function EduCenterUniversalPremium() {
                     className="w-full bg-transparent border-b-2 border-[#333] pb-2 md:pb-3 text-base md:text-2xl text-white placeholder-gray-800 focus:outline-none focus:border-[#00ff7f] transition-colors rounded-none" />
                 </div>
                 <div className="relative">
-                  <label className={`${montserrat.className} text-[9px] md:text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mb-2 md:mb-3 block`}>O'quv Markazi Nomi</label>
+                  <label className={`${montserrat.className} text-[9px] md:text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mb-2 md:mb-3 block`}>O‘quv Markazi Nomi</label>
                   <input required type="text" placeholder="Markazingiz nomi" value={formData.centerName} onChange={(e) => setFormData({ ...formData, centerName: e.target.value })}
                     className="w-full bg-transparent border-b-2 border-[#333] pb-2 md:pb-3 text-base md:text-2xl text-white placeholder-gray-800 focus:outline-none focus:border-[#00ff7f] transition-colors rounded-none" />
                 </div>

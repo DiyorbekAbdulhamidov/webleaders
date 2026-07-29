@@ -1,6 +1,10 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Webleaders — Sayt Yaratish, CRM va Mobil Ilovalar",
+  "short_name": "Webleaders",
+  "description": "Toshkentda professional sayt yaratish, CRM/ERP tizimlar, mobil ilovalar va SEO xizmatlari.",
+  "lang": "uz",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +19,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#050505",
+  "background_color": "#050505",
   "display": "standalone"
 }

@@ -614,12 +614,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<LangType>('UZ')
-  const [mounted, setMounted] = useState(false)
 
+  // Saqlangan tilni faqat mount'dan keyin o'qiymiz. useState initializer'da
+  // o'qib bo'lmaydi — server 'UZ' render qiladi, hydration mos kelmay qoladi.
   useEffect(() => {
-    setMounted(true)
     const savedLang = localStorage.getItem('lang') as LangType
-    if (savedLang && ['UZ', 'RU', 'EN'].includes(savedLang)) {
+    if (savedLang && savedLang !== 'UZ' && ['RU', 'EN'].includes(savedLang)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguage(savedLang)
     }
   }, [])
@@ -629,9 +630,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('lang', lang)
   }
 
-  const value = mounted
-    ? { language, setLanguage: handleSetLanguage, t: translations[language] }
-    : { language: 'UZ' as LangType, setLanguage: handleSetLanguage, t: translations.UZ }
+  const value = { language, setLanguage: handleSetLanguage, t: translations[language] }
 
   return (
     <LanguageContext.Provider value={value}>

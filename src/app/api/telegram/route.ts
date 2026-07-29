@@ -2,6 +2,16 @@ import { NextResponse } from 'next/server'
 import { readPortfolio, writePortfolio, saveImage, diagnostics, type DraftProject } from '@/lib/portfolio-store'
 import type { Project } from '@/data/projects'
 
+/** Telegram webhook'dan keladigan ma'lumotning biz ishlatadigan qismi */
+interface TelegramUpdate {
+  message?: {
+    chat?: { id?: number }
+    text?: string
+    caption?: string
+    photo?: { file_id: string }[]
+  }
+}
+
 /**
  * TELEGRAM PORTFOLIO BOT WEBHOOK
  *
@@ -133,7 +143,7 @@ export async function POST(req: Request) {
     }
   }
 
-  let update: any
+  let update: TelegramUpdate
   try {
     update = await req.json()
   } catch {
@@ -144,6 +154,7 @@ export async function POST(req: Request) {
   if (!message) return NextResponse.json({ ok: true })
 
   const chatId = message.chat?.id
+  if (chatId === undefined) return NextResponse.json({ ok: true })
   const chatKey = String(chatId)
 
   // Faqat adminlarga ruxsat

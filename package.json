@@ -9,21 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "@lottiefiles/dotlottie-react": "^0.14.4",
     "@vercel/analytics": "^1.5.0",
-    "aos": "^2.3.4",
     "cleave.js": "^1.6.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
-    "gsap": "^3.15.0",
-    "keen-slider": "^6.8.6",
-    "lottie-react": "^2.4.1",
     "lucide-react": "^0.525.0",
     "next": "^16.0.10",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-icons": "^5.5.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.6.0",
     "three": "^0.184.0"
@@ -31,13 +24,12 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.184.1",
     "eslint": "^9",
-    "eslint-config-next": "15.4.3",
+    "eslint-config-next": "^16.2.12",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

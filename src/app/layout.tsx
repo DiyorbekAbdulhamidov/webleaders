@@ -162,6 +162,15 @@ export default function RootLayout({
     <html lang="uz" className={`scroll-smooth ${inter.variable} ${grotesk.variable}`} suppressHydrationWarning>
       <body className={`${inter.className} bg-[#050505] text-white antialiased selection:bg-green-500 selection:text-black`}>
 
+        {/*
+          JS ishlamasa (o'chirilgan yoki bloklangan) framer-motion'ning
+          inline `opacity:0` stillari kontentni butunlay yashirib qo'yadi —
+          sahifa qora bo'lib qoladi. Shu holatda hammasini ko'rsatamiz.
+        */}
+        <noscript>
+          <style>{`[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

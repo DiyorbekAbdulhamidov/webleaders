@@ -27,11 +27,13 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
 
   const MESSAGE_LIMIT = 200
 
+  // localStorage'ni faqat mount'dan keyin o'qish mumkin (serverda mavjud emas)
   useEffect(() => {
     const lastSubmit = localStorage.getItem('lastSubmitTime')
     if (lastSubmit) {
       const timeDiff = Date.now() - parseInt(lastSubmit)
       if (timeDiff < 60000) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCanSubmit(false)
         const timeout = setTimeout(() => setCanSubmit(true), 60000 - timeDiff)
         return () => clearTimeout(timeout)
@@ -39,7 +41,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
     }
   }, [])
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target
 
     if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
@@ -110,7 +112,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
       } else {
         toast.error(t.toast.error, { theme: 'dark' })
       }
-    } catch (error) {
+    } catch {
       toast.error(t.toast.error, { theme: 'dark' })
     } finally {
       setSubmitting(false)
