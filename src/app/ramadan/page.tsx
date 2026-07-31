@@ -26,10 +26,17 @@ export default function EduCenterUniversalPremium() {
       fbq("track", "Lead");
     }
     try {
+      // MUHIM: /api/contact `plan` maydonini majburiy talab qiladi.
+      // Ilgari bu yerdan faqat {name, phone, centerName} yuborilardi va
+      // server 400 qaytarib, barcha arizalar yo'qolib ketardi.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          plan: `O‘QUV MARKAZI: ${formData.centerName || "ko‘rsatilmagan"} | Manba: /ramadan aksiyasi`,
+        }),
       });
       if (res.ok) {
         setStatus("success");

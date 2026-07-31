@@ -16,6 +16,30 @@ export interface Project {
 }
 
 export const staticProjects: Project[] = [
+  // {
+  //   slug: 'biohill',
+  //   name: '',
+  //   category: {
+  //     UZ: 'Ta’lim LMS Platformasi',
+  //     RU: 'Образовательная LMS-платформа',
+  //     EN: 'Educational LMS Platform'
+  //   },
+  //   desc: {
+  //     UZ: 'Yuqori yuklamalarga chidamli, ta’lim jarayonlarini raqamlashtiruvchi kompleks ta’lim platformasi.',
+  //     RU: 'Устойчивая к высоким нагрузкам комплексная образовательная платформа, цифровизирующая учебный процесс.',
+  //     EN: 'Highly scalable educational LMS engineered to digitalize academic operations at scale.'
+  //   },
+  //   longDesc: {
+  //     UZ: 'Hilal Edu — Toshkentdagi professional turk tili markazi uchun yaratilgan zamonaviy ta’lim platformasi. Kurslar katalogi, onlayn ro‘yxatdan o‘tish, daraja testlari va SEO-optimallashtirilgan kontent arxitekturasi orqali markaz organik trafikni bir necha barobar oshirdi. Sayt Next.js asosida qurilgan bo‘lib, Google PageSpeed’da yuqori ball bilan ishlaydi.',
+  //     RU: 'Hilal Edu — современная образовательная платформа для профессионального центра турецкого языка в Ташкенте. Каталог курсов, онлайн-запись, тесты уровня и SEO-оптимизированная контентная архитектура позволили центру кратно увеличить органический трафик. Сайт построен на Next.js и показывает высокие баллы в Google PageSpeed.',
+  //     EN: 'Hilal Edu is a modern educational platform for a professional Turkish language center in Tashkent. A course catalog, online enrollment, level tests and SEO-optimized content architecture multiplied the center\'s organic traffic. Built with Next.js, it scores high on Google PageSpeed.'
+  //   },
+  //   tech: ['Next.js', 'SEO', 'Shadcn UI', 'Tailwind CSS'],
+  //   images: ['/projects/biohill.png', '/projects/biohill2.png', '/projects/biohill4.png', '/projects/biohill4.png', '/projects/biohill5.png'],
+  //   url: 'https://biohill.uz',
+  //   year: 2026,
+  //   featured: true
+  // },
   {
     slug: 'hilaledu',
     name: 'Hilal Edu',
@@ -37,7 +61,7 @@ export const staticProjects: Project[] = [
     tech: ['Next.js', 'SEO', 'Shadcn UI', 'Tailwind CSS'],
     images: ['/projects/hilal1.png', '/projects/hilal2.png', '/projects/hilal3.png', '/projects/hilal4.png'],
     url: 'https://hilaledu.uz',
-    year: 2025,
+    year: 2026,
     featured: true
   },
   {
@@ -61,7 +85,7 @@ export const staticProjects: Project[] = [
     tech: ['Next.js 16', 'AI / ML', 'Big Data', 'PostgreSQL', 'Telegram Bot'],
     images: ['/projects/toybron1.png', '/projects/toybron2.png', '/projects/toybron3.png', '/projects/toybron4.png'],
     url: 'https://toybron.vercel.app/',
-    year: 2025,
+    year: 2026,
     featured: true
   },
   {
@@ -85,7 +109,7 @@ export const staticProjects: Project[] = [
     tech: ['Next.js', 'Framer Motion', 'Tailwind CSS', 'i18n'],
     images: ['/projects/lutsente1.png', '/projects/lutsente2.png', '/projects/lutsente3.png', '/projects/lutsente4.png'],
     url: 'https://lutsente.uz',
-    year: 2025,
+    year: 2026,
     featured: true
   },
   {
@@ -109,7 +133,7 @@ export const staticProjects: Project[] = [
     tech: ['React', 'CRM', 'Telegram Bot', 'Node.js'],
     images: ['/projects/adizone1.png', '/projects/adizone2.png', '/projects/adizone3.png', '/projects/adizone4.png'],
     url: 'https://adizone.uz',
-    year: 2024,
+    year: 2026,
     featured: true
   },
   {
@@ -133,7 +157,7 @@ export const staticProjects: Project[] = [
     tech: ['Landing Page', 'SEO', 'Mobile First', 'Telegram API'],
     images: ['/projects/move1.png', '/projects/move2.png', '/projects/move3.png', '/projects/move4.png'],
     url: 'https://kochirish.uz',
-    year: 2024,
+    year: 2025,
     featured: true
   },
   {
@@ -157,7 +181,7 @@ export const staticProjects: Project[] = [
     tech: ['Vue.js', 'Laravel', 'MySQL', 'CRM'],
     images: ['/projects/zarnigor1.png', '/projects/zarnigor2.png', '/projects/zarnigor3.png', '/projects/zarnigor4.png'],
     url: 'https://wedding-homes-crm.vercel.app/',
-    year: 2024,
+    year: 2025,
     featured: true
   },
   {
@@ -181,7 +205,7 @@ export const staticProjects: Project[] = [
     tech: ['React', 'Tailwind CSS', 'UX/UI'],
     images: ['/projects/ger(1).png', '/projects/ger(2).png', '/projects/ger(3).png', '/projects/ger(4).png'],
     url: 'https://gogermany-nu.vercel.app/',
-    year: 2024,
+    year: 2025,
 
   },
   {
@@ -205,7 +229,7 @@ export const staticProjects: Project[] = [
     tech: ['Next.js', 'Three.js', 'GSAP'],
     images: ['/projects/jetour1.png', '/projects/jetour2.png', '/projects/jetour3.png', '/projects/jetour4.png'],
     url: 'https://jetour-app.vercel.app/',
-    year: 2024
+    year: 2023
   },
   {
     slug: 'dono',
@@ -251,6 +275,6 @@ export const staticProjects: Project[] = [
     tech: ['MERN Stack', 'Socket.io', 'Real-time'],
     images: ['/projects/telmee1.png', '/projects/telmee2.png', '/projects/telmee3.png', '/projects/telmee4.png'],
     url: 'https://telmee.uz/',
-    year: 2023
+    year: 2022
   }
 ]

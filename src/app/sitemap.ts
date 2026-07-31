@@ -36,6 +36,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8
+    },
+    {
+      // Nisha sahifasi — o'quv markazlari yo'nalishi bo'yicha asosiy kirish nuqtasi
+      url: `${BASE_URL}/oquv-markazlar`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9
     }
   ]
 
