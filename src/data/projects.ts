@@ -9,7 +9,6 @@ export interface Project {
   longDesc: LocalizedText
   tech: string[]
   images: string[]
-  /** Faqat jonli, tekshirilgan saytlar. Yo'q bo'lsa tugma chiqmaydi. */
   url?: string
   year: number
   featured?: boolean
