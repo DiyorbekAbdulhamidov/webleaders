@@ -14,6 +14,8 @@ export interface Project {
   featured?: boolean
 }
 
+// 
+
 export const staticProjects: Project[] = [
   // {
   //   slug: 'biohill',
