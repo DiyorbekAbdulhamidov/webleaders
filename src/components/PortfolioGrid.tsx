@@ -1,7 +1,6 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
 import { Grid3X3 } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { useLanguage } from '@/context/LanguageContext'
@@ -40,36 +39,22 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
 
   return (
     <section className="relative pt-36 pb-24 bg-black text-white overflow-hidden min-h-screen">
-      <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-green-900/[0.07] rounded-full blur-[160px] pointer-events-none" />
+      <div className="wl-glow-faint absolute top-0 right-1/4 w-[600px] h-[600px] max-w-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* Sarlavha */}
         <div className="text-center mb-14 max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-5"
-          >
+          <div className="wl-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-[0.2em] mb-5">
             <Grid3X3 size={13} />
             {t.projects.badge}
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight mb-5"
-          >
+          </div>
+          <h1 className="wl-reveal wl-delay-1 text-4xl md:text-6xl font-bold tracking-tight mb-5">
             {t.projects.title} <span className="text-green-500">{t.projects.subtitle}</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-400 text-base md:text-lg font-light"
-          >
+          </h1>
+          <p className="wl-reveal wl-delay-2 text-gray-400 text-base md:text-lg font-light">
             {t.projects.desc}
-          </motion.p>
+          </p>
         </div>
 
         {/* Filtrlar */}

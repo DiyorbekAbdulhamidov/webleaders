@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import Reveal from '@/components/Reveal'
 import { ArrowUpRight, Globe } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { useLanguage } from '@/context/LanguageContext'
@@ -11,6 +11,8 @@ export default function ProjectCard({ project, index = 0 }: { project: Project; 
   const { t, language } = useLanguage()
   const mainImage = project.images?.[0]
 
+  // Spotlight pozitsiyasi — React state emas, to'g'ridan-to'g'ri CSS
+  // o'zgaruvchisiga yoziladi, ya'ni render qaytadan ishlamaydi.
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget
     const rect = card.getBoundingClientRect()
@@ -19,11 +21,8 @@ export default function ProjectCard({ project, index = 0 }: { project: Project; 
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: (index % 6) * 0.05 }}
+    <Reveal
+      delay={(index % 6) * 0.05}
       onMouseMove={handleMouseMove}
       className="group relative bg-white/[0.01] rounded-2xl border border-white/[0.08] overflow-hidden transition-all duration-500 hover:border-green-500/30 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-20px_rgba(34,197,94,0.15)]"
     >
@@ -103,6 +102,6 @@ export default function ProjectCard({ project, index = 0 }: { project: Project; 
           {t.projects.btnView}
         </a>
       )}
-    </motion.div>
+    </Reveal>
   )
 }

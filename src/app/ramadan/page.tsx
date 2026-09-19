@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat, Inter } from "next/font/google";
 import { ArrowRight, ShieldCheck, TrendingUp, Users, LayoutTemplate, Database } from "lucide-react";
 
@@ -54,8 +53,8 @@ export default function EduCenterUniversalPremium() {
 
       {/* 1. MUKAMMAL ATMOSFERA (Mobilga moslashtirilgan blur) */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[5%] left-[5%] md:left-[20%] w-[250px] md:w-[500px] h-[250px] md:h-[500px] bg-[#00ff7f]/10 blur-[80px] md:blur-[150px] rounded-full mix-blend-screen" />
-        <div className="absolute bottom-[10%] right-[0%] md:right-[10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#d4af37]/5 blur-[80px] md:blur-[150px] rounded-full mix-blend-screen" />
+        <div className="wl-glow absolute top-[5%] left-[5%] md:left-[20%] w-[250px] md:w-[500px] h-[250px] md:h-[500px] mix-blend-screen" />
+        <div className="wl-glow-gold absolute bottom-[10%] right-[0%] md:right-[10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] mix-blend-screen" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] mix-blend-overlay" />
       </div>
 
@@ -73,10 +72,7 @@ export default function EduCenterUniversalPremium() {
       {/* 3. HERO SECTION - Mobil uchun shriftlar va paddinglar to'g'rilandi */}
       <section className="relative z-10 flex flex-col xl:flex-row items-center justify-between px-4 md:px-12 max-w-[1600px] mx-auto gap-10 md:gap-16 pt-4 pb-16 md:pb-20">
 
-        <motion.div
-          initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full xl:w-1/2 flex flex-col items-start z-20"
-        >
+        <div className="wl-reveal w-full xl:w-1/2 flex flex-col items-start z-20">
           <div className="px-3 py-1.5 md:px-4 md:py-2 border border-[#d4af37]/30 bg-[#d4af37]/5 rounded-full backdrop-blur-md mb-6 md:mb-8 inline-flex items-center gap-2 md:gap-3">
             <span className="text-[#d4af37] text-base md:text-xl">🌙</span>
             <span className={`text-[#d4af37] font-bold text-[9px] md:text-sm tracking-[0.1em] md:tracking-[0.2em] uppercase ${montserrat.className}`}>O‘quv Markazlari Uchun Maxsus</span>
@@ -96,13 +92,10 @@ export default function EduCenterUniversalPremium() {
             <span className={`relative z-10 uppercase tracking-wider ${montserrat.className}`}>Loyiha Muhokamasi</span>
             <ArrowRight className="relative z-10 group-hover:translate-x-2 transition-transform w-5 h-5 md:w-6 md:h-6" />
           </a>
-        </motion.div>
+        </div>
 
         {/* 3D SHISHA VA NEON BLOK (Mobil ekranga sig'dirish) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-full xl:w-1/2 max-w-lg mx-auto relative perspective-[1200px] z-10 mt-8 xl:mt-0"
-        >
+        <div className="wl-reveal wl-delay-2 w-full xl:w-1/2 max-w-lg mx-auto relative perspective-[1200px] z-10 mt-8 xl:mt-0">
           <div className="absolute -inset-2 md:-inset-4 bg-[#00ff7f] opacity-[0.15] md:opacity-20 blur-[40px] md:blur-[60px] rounded-[2rem] md:rounded-[3rem] animate-pulse" />
 
           <div className="relative bg-[#050505]/80 backdrop-blur-3xl border border-[#00ff7f]/40 rounded-[1.5rem] md:rounded-[2.5rem] p-6 sm:p-10 md:p-14 shadow-[inset_0_0_40px_rgba(0,255,127,0.1),0_20px_40px_rgba(0,0,0,0.8)] flex flex-col items-center text-center transform-gpu md:rotate-y-[-8deg] md:rotate-x-[5deg]">
@@ -128,7 +121,7 @@ export default function EduCenterUniversalPremium() {
               Faqat 30 ta joy
             </p>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* 4. XIZMATLAR KO'LAMI (Mobilda Grid ustma-ust tushadi) */}
@@ -196,7 +189,7 @@ export default function EduCenterUniversalPremium() {
 
             <div className="w-full lg:w-1/2 relative min-h-[250px] sm:min-h-[350px] md:min-h-full bg-[#0a0a0a] border-b lg:border-t-0 lg:border-l border-[#222] overflow-hidden p-0 md:p-8 flex items-center justify-center order-1 lg:order-2">
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10 opacity-50 md:hidden" />
-              <Image src="/discounts/hilal-edu.png" alt="Hilal Edu Mockup" fill className="object-cover md:object-contain opacity-80 md:opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 md:grayscale group-hover:grayscale-0" />
+              <Image src="/discounts/hilal-edu.webp" alt="Hilal Edu Mockup" fill className="object-cover md:object-contain opacity-80 md:opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 md:grayscale group-hover:grayscale-0" />
             </div>
           </div>
         </div>
@@ -204,7 +197,7 @@ export default function EduCenterUniversalPremium() {
 
       {/* 6. JIDDIY FORMA - Telefon uchun klaviatura chiqishiga moslashgan */}
       <section id="booking" className="relative z-10 py-20 md:py-32 px-4 md:px-6 bg-[#020202] border-t border-[#111] overflow-hidden">
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-[#00ff7f]/5 blur-[100px] md:blur-[200px] rounded-full pointer-events-none" />
+        <div className="wl-glow-faint absolute top-1/2 right-0 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[800px] max-w-full pointer-events-none" />
 
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
 
@@ -254,18 +247,18 @@ export default function EduCenterUniversalPremium() {
                   {!status && <ArrowRight size={20} className="md:w-6 md:h-6" />}
                 </button>
 
-                <AnimatePresence>
+                <>
                   {status === "success" && (
-                    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-[#00ff7f] font-bold text-center mt-4 md:mt-6 text-[10px] md:text-sm bg-[#00ff7f]/10 py-3 md:py-4 rounded-xl border border-[#00ff7f]/20 uppercase tracking-widest">
+                    <p className="animate-fade-in-up text-[#00ff7f] font-bold text-center mt-4 md:mt-6 text-[10px] md:text-sm bg-[#00ff7f]/10 py-3 md:py-4 rounded-xl border border-[#00ff7f]/20 uppercase tracking-widest">
                       Murojaat qabul qilindi.
-                    </motion.p>
+                    </p>
                   )}
                   {status === "error" && (
-                    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 font-bold text-center mt-4 md:mt-6 text-[10px] md:text-sm bg-red-500/10 py-3 md:py-4 rounded-xl border border-red-500/20 uppercase tracking-widest">
+                    <p className="animate-fade-in-up text-red-500 font-bold text-center mt-4 md:mt-6 text-[10px] md:text-sm bg-red-500/10 py-3 md:py-4 rounded-xl border border-red-500/20 uppercase tracking-widest">
                       Tizimda xatolik yuz berdi.
-                    </motion.p>
+                    </p>
                   )}
-                </AnimatePresence>
+                </>
               </form>
             </div>
           </div>

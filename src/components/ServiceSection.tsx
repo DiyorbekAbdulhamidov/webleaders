@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { motion, Variants } from 'framer-motion'
+import Reveal from '@/components/Reveal'
 import {
   MonitorSmartphone,
   Smartphone,
@@ -33,28 +33,6 @@ export default function ServicesSection({ asPage = false }: { asPage?: boolean }
   const HeadingTag = asPage ? 'h1' : 'h2'
   const enable3D = use3DEnabled()
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const cardVariants: Variants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  }
-
   return (
     <section id="services" className={`relative ${asPage ? 'pt-36 pb-24' : 'py-24'} bg-black text-white overflow-hidden`}>
 
@@ -63,59 +41,41 @@ export default function ServicesSection({ asPage = false }: { asPage?: boolean }
 
       {/* Cyber overlay elements */}
       <div className="wl-noise absolute inset-0 opacity-5 pointer-events-none z-[1]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-gradient-to-tr from-green-500/5 via-transparent to-transparent rounded-full blur-[120px] pointer-events-none z-[1]" />
+      <div className="wl-glow-faint absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] max-w-full pointer-events-none z-[1]" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* Header */}
         <div className="text-center mb-20 max-w-3xl mx-auto">
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+          <Reveal
+            as="span"
+            variant="zoom"
             className="px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-sm font-semibold uppercase tracking-wider mb-4 inline-block backdrop-blur-md"
           >
             {t.services.badge}
-          </motion.span>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          </Reveal>
+          <Reveal>
             <HeadingTag className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 mb-6 tracking-tight">
               {t.services.title} <br className="hidden md:block" />
               <span className="text-green-500">{t.services.subtitle}</span>
             </HeadingTag>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-400 text-lg font-light"
-          >
+          </Reveal>
+          <Reveal as="p" delay={0.1} className="text-gray-400 text-lg font-light">
             {t.services.desc}
-          </motion.p>
+          </Reveal>
         </div>
 
         {/* Services Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {t.services.list.map((service, index) => {
             const Icon = icons[index]
             return (
-              <motion.div
+              <Reveal
                 key={index}
-                variants={cardVariants}
+                delay={index * 0.08}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="group relative bg-white/[0.01] hover:bg-white/[0.04] backdrop-blur-md border border-white/[0.06] hover:border-green-500/40 rounded-3xl p-8 transition-all duration-500 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-                style={{ transformStyle: 'preserve-3d' }}
+                className="group relative bg-white/[0.01] hover:bg-white/[0.04] backdrop-blur-md border border-white/[0.06] hover:border-green-500/40 rounded-3xl p-8 transition-colors duration-500 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
               >
                 {/* Micro Glow Effect inside the card */}
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 via-transparent to-transparent group-hover:from-green-500/[0.08] transition-all duration-700 pointer-events-none" />
@@ -143,10 +103,10 @@ export default function ServicesSection({ asPage = false }: { asPage?: boolean }
 
                 {/* Neon Bottom Gauge line */}
                 <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-500 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-              </motion.div>
+              </Reveal>
             )
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

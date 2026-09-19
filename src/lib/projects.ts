@@ -1,11 +1,16 @@
+import { cache } from 'react'
 import { staticProjects, type Project, type LocalizedText } from '@/data/projects'
 import { readPortfolio } from './portfolio-store'
 
 /**
  * Statik (repo ichidagi) va dinamik (Telegram bot orqali qo'shilgan)
  * loyihalarni yagona ro'yxatga birlashtiradi. Dinamik loyihalar oldinda turadi.
+ *
+ * `cache()` bilan o'ralgan: bitta sahifa renderida bir necha marta chaqirilsa
+ * ham (masalan /portfolio/[slug] da generateMetadata + sahifa + o'xshash
+ * loyihalar ro'yxati) fayl/GitHub o'qish faqat bir marta bajariladi.
  */
-export async function getAllProjects(): Promise<Project[]> {
+export const getAllProjects = cache(async (): Promise<Project[]> => {
   try {
     const dynamic = await readPortfolio()
     const dynamicProjects = (dynamic.projects || []).map(normalizeProject)
@@ -16,7 +21,7 @@ export async function getAllProjects(): Promise<Project[]> {
   } catch {
     return staticProjects
   }
-}
+})
 
 export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
   const all = await getAllProjects()

@@ -3,6 +3,7 @@
 :root {
   --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
   --font-display: var(--font-grotesk), var(--font-inter), 'Inter', sans-serif;
+  --wl-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
@@ -29,51 +30,104 @@ h1, h2, h3 {
   border-radius: 4px;
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ==========================================================================
+   1. DEKORATIV YORUG'LIK DOG'LARI
+   --------------------------------------------------------------------------
+   Ilgari bular `bg-green-500/10 rounded-full blur-[150px]` edi. `filter: blur()`
+   brauzerni har bir kadrda alohida qatlam chizib, uni 150px radiusda yoyishga
+   majburlaydi — mobil GPU uchun eng qimmat operatsiyalardan biri.
+   radial-gradient ko'rinishi deyarli bir xil, lekin oddiy fon — narxi nol.
+   ========================================================================== */
+.wl-glow {
+  background-image: radial-gradient(closest-side, rgba(34, 197, 94, 0.10), transparent);
 }
-.animate-fade-in-up {
-  animation: fade-in-up 0.4s ease-out;
+.wl-glow-soft {
+  background-image: radial-gradient(closest-side, rgba(34, 197, 94, 0.06), transparent);
+}
+.wl-glow-faint {
+  background-image: radial-gradient(closest-side, rgba(34, 197, 94, 0.035), transparent);
+}
+.wl-glow-deep {
+  background-image: radial-gradient(closest-side, rgba(20, 83, 45, 0.16), transparent);
+}
+.wl-glow-white {
+  background-image: radial-gradient(closest-side, rgba(255, 255, 255, 0.05), transparent);
+}
+.wl-glow-gold {
+  background-image: radial-gradient(closest-side, rgba(212, 175, 55, 0.10), transparent);
 }
 
+/* ==========================================================================
+   2. SCROLL-REVEAL — framer-motion o'rniga
+   --------------------------------------------------------------------------
+   Butun sayt bo'ylab `whileInView` animatsiyalari framer-motion'ga (41 KB gz)
+   bog'liq edi. Endi bitta umumiy IntersectionObserver (src/components/Reveal.tsx)
+   elementga `data-shown` qo'yadi, animatsiyani esa CSS bajaradi.
+
+   `.wl-js` klassi <html> ga inline skript orqali qo'yiladi. Ya'ni JS
+   ishlamasa element yashirilmaydi ham — sahifa hech qachon qora qolmaydi.
+   ========================================================================== */
 /*
-  Hero animatsiyasi — sof CSS.
-  Muhim: birinchi ekran JS'ga bog'liq bo'lmasin. JS sekin kelsa ham
-  (mobil internet) matn darhol chiqadi, sahifa qora bo'lib qolmaydi.
-
-  Ataylab `opacity` animatsiya qilinmaydi — faqat siljish. Sahifa fon
-  rejimida yuklansa (Telegram/Instagram ichki brauzeri) animatsiya soati
-  yurmaydi; opacity ishlatilsa kontent 0 da qotib qolar edi.
+  Ataylab `transition` emas, `animation` ishlatilgan: transition ishlatilsa
+  u Tailwind'ning `transition-colors` / `hover:` effektlarini bosib ketardi.
+  `animation-fill-mode: backwards` — animatsiya tugagach element o'z
+  stillariga qaytadi, ya'ni `hover:-translate-y-1.5` kabi effektlar ishlaydi.
 */
+.wl-js .wl-in {
+  opacity: 0;
+}
+.wl-js .wl-in[data-shown] {
+  opacity: 1;
+  animation: wl-in 0.6s var(--wl-ease) var(--wl-delay, 0s) backwards;
+}
+.wl-js .wl-in-left[data-shown] {
+  animation-name: wl-in-left;
+}
+.wl-js .wl-in-right[data-shown] {
+  animation-name: wl-in-right;
+}
+.wl-js .wl-in-zoom[data-shown] {
+  animation-name: wl-in-zoom;
+}
+
+@keyframes wl-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wl-in-left {
+  from { opacity: 0; transform: translateX(-28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wl-in-right {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wl-in-zoom {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   3. BIRINCHI EKRAN ANIMATSIYASI — sof CSS, JS kutmaydi
+   --------------------------------------------------------------------------
+   Ataylab `opacity` animatsiya qilinmaydi — faqat siljish. Sahifa fon
+   rejimida yuklansa (Telegram/Instagram ichki brauzeri) animatsiya soati
+   yurmaydi; opacity ishlatilsa kontent 0 da qotib qolar edi.
+   ========================================================================== */
 @keyframes wl-reveal {
-  from {
-    transform: translateY(22px);
-  }
-  to {
-    transform: none;
-  }
+  from { transform: translateY(22px); }
+  to { transform: none; }
 }
 .wl-reveal {
-  animation: wl-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: wl-reveal 0.7s var(--wl-ease) both;
 }
-/* Header uchun — yuqoridan tushadi */
+
 @keyframes wl-reveal-down {
-  from {
-    transform: translateY(-14px);
-  }
-  to {
-    transform: none;
-  }
+  from { transform: translateY(-14px); }
+  to { transform: none; }
 }
 .wl-reveal-down {
-  animation: wl-reveal-down 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: wl-reveal-down 0.8s var(--wl-ease) both;
 }
 
 .wl-delay-1 { animation-delay: 0.12s; }
@@ -81,12 +135,113 @@ h1, h2, h3 {
 .wl-delay-3 { animation-delay: 0.36s; }
 .wl-delay-4 { animation-delay: 0.48s; }
 
-/* Grain tekstura — tashqi domenga (vercel.app) so'rov yubormaydi */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out;
+}
+
+/* ==========================================================================
+   4. OCHILIB-YOPILADIGAN BLOKLAR — AnimatePresence o'rniga
+   ========================================================================== */
+
+/* Akkordeon: height:auto ni CSS bilan animatsiya qilish uchun grid hiylasi */
+.wl-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s var(--wl-ease);
+}
+.wl-collapse > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.wl-collapse[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+/* Umumiy "paydo bo'lish" paneli (dropdown, modal, suzuvchi menyu) */
+.wl-pop {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity 0.25s var(--wl-ease),
+    transform 0.25s var(--wl-ease),
+    visibility 0s linear 0.25s;
+}
+.wl-pop[data-open='true'] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  visibility: visible;
+  transition:
+    opacity 0.25s var(--wl-ease),
+    transform 0.25s var(--wl-ease),
+    visibility 0s;
+}
+
+/* Mobil to'liq ekran menyusi — yuqoridan tushadi */
+.wl-sheet {
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition:
+    transform 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0s linear 0.5s;
+}
+.wl-sheet[data-open='true'] {
+  transform: none;
+  visibility: visible;
+  transition:
+    transform 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0s;
+}
+/* Menyu ichidagi bandlar navbat bilan chiqadi */
+.wl-sheet .wl-stagger {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.4s var(--wl-ease),
+    transform 0.4s var(--wl-ease);
+}
+.wl-sheet[data-open='true'] .wl-stagger {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.15s + var(--wl-i, 0) * 0.06s);
+}
+
+/* Sichqoncha ortidan egiladigan karta (MyChooseUs).
+   Burchak JS'dan CSS o'zgaruvchisiga yoziladi, silliqlashni brauzer qiladi. */
+.wl-tilt {
+  perspective: 1000px;
+}
+.wl-tilt-inner {
+  transform: rotateX(var(--wl-rx, 0deg)) rotateY(var(--wl-ry, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    transform 0.35s ease-out,
+    background-color 0.5s var(--wl-ease),
+    border-color 0.5s var(--wl-ease);
+}
+/* Sensorli ekranlarda egilish mantiqsiz — o'chiramiz */
+@media (hover: none) {
+  .wl-tilt-inner {
+    transform: none;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+}
+
+/* ==========================================================================
+   5. BOSHQA
+   ========================================================================== */
+
+/* Grain tekstura — tashqi domenga so'rov yubormaydi */
 .wl-noise {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Marquee (texnologiyalar lentasi) */
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -102,26 +257,45 @@ h1, h2, h3 {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.04);
 }
-
 ::-webkit-scrollbar-thumb {
   background-color: rgba(34, 197, 94, 0.35);
   border-radius: 9999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(34, 197, 94, 0.6);
 }
 
-/* Scrollbar'siz gorizontal scroll konteynerlar uchun */
 .scrollbar-none {
   scrollbar-width: none;
 }
 .scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+/* ==========================================================================
+   6. MOBIL RENDER BUDJETI
+   --------------------------------------------------------------------------
+   Saytda 50 dan ortiq element `backdrop-filter: blur()` ishlatardi. Har biri
+   scroll paytida orqasidagi fonni qayta o'qib, qayta xiralashtiradi — o'rta
+   darajali Android telefonlarda kadr chastotasi 10-15 fps ga tushadi.
+   Desktopda effekt qoladi, mobilda o'chiriladi: fon ranglari allaqachon
+   yarim shaffof, shuning uchun ko'rinish deyarli o'zgarmaydi.
+   ========================================================================== */
+@media (max-width: 1023px) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Blur o'chgach shaffof qolib ketadigan joylarga to'qroq fon beramiz */
+  .wl-solid-mobile {
+    background-color: rgba(5, 5, 5, 0.96) !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -136,5 +310,16 @@ h1, h2, h3 {
   .wl-reveal-down {
     animation: none;
     transform: none;
+  }
+  .wl-js .wl-in,
+  .wl-js .wl-in[data-shown] {
+    opacity: 1;
+    animation: none;
+  }
+  .wl-collapse,
+  .wl-pop,
+  .wl-sheet,
+  .wl-sheet .wl-stagger {
+    transition-duration: 0.01ms;
   }
 }

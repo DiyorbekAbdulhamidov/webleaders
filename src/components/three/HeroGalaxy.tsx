@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { createRenderer } from './createRenderer'
+import { createRenderer, startRenderLoop } from './createRenderer'
 
 export default function HeroGalaxy() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -74,27 +74,18 @@ export default function HeroGalaxy() {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    const clock = new THREE.Clock()
-    let animationFrameId: number
-    let running = true
-
-    const animate = () => {
-      if (!running) return
-      const elapsedTime = clock.getElapsedTime()
+    let stopLoop = startRenderLoop(container, elapsedTime => {
       points.rotation.y = elapsedTime * 0.03
       points.rotation.x = 0.9 + (mouseY * 0.2)
       points.rotation.z = mouseX * 0.2
-
       renderer.render(scene, camera)
-      animationFrameId = requestAnimationFrame(animate)
-    }
-    animate()
+    })
 
     // Brauzer GPU kontekstini tortib olsa — sokin to'xtaymiz, xato tashlamaymiz
     const handleContextLost = (e: Event) => {
       e.preventDefault()
-      running = false
-      cancelAnimationFrame(animationFrameId)
+      stopLoop()
+      stopLoop = () => {}
     }
     renderer.domElement.addEventListener('webglcontextlost', handleContextLost)
 
@@ -106,8 +97,7 @@ export default function HeroGalaxy() {
     window.addEventListener('resize', handleResize)
 
     return () => {
-      running = false
-      cancelAnimationFrame(animationFrameId)
+      stopLoop()
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('webglcontextlost', handleContextLost)

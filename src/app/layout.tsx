@@ -4,6 +4,7 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import FloatingContact from '@/components/FloatingContact'
+import Toaster from '@/components/Toaster'
 import { Analytics } from '@vercel/analytics/react'
 import { LanguageProvider } from '@/context/LanguageContext'
 
@@ -163,13 +164,19 @@ export default function RootLayout({
       <body className={`${inter.className} bg-[#050505] text-white antialiased selection:bg-green-500 selection:text-black`}>
 
         {/*
-          JS ishlamasa (o'chirilgan yoki bloklangan) framer-motion'ning
-          inline `opacity:0` stillari kontentni butunlay yashirib qo'yadi —
-          sahifa qora bo'lib qoladi. Shu holatda hammasini ko'rsatamiz.
+          Scroll-reveal animatsiyalari faqat `.wl-js` bo'lganda kontentni
+          yashiradi (globals.css). Ya'ni JS o'chirilgan yoki bloklangan bo'lsa
+          hech narsa yashirilmaydi — sahifa hech qachon qora qolmaydi.
+
+          Ikkinchi himoya: 3 soniyada hydration bo'lmasa klass o'zi olib
+          tashlanadi. Sekin mobil internetda ham matn ko'rinib turadi.
         */}
-        <noscript>
-          <style>{`[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}`}</style>
-        </noscript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "var e=document.documentElement;e.classList.add('wl-js');setTimeout(function(){if(!e.hasAttribute('data-wl-ready'))e.classList.remove('wl-js')},3000)"
+          }}
+        />
 
         <script
           type="application/ld+json"
@@ -187,6 +194,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <FloatingContact />
+          <Toaster />
           <Analytics />
         </LanguageProvider>
 

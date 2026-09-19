@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { createRenderer } from './createRenderer'
+import { createRenderer, startRenderLoop } from './createRenderer'
 
 interface EngineProps {
   hoveredIndex: number | null
@@ -73,14 +73,8 @@ export default function QuantumCore({ hoveredIndex, globalMouse }: EngineProps) 
     const starField = new THREE.Points(partGeom, partMat)
     scene.add(starField)
 
-    const clock = new THREE.Clock()
-    let animationId: number
-    let running = true
-
     // --- ANIMATION INTERACTIVE LOOP ---
-    const animate = () => {
-      if (!running) return
-      const elapsed = clock.getElapsedTime()
+    let stopLoop = startRenderLoop(container, elapsed => {
       const { hoveredIndex: currentHover, globalMouse: currentMouse } = stateRef.current
 
       // Camera Parallax (Sichqoncha harakatiga qarab butun fazoni 3D burish)
@@ -135,14 +129,12 @@ export default function QuantumCore({ hoveredIndex, globalMouse }: EngineProps) 
       })
 
       renderer.render(scene, camera)
-      animationId = requestAnimationFrame(animate)
-    }
-    animate()
+    })
 
     const handleContextLost = (e: Event) => {
       e.preventDefault()
-      running = false
-      cancelAnimationFrame(animationId)
+      stopLoop()
+      stopLoop = () => {}
     }
     renderer.domElement.addEventListener('webglcontextlost', handleContextLost)
 
@@ -155,8 +147,7 @@ export default function QuantumCore({ hoveredIndex, globalMouse }: EngineProps) 
     window.addEventListener('resize', handleResize)
 
     return () => {
-      running = false
-      cancelAnimationFrame(animationId)
+      stopLoop()
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('webglcontextlost', handleContextLost)
       if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement)

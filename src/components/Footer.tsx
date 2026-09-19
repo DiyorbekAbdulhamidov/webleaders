@@ -29,7 +29,7 @@ export default function Footer() {
   return (
     <footer className="relative bg-black text-white pt-20 pb-10 border-t border-white/[0.06] overflow-hidden">
 
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-green-950/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="wl-glow-deep absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] max-w-full pointer-events-none opacity-60" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 

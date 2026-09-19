@@ -14,7 +14,6 @@ export interface Project {
   featured?: boolean
 }
 
-// 
 
 export const staticProjects: Project[] = [
   // {
@@ -36,7 +35,7 @@ export const staticProjects: Project[] = [
   //     EN: 'Hilal Edu is a modern educational platform for a professional Turkish language center in Tashkent. A course catalog, online enrollment, level tests and SEO-optimized content architecture multiplied the center\'s organic traffic. Built with Next.js, it scores high on Google PageSpeed.'
   //   },
   //   tech: ['Next.js', 'SEO', 'Shadcn UI', 'Tailwind CSS'],
-  //   images: ['/projects/biohill.png', '/projects/biohill2.png', '/projects/biohill4.png', '/projects/biohill4.png', '/projects/biohill5.png'],
+  //   images: ['/projects/biohill.webp', '/projects/biohill2.webp', '/projects/biohill4.webp', '/projects/biohill4.webp', '/projects/biohill5.webp'],
   //   url: 'https://biohill.uz',
   //   year: 2026,
   //   featured: true
@@ -60,7 +59,7 @@ export const staticProjects: Project[] = [
       EN: 'Hilal Edu is a modern educational platform for a professional Turkish language center in Tashkent. A course catalog, online enrollment, level tests and SEO-optimized content architecture multiplied the center\'s organic traffic. Built with Next.js, it scores high on Google PageSpeed.'
     },
     tech: ['Next.js', 'SEO', 'Shadcn UI', 'Tailwind CSS'],
-    images: ['/projects/hilal1.png', '/projects/hilal2.png', '/projects/hilal3.png', '/projects/hilal4.png'],
+    images: ['/projects/hilal1.webp', '/projects/hilal2.webp', '/projects/hilal3.webp', '/projects/hilal4.webp'],
     url: 'https://hilaledu.uz',
     year: 2026,
     featured: true
@@ -84,7 +83,7 @@ export const staticProjects: Project[] = [
       EN: 'ToyBron is an AI ecosystem digitalizing the banquet hall and event services market. Booking, pricing, financial reporting and client management are automated within a single Super-CRM. An AI recommendation engine helps clients pick the right venue while giving business owners occupancy forecasts and revenue analytics.'
     },
     tech: ['Next.js 16', 'AI / ML', 'Big Data', 'PostgreSQL', 'Telegram Bot'],
-    images: ['/projects/toybron1.png', '/projects/toybron2.png', '/projects/toybron3.png', '/projects/toybron4.png'],
+    images: ['/projects/toybron1.webp', '/projects/toybron2.webp', '/projects/toybron3.webp', '/projects/toybron4.webp'],
     url: 'https://toybron.vercel.app/',
     year: 2026,
     featured: true
@@ -108,7 +107,7 @@ export const staticProjects: Project[] = [
       EN: 'Lutsente is the corporate website of a Wi-Fi marketing and analytics company. Product presentation, trilingual content management and modern animations strengthen the brand\'s digital authority. Smooth Framer Motion transitions and a premium UI guide users toward ordering the service.'
     },
     tech: ['Next.js', 'Framer Motion', 'Tailwind CSS', 'i18n'],
-    images: ['/projects/lutsente1.png', '/projects/lutsente2.png', '/projects/lutsente3.png', '/projects/lutsente4.png'],
+    images: ['/projects/lutsente1.webp', '/projects/lutsente2.webp', '/projects/lutsente3.webp', '/projects/lutsente4.webp'],
     url: 'https://lutsente.uz',
     year: 2026,
     featured: true
@@ -132,7 +131,7 @@ export const staticProjects: Project[] = [
       EN: 'Adizone is the digital platform of a professional Turkish language and university-prep center in Tashkent. Alongside course, teacher and results presentation, a CRM and Telegram bot integration handle internal management. The application flow is automated, significantly reducing administrative load.'
     },
     tech: ['React', 'CRM', 'Telegram Bot', 'Node.js'],
-    images: ['/projects/adizone1.png', '/projects/adizone2.png', '/projects/adizone3.png', '/projects/adizone4.png'],
+    images: ['/projects/adizone1.webp', '/projects/adizone2.webp', '/projects/adizone3.webp', '/projects/adizone4.webp'],
     url: 'https://adizone.uz',
     year: 2026,
     featured: true
@@ -156,7 +155,7 @@ export const staticProjects: Project[] = [
       EN: 'Kochirish.uz is a high-converting landing page for a professional moving and storage company. A multi-variable tariff calculator instantly quotes prices, and orders reach the operator in Telegram in real time. Mobile-first design and local SEO took the site to top search positions.'
     },
     tech: ['Landing Page', 'SEO', 'Mobile First', 'Telegram API'],
-    images: ['/projects/move1.png', '/projects/move2.png', '/projects/move3.png', '/projects/move4.png'],
+    images: ['/projects/move1.webp', '/projects/move2.webp', '/projects/move3.webp', '/projects/move4.png'],
     url: 'https://kochirish.uz',
     year: 2025,
     featured: true
@@ -180,7 +179,7 @@ export const staticProjects: Project[] = [
       EN: 'Zarnigor Wedding is the digital platform of a premium wedding dress rental business. Catalog, booking calendar and financial ledgering live in a single system. Each item\'s availability is tracked in real time, the client flow is managed through the CRM, and the owner has full control from a mobile device.'
     },
     tech: ['Vue.js', 'Laravel', 'MySQL', 'CRM'],
-    images: ['/projects/zarnigor1.png', '/projects/zarnigor2.png', '/projects/zarnigor3.png', '/projects/zarnigor4.png'],
+    images: ['/projects/zarnigor1.png', '/projects/zarnigor2.png', '/projects/zarnigor3.webp', '/projects/zarnigor4.webp'],
     url: 'https://wedding-homes-crm.vercel.app/',
     year: 2025,
     featured: true
@@ -204,7 +203,7 @@ export const staticProjects: Project[] = [
       EN: 'GoGermany is the digital platform of a consulting agency for education and employment in Germany. Featuring service presentations, application forms and success stories, the site follows European visual standards. Conversion-focused UX effectively leads clients to book a consultation.'
     },
     tech: ['React', 'Tailwind CSS', 'UX/UI'],
-    images: ['/projects/ger(1).png', '/projects/ger(2).png', '/projects/ger(3).png', '/projects/ger(4).png'],
+    images: ['/projects/ger(1).webp', '/projects/ger(2).webp', '/projects/ger(3).png', '/projects/ger(4).png'],
     url: 'https://gogermany-nu.vercel.app/',
     year: 2025,
 
@@ -228,7 +227,7 @@ export const staticProjects: Project[] = [
       EN: 'Jetour Uzbekistan is a promo platform for a premium car brand. Three.js 3D visualization and GSAP animations convey vehicle dynamics on screen. With a model catalog, tech specs and a test-drive form, it works as a complete marketing tool.'
     },
     tech: ['Next.js', 'Three.js', 'GSAP'],
-    images: ['/projects/jetour1.png', '/projects/jetour2.png', '/projects/jetour3.png', '/projects/jetour4.png'],
+    images: ['/projects/jetour1.webp', '/projects/jetour2.webp', '/projects/jetour3.webp', '/projects/jetour4.webp'],
     url: 'https://jetour-app.vercel.app/',
     year: 2023
   },
@@ -251,7 +250,7 @@ export const staticProjects: Project[] = [
       EN: 'Dono-Dance is a digital learning platform for a dance school. Students track schedules and results, parents track payments and attendance through personal portals. For administration, group, teacher and finance management is unified in a single panel.'
     },
     tech: ['WordPress', 'PHP', 'Custom Theme'],
-    images: ['/projects/dance1.png', '/projects/dance2.png', '/projects/dance3.png', '/projects/dance4.png'],
+    images: ['/projects/dance1.webp', '/projects/dance2.webp', '/projects/dance3.webp', '/projects/dance4.webp'],
     url: 'https://webleaders-project-dance.vercel.app/',
     year: 2023
   },
@@ -274,7 +273,7 @@ export const staticProjects: Project[] = [
       EN: 'Telmee Market is a high-speed marketplace combining B2C and P2P commerce models. Built on the MERN stack and Socket.io, it provides real-time chat, order tracking and seller dashboards. The product catalog runs on a high-load architecture.'
     },
     tech: ['MERN Stack', 'Socket.io', 'Real-time'],
-    images: ['/projects/telmee1.png', '/projects/telmee2.png', '/projects/telmee3.png', '/projects/telmee4.png'],
+    images: ['/projects/telmee1.webp', '/projects/telmee2.webp', '/projects/telmee3.webp', '/projects/telmee4.webp'],
     url: 'https://telmee.uz/',
     year: 2022
   }

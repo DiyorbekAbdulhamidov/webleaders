@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import Reveal from '@/components/Reveal'
 import { ArrowLeft, ExternalLink, Layers, Calendar, ArrowUpRight, Globe } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { useLanguage } from '@/context/LanguageContext'
@@ -13,7 +13,7 @@ export default function ProjectDetail({ project, others }: { project: Project; o
 
   return (
     <article className="relative pt-32 pb-24 bg-black text-white overflow-hidden min-h-screen">
-      <div className="absolute top-0 left-1/3 w-[600px] h-[500px] bg-green-900/[0.07] rounded-full blur-[160px] pointer-events-none" />
+      <div className="wl-glow-faint absolute top-0 left-1/3 w-[600px] h-[500px] max-w-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
@@ -29,12 +29,7 @@ export default function ProjectDetail({ project, others }: { project: Project; o
         <div className="grid lg:grid-cols-5 gap-12 mb-20">
 
           {/* Chap — ma'lumot */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-2"
-          >
+          <div className="wl-reveal lg:col-span-2">
             <div className="lg:sticky lg:top-28">
               <div className="flex items-center gap-2 text-green-400 mb-4">
                 <Layers size={14} />
@@ -104,19 +99,16 @@ export default function ProjectDetail({ project, others }: { project: Project; o
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* O'ng — galereya */}
           <div className="lg:col-span-3">
             <h2 className="sr-only">{t.projects.detail.gallery}</h2>
             <div className="flex flex-col gap-5">
               {project.images.map((img, i) => (
-                <motion.div
+                <Reveal
                   key={img}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.6, delay: i * 0.05 }}
+                  delay={i * 0.05}
                   className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0d0d0d] group"
                 >
                   <Image
@@ -126,8 +118,9 @@ export default function ProjectDetail({ project, others }: { project: Project; o
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                     priority={i === 0}
+                    loading={i === 0 ? undefined : 'lazy'}
                   />
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           </div>

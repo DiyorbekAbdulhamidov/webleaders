@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import {
   ArrowRight,
   Users,
@@ -133,7 +132,7 @@ const CASES = [
   {
     name: 'Hilal Edu',
     tag: 'Ta’lim platformasi',
-    image: '/projects/hilal1.png',
+    image: '/projects/hilal1.webp',
     text:
       'Yuqori yuklamalarga chidamli, ta’lim jarayonlarini raqamlashtiruvchi kompleks platforma. Katta oqimdagi o‘quvchilar bilan ishlash uchun qurilgan arxitektura.',
     href: '/portfolio/hilaledu',
@@ -142,7 +141,7 @@ const CASES = [
   {
     name: 'Adizone Education',
     tag: 'ERP / CRM yechim',
-    image: '/projects/adizone1.png',
+    image: '/projects/adizone1.webp',
     text:
       'Ta’lim muassasalari zanjiri uchun ERP. Talabalar, guruhlar va to‘lovlar hisobi to‘liq avtomatlashtirilgan, Telegram bot bilan integratsiya qilingan.',
     href: '/portfolio/adizone',
@@ -221,17 +220,12 @@ export default function EduCenterLanding() {
       {/* ============================ HERO ============================ */}
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-20 left-[10%] h-[300px] w-[300px] rounded-full bg-emerald-500/10 blur-[120px] md:h-[520px] md:w-[520px]" />
-          <div className="absolute bottom-0 right-[5%] h-[260px] w-[260px] rounded-full bg-sky-500/10 blur-[120px] md:h-[460px] md:w-[460px]" />
+          <div className="wl-glow absolute -top-20 left-[10%] h-[300px] w-[300px] md:h-[520px] md:w-[520px]" />
+          <div className="wl-glow-white absolute bottom-0 right-[5%] h-[260px] w-[260px] md:h-[460px] md:w-[460px]" />
         </div>
 
         <div className="relative mx-auto max-w-[1280px] px-5 py-20 md:px-10 md:py-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
+          <div className="wl-reveal max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400 md:text-xs">
               O‘quv markazlari uchun maxsus yo‘nalish
             </span>
@@ -270,7 +264,7 @@ export default function EduCenterLanding() {
               <span className="font-bold text-white">Hilal Edu</span>
               <span className="font-bold text-white">Adizone Education</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -507,7 +501,7 @@ export default function EduCenterLanding() {
 
       {/* ============================ ARIZA ============================ */}
       <section id="ariza" className="relative overflow-hidden py-20 md:py-28">
-        <div className="pointer-events-none absolute right-0 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[140px]" />
+        <div className="wl-glow pointer-events-none absolute right-0 top-1/2 h-[400px] w-[400px] max-w-full -translate-y-1/2" />
 
         <div className="relative mx-auto grid max-w-[1280px] items-center gap-14 px-5 md:px-10 lg:grid-cols-2">
           <div>

@@ -19,10 +19,10 @@ export default function HeroVideo() {
       {enable3D ? (
         <HeroGalaxy />
       ) : (
-        /* Mobil uchun yengil gradient fon */
+        /* Mobil uchun yengil gradient fon — blur emas, radial-gradient */
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500/[0.07] rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-green-900/[0.1] rounded-full blur-[100px]" />
+          <div className="wl-glow-soft absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] max-w-full" />
+          <div className="wl-glow-deep absolute bottom-0 right-0 w-[300px] h-[300px]" />
         </div>
       )}
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { createRenderer } from './createRenderer'
+import { createRenderer, startRenderLoop } from './createRenderer'
 
 // --- 🌌 THREE.JS GRAVITY WELL CYBER-FABRIC ENGINE ---
 export default function GravityFabric({ mousePos }: { mousePos: { x: number; y: number; active: boolean } }) {
@@ -82,19 +82,13 @@ export default function GravityFabric({ mousePos }: { mousePos: { x: number; y: 
     const gridLines = new THREE.LineSegments(geometry, material)
     scene.add(gridLines)
 
-    const clock = new THREE.Clock()
-    let animationId: number
-    let running = true
-
     // Raycaster yordamida sichqoncha koordinatasini 3D fazoga o'tkazish
     const raycaster = new THREE.Raycaster()
     const planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0)
     const intersectPoint = new THREE.Vector3()
 
     // --- ANIMATION LOOP (Eynshteyn Gravitatsiya Matematikasi) ---
-    const animate = () => {
-      if (!running) return
-      const elapsed = clock.getElapsedTime()
+    let stopLoop = startRenderLoop(container, elapsed => {
       const currentMouse = mouseRef.current
 
       // Sichqoncha nuqtasini 3D fazodagi koordinataga o'girish
@@ -148,14 +142,12 @@ export default function GravityFabric({ mousePos }: { mousePos: { x: number; y: 
       gridLines.rotation.z = Math.sin(elapsed * 0.03) * 0.02
 
       renderer.render(scene, camera)
-      animationId = requestAnimationFrame(animate)
-    }
-    animate()
+    })
 
     const handleContextLost = (e: Event) => {
       e.preventDefault()
-      running = false
-      cancelAnimationFrame(animationId)
+      stopLoop()
+      stopLoop = () => {}
     }
     renderer.domElement.addEventListener('webglcontextlost', handleContextLost)
 
@@ -168,8 +160,7 @@ export default function GravityFabric({ mousePos }: { mousePos: { x: number; y: 
     window.addEventListener('resize', handleResize)
 
     return () => {
-      running = false
-      cancelAnimationFrame(animationId)
+      stopLoop()
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('webglcontextlost', handleContextLost)
       if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement)

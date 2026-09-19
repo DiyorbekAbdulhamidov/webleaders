@@ -4,11 +4,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { createPortal } from 'react-dom'
 import { Check, X, Loader2, Sparkles, Zap } from 'lucide-react'
-import { ToastContainer, toast } from 'react-toastify'
-import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from '@/components/Toaster'
+import Reveal from '@/components/Reveal'
 import { useLanguage } from '@/context/LanguageContext'
 import { use3DEnabled } from '@/hooks/use3DEnabled'
-import 'react-toastify/dist/ReactToastify.css'
+import { formatPhone, isPhoneComplete, PHONE_PREFIX, PHONE_MAX_LENGTH } from '@/lib/phone'
 
 // three.js faqat desktopda, alohida chunk sifatida yuklanadi
 const QuantumCore = dynamic(() => import('@/components/three/QuantumCore'), { ssr: false })
@@ -26,7 +26,7 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [globalMouse, setGlobalMouse] = useState({ x: 0, y: 0 })
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('+998 ')
+  const [phone, setPhone] = useState(PHONE_PREFIX)
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [canSubmit, setCanSubmit] = useState(true)
@@ -37,7 +37,10 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
-    const lastSubmit = localStorage.getItem('lastSubmitTime')
+    let lastSubmit: string | null = null
+    try {
+      lastSubmit = localStorage.getItem('lastSubmitTime')
+    } catch { /* private rejim */ }
     if (lastSubmit) {
       const timeDiff = Date.now() - parseInt(lastSubmit)
       if (timeDiff < 60000) {
@@ -49,16 +52,21 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   }, [])
 
   useEffect(() => {
-    if (selectedPlan) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => { document.body.style.overflow = 'unset' }
+    if (!selectedPlan) return
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [selectedPlan])
+
+  // Modalni Escape bilan yopish
+  useEffect(() => {
+    if (!selectedPlan) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedPlan(null) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
   }, [selectedPlan])
 
   const handleGlobalMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!sectionRef.current) return
+    if (!enable3D || !sectionRef.current) return
     const rect = sectionRef.current.getBoundingClientRect()
     // Convert mouse coordinates to clip space (-1 to 1)
     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1
@@ -67,19 +75,13 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value
-    if (!val.startsWith('+998')) {
-      val = '+998 '
-    }
-    if (/^[+0-9 ]*$/.test(val)) {
-      setPhone(val)
-    }
+    setPhone(formatPhone(e.target.value))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!canSubmit) {
-      toast.warning('Iltimos, biroz kuting...', { theme: 'dark' })
+      toast.warning(t.toast.wait)
       return
     }
 
@@ -87,14 +89,13 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
     const cleanName = sanitizeInput(name.trim())
 
     if (cleanName.length < 3) {
-      toast.error(t.toast.nameError, { theme: 'dark' })
+      toast.error(t.toast.nameError)
       setLoading(false)
       return
     }
 
-    const rawPhone = phone.replace(/\D/g, '')
-    if (rawPhone.length !== 12) {
-      toast.error(t.toast.phoneError, { theme: 'dark' })
+    if (!isPhoneComplete(phone)) {
+      toast.error(t.toast.phoneError)
       setLoading(false)
       return
     }
@@ -109,19 +110,21 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
       const data = await res.json()
 
       if (res.ok && data.success) {
-        toast.success(t.toast.success, { theme: 'dark' })
+        toast.success(t.toast.success)
         setSelectedPlan(null)
         setName('')
-        setPhone('+998 ')
+        setPhone(PHONE_PREFIX)
 
-        localStorage.setItem('lastSubmitTime', Date.now().toString())
+        try {
+          localStorage.setItem('lastSubmitTime', Date.now().toString())
+        } catch { /* private rejim */ }
         setCanSubmit(false)
         setTimeout(() => setCanSubmit(true), 60000)
       } else {
-        toast.error(t.toast.error, { theme: 'dark' })
+        toast.error(t.toast.error)
       }
     } catch {
-      toast.error(t.toast.error, { theme: 'dark' })
+      toast.error(t.toast.error)
     } finally {
       setLoading(false)
     }
@@ -130,7 +133,7 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
   return (
     <section
       ref={sectionRef}
-      onMouseMove={handleGlobalMouseMove}
+      onMouseMove={enable3D ? handleGlobalMouseMove : undefined}
       id="pricing"
       className={`relative ${asPage ? 'pt-36 pb-32' : 'py-32'} bg-black text-white overflow-hidden`}
     >
@@ -146,51 +149,32 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
 
         {/* HEADER */}
         <div className="text-center mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner"
-          >
+          <Reveal className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner">
             <Sparkles size={13} className="text-green-400" />
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-gray-400">{t.nav.pricing}</span>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
+          <Reveal delay={0.1}>
             <HeadingTag className="text-5xl md:text-7xl font-black mb-6 tracking-tighter leading-none">
               {t.pricing.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-gray-300 to-green-600">{t.pricing.subtitle}</span>
             </HeadingTag>
-          </motion.div>
+          </Reveal>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-400 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed tracking-wide"
-          >
+          <Reveal as="p" delay={0.2} className="text-gray-400 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed tracking-wide">
             {t.pricing.desc}
-          </motion.p>
+          </Reveal>
         </div>
 
         {/* INTERACTIVE CARDS GRID */}
         <div className="grid md:grid-cols-3 gap-8 items-center relative z-20">
           {t.pricing.plans.map((plan, idx) => (
-            <motion.div
+            <Reveal
               key={idx}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              delay={idx * 0.1}
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className={`relative group flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] transition-all duration-500 backdrop-blur-xl border cursor-pointer ${plan.isPopular
+              className={`relative group flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] transition-colors duration-500 backdrop-blur-xl border cursor-pointer ${plan.isPopular
                   ? 'bg-black/40 border-green-500/30 shadow-[0_0_60px_-20px_rgba(34,197,94,0.3)] scale-105 z-10'
                   : 'bg-black/20 border-white/[0.05] hover:bg-black/40 hover:border-white/20'
                 }`}
@@ -243,90 +227,92 @@ export default function PricingPage({ asPage = false }: { asPage?: boolean }) {
               >
                 {t.pricing.btnSelect}
               </button>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>
 
-      {/* MODAL PORTAL */}
+      {/* MODAL PORTAL — ochilish/yopilish animatsiyasi CSS orqali (globals.css) */}
       {mounted && createPortal(
-        <AnimatePresence>
-          {selectedPlan && (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
-                onClick={() => setSelectedPlan(null)}
-              />
+        <div
+          data-open={Boolean(selectedPlan)}
+          className="wl-pop fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t.pricing.modalTitle}
+        >
+          <div
+            className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
+            onClick={() => setSelectedPlan(null)}
+          />
 
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-md bg-[#070707] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden z-10"
-              >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-[90px] pointer-events-none" />
+          <div className="relative w-full max-w-md bg-[#070707] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 shadow-2xl overflow-hidden z-10">
+            <div className="wl-glow absolute top-0 right-0 w-64 h-64 pointer-events-none" />
+
+            <button
+              onClick={() => setSelectedPlan(null)}
+              aria-label="Yopish"
+              tabIndex={selectedPlan ? 0 : -1}
+              className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-300 cursor-pointer"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="relative z-10">
+              <h3 className="text-2xl font-black text-white mb-2 tracking-tight">{t.pricing.modalTitle}</h3>
+              <p className="text-gray-400 text-xs font-light mb-8 tracking-wide leading-relaxed">
+                <span className="text-green-400 font-mono font-bold uppercase tracking-wider">{selectedPlan}</span> {t.pricing.modalDesc}
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <label htmlFor="wl-plan-name" className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 ml-1">
+                    {t.pricing.formName}
+                  </label>
+                  <input
+                    id="wl-plan-name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t.pricing.formName}
+                    autoComplete="name"
+                    tabIndex={selectedPlan ? 0 : -1}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-green-500/40 focus:bg-white/10 transition-all font-light text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="wl-plan-phone" className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 ml-1">
+                    {t.pricing.formPhone}
+                  </label>
+                  <input
+                    id="wl-plan-phone"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    placeholder="+998 90 123-45-67"
+                    maxLength={PHONE_MAX_LENGTH}
+                    tabIndex={selectedPlan ? 0 : -1}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-green-500/40 focus:bg-white/10 transition-all font-mono text-sm"
+                  />
+                </div>
 
                 <button
-                  onClick={() => setSelectedPlan(null)}
-                  className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-300"
+                  type="submit"
+                  disabled={loading || !canSubmit}
+                  tabIndex={selectedPlan ? 0 : -1}
+                  className="w-full py-4.5 mt-4 bg-green-500 text-black font-bold rounded-xl uppercase tracking-widest hover:bg-green-400 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-xs cursor-pointer"
                 >
-                  <X size={18} />
+                  {loading ? <Loader2 className="animate-spin" size={16} /> : t.pricing.btnSubmit}
                 </button>
-
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-black text-white mb-2 tracking-tight">{t.pricing.modalTitle}</h3>
-                  <p className="text-gray-400 text-xs font-light mb-8 tracking-wide leading-relaxed">
-                    <span className="text-green-400 font-mono font-bold uppercase tracking-wider">{selectedPlan}</span> {t.pricing.modalDesc}
-                  </p>
-
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 ml-1">CLIENT_NAME</label>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Ismingiz"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-green-500/40 focus:bg-white/10 transition-all font-light text-sm"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-500 ml-1">SECURE_TEL</label>
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={handlePhoneChange}
-                        placeholder="+998 90 123 45 67"
-                        maxLength={17}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-green-500/40 focus:bg-white/10 transition-all font-mono text-sm"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading || !canSubmit}
-                      className="w-full py-4.5 mt-4 bg-green-500 text-black font-bold rounded-xl uppercase tracking-widest hover:bg-green-400 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-xs"
-                    >
-                      {loading ? <Loader2 className="animate-spin" size={16} /> : t.pricing.btnSubmit}
-                    </button>
-                  </form>
-                </div>
-              </motion.div>
+              </form>
             </div>
-          )}
-        </AnimatePresence>,
+          </div>
+        </div>,
         document.body
       )}
 
-      <ToastContainer
-        position="bottom-right"
-        theme="dark"
-        toastStyle={{ backgroundColor: '#070707', border: '1px solid #1c1c1c', borderRadius: '16px' }}
-      />
     </section>
   )
 }

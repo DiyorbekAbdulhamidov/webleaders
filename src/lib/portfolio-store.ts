@@ -38,7 +38,16 @@ const githubConfigured = () =>
 
 // ---------- GitHub Contents API helpers ----------
 
-async function githubRequest(method: string, apiPath: string, body?: object) {
+/**
+ * `fresh: true` — kesh butunlay chetlab o'tiladi (yozishdan oldingi o'qish,
+ * diagnostika). Aks holda javob 60 soniya keshlanadi.
+ *
+ * Muhim: bu yerda `cache: 'no-store'` ishlatilsa, uni chaqirgan sahifa Next
+ * tomonidan dinamik deb belgilanadi — ya'ni HAR BIR tashrifda GitHub API'ga
+ * so'rov ketadi va sahifa shuncha kutadi. Sayt sekin ochilishining asosiy
+ * sabablaridan biri shu edi.
+ */
+async function githubRequest(method: string, apiPath: string, body?: object, fresh = false) {
   const repo = process.env.GITHUB_REPO // "owner/repo" formatida
   const res = await fetch(`https://api.github.com/repos/${repo}/${apiPath}`, {
     method,
@@ -49,13 +58,15 @@ async function githubRequest(method: string, apiPath: string, body?: object) {
       ...(body ? { 'Content-Type': 'application/json' } : {})
     },
     body: body ? JSON.stringify(body) : undefined,
-    cache: 'no-store'
+    ...(method === 'GET' && !fresh
+      ? { next: { revalidate: 60 } }
+      : { cache: 'no-store' as const })
   })
   return res
 }
 
-async function githubReadFile(filePath: string): Promise<{ content: string; sha: string } | null> {
-  const res = await githubRequest('GET', `contents/${filePath}`)
+async function githubReadFile(filePath: string, fresh = false): Promise<{ content: string; sha: string } | null> {
+  const res = await githubRequest('GET', `contents/${filePath}`, undefined, fresh)
   if (!res.ok) return null
   const json = await res.json()
   return {
@@ -65,7 +76,7 @@ async function githubReadFile(filePath: string): Promise<{ content: string; sha:
 }
 
 async function githubWriteFile(filePath: string, contentBase64: string, message: string): Promise<boolean> {
-  const existing = await githubReadFile(filePath).catch(() => null)
+  const existing = await githubReadFile(filePath, true).catch(() => null)
   const res = await githubRequest('PUT', `contents/${filePath}`, {
     message,
     content: contentBase64,
@@ -92,10 +103,10 @@ export async function diagnostics(): Promise<Record<string, unknown>> {
   }
   if (githubConfigured()) {
     // O'qish testi
-    const readRes = await githubRequest('GET', `contents/${DATA_FILE}`).catch(() => null)
+    const readRes = await githubRequest('GET', `contents/${DATA_FILE}`, undefined, true).catch(() => null)
     out.readStatus = readRes ? readRes.status : 'network-error'
     // Yozish testi: faylni o'zgarishsiz qayta yozamiz (huquqni tekshirish uchun)
-    const file = await githubReadFile(DATA_FILE).catch(() => null)
+    const file = await githubReadFile(DATA_FILE, true).catch(() => null)
     if (file) {
       const wr = await githubRequest('PUT', `contents/${DATA_FILE}`, {
         message: 'chore: portfolio-store write permission self-check',
@@ -133,9 +144,15 @@ async function fsWriteData(data: PortfolioData): Promise<boolean> {
 
 // ---------- Ochiq API ----------
 
-export async function readPortfolio(): Promise<PortfolioData> {
+/**
+ * @param fresh Keshni chetlab o'tish. Sahifalar uchun `false` (standart) —
+ *   javob 60 soniya keshlanadi va sahifa dinamikka aylanmaydi. Telegram bot
+ *   o'qib-o'zgartirib-yozayotganda `true` berilishi shart, aks holda eski
+ *   nusxa ustiga yoziladi.
+ */
+export async function readPortfolio(fresh = false): Promise<PortfolioData> {
   if (githubConfigured()) {
-    const file = await githubReadFile(DATA_FILE).catch(() => null)
+    const file = await githubReadFile(DATA_FILE, fresh).catch(() => null)
     if (file) {
       try {
         return { ...emptyData, ...JSON.parse(file.content) }

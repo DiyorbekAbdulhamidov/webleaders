@@ -5,7 +5,8 @@ const eslintConfig = [
   ...nextCoreWebVitals,
   ...nextTypescript,
   {
-    ignores: ['.next/**', 'node_modules/**', 'next-env.d.ts']
+    // scripts/ — bir martalik Node yordamchi skriptlari (CommonJS), sayt kodi emas
+    ignores: ['.next/**', 'node_modules/**', 'next-env.d.ts', 'scripts/**']
   }
 ]
 

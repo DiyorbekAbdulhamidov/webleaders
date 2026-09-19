@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Cleave from 'cleave.js/react'
-import { ToastContainer, toast } from 'react-toastify'
-import { motion } from 'framer-motion'
+import { toast } from '@/components/Toaster'
+import Reveal from '@/components/Reveal'
 import { MapPin, Phone, Mail, Send, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
-// import 'react-toastify/dist/ReactToastify.css'
+import { formatPhone, isPhoneComplete, PHONE_PREFIX, PHONE_MAX_LENGTH } from '@/lib/phone'
 
 const sanitizeInput = (input: string) => {
   return input.replace(/[<>&/"']/g, '')
@@ -18,7 +17,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
 
   const [form, setForm] = useState({
     name: '',
-    phone: '+998',
+    phone: PHONE_PREFIX,
     message: ''
   })
   const [submitting, setSubmitting] = useState(false)
@@ -29,7 +28,10 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
 
   // localStorage'ni faqat mount'dan keyin o'qish mumkin (serverda mavjud emas)
   useEffect(() => {
-    const lastSubmit = localStorage.getItem('lastSubmitTime')
+    let lastSubmit: string | null = null
+    try {
+      lastSubmit = localStorage.getItem('lastSubmitTime')
+    } catch { /* private rejim */ }
     if (lastSubmit) {
       const timeDiff = Date.now() - parseInt(lastSubmit)
       if (timeDiff < 60000) {
@@ -46,20 +48,19 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
 
     if (name === 'name' && /[^a-zA-Zа-яА-ЯёЁ\s'-]/.test(value)) return
 
-    if (name === 'message') {
-      if (value.length > MESSAGE_LIMIT) return
-    }
+    if (name === 'message' && value.length > MESSAGE_LIMIT) return
 
-    setForm({ ...form, [name]: value })
+    setForm(prev => ({
+      ...prev,
+      [name]: name === 'phone' ? formatPhone(value) : value
+    }))
   }
-
-  const getRawPhone = (phone: string) => phone.replace(/\D/g, '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!canSubmit) {
-      toast.warning('Iltimos, biroz kuting...', { theme: 'dark' })
+      toast.warning(t.toast.wait)
       return
     }
 
@@ -69,20 +70,19 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
     const cleanMessage = sanitizeInput(form.message.trim())
 
     if (cleanName.length < 3) {
-      toast.error(t.toast.nameError, { theme: 'dark' })
+      toast.error(t.toast.nameError)
       setSubmitting(false)
       return
     }
 
-    const rawPhone = getRawPhone(form.phone)
-    if (rawPhone.length < 12) {
-      toast.error(t.toast.phoneError, { theme: 'dark' })
+    if (!isPhoneComplete(form.phone)) {
+      toast.error(t.toast.phoneError)
       setSubmitting(false)
       return
     }
 
     if (cleanMessage.length < 3) {
-      toast.error(t.toast.msgError, { theme: 'dark' })
+      toast.error(t.toast.msgError)
       setSubmitting(false)
       return
     }
@@ -103,17 +103,19 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
       const data = await res.json()
 
       if (res.ok && data.success) {
-        toast.success(t.toast.success, { theme: 'dark' })
-        setForm({ name: '', phone: '+998', message: '' })
+        toast.success(t.toast.success)
+        setForm({ name: '', phone: PHONE_PREFIX, message: '' })
 
-        localStorage.setItem('lastSubmitTime', Date.now().toString())
+        try {
+          localStorage.setItem('lastSubmitTime', Date.now().toString())
+        } catch { /* private rejim */ }
         setCanSubmit(false)
         setTimeout(() => setCanSubmit(true), 60000)
       } else {
-        toast.error(t.toast.error, { theme: 'dark' })
+        toast.error(t.toast.error)
       }
     } catch {
-      toast.error(t.toast.error, { theme: 'dark' })
+      toast.error(t.toast.error)
     } finally {
       setSubmitting(false)
     }
@@ -128,18 +130,13 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
 
   return (
     <section id="contact" className={`relative bg-black text-white ${asPage ? 'pt-36 pb-24' : 'py-24'} overflow-hidden`}>
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-900/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="wl-glow-deep absolute top-0 right-0 w-[600px] h-[600px] max-w-full pointer-events-none" />
+      <div className="wl-glow-white absolute bottom-0 left-0 w-[400px] h-[400px] max-w-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <Reveal variant="left">
             <span className="text-green-400 font-bold tracking-widest uppercase text-sm mb-4 block">
               {t.contactSection.badge}
             </span>
@@ -179,15 +176,9 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
-          >
+          <Reveal variant="right" delay={0.2} className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-blue-500/20 blur-3xl opacity-30 -z-10" />
 
             <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
@@ -214,14 +205,17 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
                 <div className="space-y-2">
                   <label className="text-xs text-gray-500 uppercase tracking-wider ml-1">{t.contactSection.inputPhone}</label>
                   <div className={`relative transition-all duration-300 ${focused === 'phone' ? 'scale-[1.02]' : ''}`}>
-                    <Cleave
-                      options={{ prefix: '+998', blocks: [4, 2, 3, 2, 2], delimiters: [' ', ' ', '-', '-', ''], numericOnly: true }}
+                    <input
+                      type="tel"
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
                       onFocus={() => setFocused('phone')}
                       onBlur={() => setFocused(null)}
                       inputMode="tel"
+                      autoComplete="tel"
+                      maxLength={PHONE_MAX_LENGTH}
+                      placeholder="+998 90 123-45-67"
                       className={`w-full bg-[#0a0a0a] border rounded-xl px-5 py-4 text-white placeholder-gray-600 focus:outline-none transition-all duration-300 ${focused === 'phone' ? 'border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.1)]' : 'border-white/10 hover:border-white/20'}`}
                     />
                   </div>
@@ -265,10 +259,9 @@ export default function Contact({ asPage = false }: { asPage?: boolean }) {
                 </button>
               </div>
             </form>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
-      <ToastContainer position="bottom-right" theme="dark" />
     </section>
   )
 }

@@ -11,7 +11,7 @@ export default function PortfolioPreview({ projects }: { projects: Project[] }) 
 
   return (
     <section id="projects" className="relative py-24 bg-black text-white overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-green-900/[0.06] rounded-full blur-[150px] pointer-events-none" />
+      <div className="wl-glow-faint absolute top-0 left-1/4 w-[500px] h-[500px] max-w-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 

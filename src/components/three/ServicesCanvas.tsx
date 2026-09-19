@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { createRenderer } from './createRenderer'
+import { createRenderer, startRenderLoop } from './createRenderer'
 
 interface CanvasProps {
   hoveredIndex: number | null
@@ -124,14 +124,8 @@ export default function ServicesCanvas({ hoveredIndex }: CanvasProps) {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    const clock = new THREE.Clock()
-    let animationFrameId: number
-    let running = true
-
     // --- RENDER ANIMATION LOOP ---
-    const animate = () => {
-      if (!running) return
-      const elapsed = clock.getElapsedTime()
+    let stopLoop = startRenderLoop(container, elapsed => {
       const state = stateRef.current
 
       // Hover holatiga qarab aylanish tezligini oshirish yoki sekinlashtirish
@@ -163,14 +157,12 @@ export default function ServicesCanvas({ hoveredIndex }: CanvasProps) {
       camera.lookAt(0, 0, 0)
 
       renderer.render(scene, camera)
-      animationFrameId = requestAnimationFrame(animate)
-    }
-    animate()
+    })
 
     const handleContextLost = (e: Event) => {
       e.preventDefault()
-      running = false
-      cancelAnimationFrame(animationFrameId)
+      stopLoop()
+      stopLoop = () => {}
     }
     renderer.domElement.addEventListener('webglcontextlost', handleContextLost)
 
@@ -183,8 +175,7 @@ export default function ServicesCanvas({ hoveredIndex }: CanvasProps) {
     window.addEventListener('resize', handleResize)
 
     return () => {
-      running = false
-      cancelAnimationFrame(animationFrameId)
+      stopLoop()
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('webglcontextlost', handleContextLost)

@@ -173,7 +173,7 @@ export async function POST(req: Request) {
     }
 
     if (text === '/yangi') {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       data.drafts[chatKey] = { images: [] }
       await writePortfolio(data, 'chore: portfolio draft start')
       await reply(chatId, `🆕 Yangi loyiha qoralamasi ochildi!\n\nEndi maydonlarni yuboring:\n\n<code>Nomi: Loyiha nomi\nKategoriya: E-commerce\nTavsif: Qisqacha tavsif\nStack: Next.js, Tailwind\nURL: https://sayt.uz</code>\n\nKeyin rasmlarni yuboring 📸`)
@@ -181,7 +181,7 @@ export async function POST(req: Request) {
     }
 
     if (text === '/bekor') {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       delete data.drafts[chatKey]
       await writePortfolio(data, 'chore: portfolio draft cancel')
       await reply(chatId, '❌ Qoralama bekor qilindi.')
@@ -189,7 +189,7 @@ export async function POST(req: Request) {
     }
 
     if (text === '/korish') {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       const draft = data.drafts[chatKey]
       if (!draft) {
         await reply(chatId, '⚠️ Aktiv qoralama yo\'q. /yangi bilan boshlang.')
@@ -200,7 +200,7 @@ export async function POST(req: Request) {
     }
 
     if (text === '/royxat') {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       if (data.projects.length === 0) {
         await reply(chatId, '📭 Bot orqali qo\'shilgan loyihalar hali yo\'q.')
       } else {
@@ -218,7 +218,7 @@ export async function POST(req: Request) {
         await reply(chatId, '⚠️ Slug kiriting: <code>/ochirish loyiha-slug</code>')
         return NextResponse.json({ ok: true })
       }
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       const before = data.projects.length
       data.projects = data.projects.filter(p => p.slug !== slug)
       if (data.projects.length === before) {
@@ -231,7 +231,7 @@ export async function POST(req: Request) {
     }
 
     if (text === '/saqlash') {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       const draft = data.drafts[chatKey]
       if (!draft || !draft.name || !draft.desc || draft.images.length === 0) {
         await reply(chatId, '⚠️ Qoralama to\'liq emas. Kamida <b>Nomi</b>, <b>Tavsif</b> va <b>1 ta rasm</b> bo\'lishi kerak.\n\n/korish bilan holatni tekshiring.')
@@ -268,7 +268,7 @@ export async function POST(req: Request) {
 
     // --- RASM QABUL QILISH ---
     if (message.photo && Array.isArray(message.photo) && message.photo.length > 0) {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       const draft = data.drafts[chatKey]
       if (!draft) {
         await reply(chatId, '⚠️ Avval /yangi bilan qoralama boshlang.')
@@ -306,7 +306,7 @@ export async function POST(req: Request) {
 
     // --- MAYDONLARNI QABUL QILISH ---
     if (text) {
-      const data = await readPortfolio()
+      const data = await readPortfolio(true)
       const draft = data.drafts[chatKey]
       if (!draft) {
         await reply(chatId, '⚠️ Aktiv qoralama yo\'q.\n\n/yangi — yangi loyiha boshlash\n/help — yordam')
