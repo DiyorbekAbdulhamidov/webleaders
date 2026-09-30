@@ -2,10 +2,19 @@ import { NextResponse } from 'next/server'
 import { readPortfolio, writePortfolio, saveImage, diagnostics, type DraftProject } from '@/lib/portfolio-store'
 import type { Project } from '@/data/projects'
 
+/** Kim yozgani — begona xabarni adminga uzatishda kerak */
+interface TelegramFrom {
+  id?: number
+  first_name?: string
+  last_name?: string
+  username?: string
+}
+
 /** Telegram webhook'dan keladigan ma'lumotning biz ishlatadigan qismi */
 interface TelegramUpdate {
   message?: {
     chat?: { id?: number }
+    from?: TelegramFrom
     text?: string
     caption?: string
     photo?: { file_id: string }[]
@@ -43,6 +52,57 @@ async function reply(chatId: number | string, text: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
   }).catch(() => {})
+}
+
+/* ============================================================
+   BEGONA XABARNI ADMINGA UZATISH
+   ------------------------------------------------------------
+   Nega kerak: bu bot `moslik.uz` ning ommaviy ofertasida ham,
+   to'lov sahifasida ham RASMIY aloqa manzili sifatida yozilgan
+   (`src/lib/legal.ts`, `src/lib/payment.ts` — boshqa loyiha).
+   Ilgari admin bo'lmagan odamning xabari JIMGINA tashlanardi:
+   yozgan odamga javob yo'q, adminga xabar yo'q. Ya'ni pul
+   to'lamoqchi bo'lgan mijoz hech kimga yeta olmasdi.
+
+   HTML QOCHIRISH SHART: `reply()` `parse_mode: 'HTML'` bilan
+   yuboradi. Begona matnda `<` yoki `&` bo'lsa Telegram butun
+   xabarni RAD ETADI (400) va uzatish jimgina yo'qoladi.
+   ============================================================ */
+function esc(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+/** Uzun xabar Telegram chegarasiga urilmasligi uchun qisqartiriladi */
+const MAX_FORWARD = 1500
+
+async function forwardToAdmins(
+  from: TelegramFrom | undefined,
+  chatKey: string,
+  text: string,
+  hasPhoto: boolean
+) {
+  const admins = adminIds()
+  if (admins.length === 0) return
+
+  const name = [from?.first_name, from?.last_name].filter(Boolean).join(' ').trim()
+  const who = [
+    name ? esc(name) : null,
+    from?.username ? `@${esc(from.username)}` : null,
+  ].filter(Boolean).join(' · ') || 'номаълум'
+
+  const body = text ? esc(text.slice(0, MAX_FORWARD)) : (hasPhoto ? '<i>(расм)</i>' : '<i>(бўш хабар)</i>')
+  const cut = text.length > MAX_FORWARD ? '\n\n<i>…қисқартирилди</i>' : ''
+
+  const note =
+    `📨 <b>Ботга хабар келди</b>\n\n` +
+    `<b>Кимдан:</b> ${who}\n` +
+    `<b>Chat ID:</b> <code>${esc(chatKey)}</code>\n\n` +
+    `${body}${cut}\n\n` +
+    `<i>Жавоб бериш учун унга Telegram'да ёзинг.</i>`
+
+  for (const admin of admins) {
+    await reply(admin, note)
+  }
 }
 
 function slugify(name: string): string {
@@ -157,9 +217,24 @@ export async function POST(req: Request) {
   if (chatId === undefined) return NextResponse.json({ ok: true })
   const chatKey = String(chatId)
 
-  // Faqat adminlarga ruxsat
+  // Portfolio BUYRUQLARI faqat adminlarga. Lekin begona odamning
+  // xabari endi TASHLANMAYDI: u adminga uzatiladi va yozgan odam
+  // xabari yetganini biladi. Sabab funksiya izohida.
   const admins = adminIds()
   if (!admins.includes(chatKey)) {
+    const incoming: string = (message.text || message.caption || '').trim()
+    const hasPhoto = Array.isArray(message.photo) && message.photo.length > 0
+
+    // Bo'sh xabarga javob ham, uzatish ham kerak emas
+    if (incoming || hasPhoto) {
+      await forwardToAdmins(message.from, chatKey, incoming, hasPhoto)
+      await reply(
+        chatId,
+        'Раҳмат! Хабарингиз қабул қилинди ва жамоага юборилди.\n\n' +
+          'Саволингиз <b>Moslik</b> ёки тўлов бўйича бўлса — шу ерга ёзаверинг, ' +
+          'жавоб шу чатга келади.'
+      )
+    }
     return NextResponse.json({ ok: true })
   }
 
