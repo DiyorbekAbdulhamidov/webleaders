@@ -10,16 +10,30 @@ interface TelegramFrom {
   username?: string
 }
 
+/** Hujjat/video/ovozli xabar obyektining biz ishlatadigan qismi */
+interface TelegramFile {
+  file_id: string
+  file_name?: string
+}
+
 /** Telegram webhook'dan keladigan ma'lumotning biz ishlatadigan qismi */
 interface TelegramUpdate {
   message?: {
+    message_id?: number
     chat?: { id?: number }
     from?: TelegramFrom
     text?: string
     caption?: string
     photo?: { file_id: string }[]
+    document?: TelegramFile
+    video?: TelegramFile
+    video_note?: TelegramFile
+    voice?: TelegramFile
+    audio?: TelegramFile
   }
 }
+
+type TelegramMessage = NonNullable<TelegramUpdate['message']>
 
 /**
  * TELEGRAM PORTFOLIO BOT WEBHOOK
@@ -46,12 +60,27 @@ function adminIds(): string[] {
   return ids.split(',').map(s => s.trim()).filter(Boolean)
 }
 
-async function reply(chatId: number | string, text: string) {
-  await fetch(`${API}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
-  }).catch(() => {})
+interface TelegramResult {
+  ok?: boolean
+  result?: { message_id?: number }
+}
+
+/** Bot API chaqiruvi. Xato bo'lsa null qaytadi — webhook hech qachon yiqilmaydi */
+async function tg(method: string, payload: Record<string, unknown>): Promise<TelegramResult | null> {
+  try {
+    const res = await fetch(`${API}/${method}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    return (await res.json()) as TelegramResult
+  } catch {
+    return null
+  }
+}
+
+async function reply(chatId: number | string, text: string, extra?: Record<string, unknown>) {
+  await tg('sendMessage', { chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true, ...extra })
 }
 
 /* ============================================================
@@ -67,6 +96,13 @@ async function reply(chatId: number | string, text: string) {
    HTML QOCHIRISH SHART: `reply()` `parse_mode: 'HTML'` bilan
    yuboradi. Begona matnda `<` yoki `&` bo'lsa Telegram butun
    xabarni RAD ETADI (400) va uzatish jimgina yo'qoladi.
+
+   FAYLLAR: buxgalter bank ko'chirmasini (Excel/PDF) izohsiz
+   yuborishi mumkin — unda matn yo'q. Ilgari bunday xabar ham
+   jimgina tashlanardi. Endi fayl/rasm/video/ovozli xabarning
+   O'ZI `copyMessage` bilan adminga ko'chiriladi: Telegram
+   `file_id` ni server tomonida qayta ishlatadi, yuklab olish
+   ham, hajm chegarasi ham yo'q.
    ============================================================ */
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -75,11 +111,31 @@ function esc(s: string): string {
 /** Uzun xabar Telegram chegarasiga urilmasligi uchun qisqartiriladi */
 const MAX_FORWARD = 1500
 
+/** Matnsiz kelishi mumkin bo'lgan media turlari va admin uchun yorlig'i */
+const MEDIA_KINDS = [
+  ['document', 'файл'],
+  ['video', 'видео'],
+  ['video_note', 'видео хабар'],
+  ['voice', 'овозли хабар'],
+  ['audio', 'аудио'],
+] as const
+
+/** Xabarda media bo'lsa uning yorlig'i (fayl nomi bilan), aks holda null. QochirilMAGAN matn */
+function describeMedia(message: TelegramMessage): string | null {
+  if (Array.isArray(message.photo) && message.photo.length > 0) return 'расм'
+  for (const [key, label] of MEDIA_KINDS) {
+    const file = message[key]
+    if (file?.file_id) return file.file_name ? `${label}: ${file.file_name}` : label
+  }
+  return null
+}
+
 async function forwardToAdmins(
   from: TelegramFrom | undefined,
   chatKey: string,
+  messageId: number | undefined,
   text: string,
-  hasPhoto: boolean
+  media: string | null
 ) {
   const admins = adminIds()
   if (admins.length === 0) return
@@ -90,18 +146,41 @@ async function forwardToAdmins(
     from?.username ? `@${esc(from.username)}` : null,
   ].filter(Boolean).join(' · ') || 'номаълум'
 
-  const body = text ? esc(text.slice(0, MAX_FORWARD)) : (hasPhoto ? '<i>(расм)</i>' : '<i>(бўш хабар)</i>')
   const cut = text.length > MAX_FORWARD ? '\n\n<i>…қисқартирилди</i>' : ''
+  const body = [
+    media ? `<i>(${esc(media)})</i>` : null,
+    text ? esc(text.slice(0, MAX_FORWARD)) + cut : null,
+  ].filter(Boolean).join('\n') || '<i>(бўш хабар)</i>'
 
-  const note =
+  const head =
     `📨 <b>Ботга хабар келди</b>\n\n` +
     `<b>Кимдан:</b> ${who}\n` +
     `<b>Chat ID:</b> <code>${esc(chatKey)}</code>\n\n` +
-    `${body}${cut}\n\n` +
-    `<i>Жавоб бериш учун унга Telegram'да ёзинг.</i>`
+    `${body}\n\n`
+  const tail = `<i>Жавоб бериш учун унга Telegram'да ёзинг.</i>`
 
   for (const admin of admins) {
-    await reply(admin, note)
+    // Avval faylning o'zi, keyin izoh unga javob (reply) sifatida —
+    // admin chatida qaysi fayl kimdan kelgani bir qarashda ko'rinadi.
+    // copyMessage asl caption'ni o'z formatlashi bilan ko'chiradi
+    // (parse_mode yo'q), shuning uchun u yerda esc() kerak emas.
+    let copiedId: number | undefined
+    if (media && messageId !== undefined) {
+      const res = await tg('copyMessage', { chat_id: admin, from_chat_id: chatKey, message_id: messageId })
+      if (res?.ok) copiedId = res.result?.message_id
+    }
+
+    const warn = media && copiedId === undefined
+      ? `⚠️ <i>Иловани нусхалаб бўлмади — юборувчидан қайта юборишни сўранг.</i>\n\n`
+      : ''
+
+    await reply(
+      admin,
+      head + warn + tail,
+      copiedId !== undefined
+        ? { reply_parameters: { message_id: copiedId, allow_sending_without_reply: true } }
+        : undefined
+    )
   }
 }
 
@@ -223,11 +302,11 @@ export async function POST(req: Request) {
   const admins = adminIds()
   if (!admins.includes(chatKey)) {
     const incoming: string = (message.text || message.caption || '').trim()
-    const hasPhoto = Array.isArray(message.photo) && message.photo.length > 0
+    const media = describeMedia(message)
 
-    // Bo'sh xabarga javob ham, uzatish ham kerak emas
-    if (incoming || hasPhoto) {
-      await forwardToAdmins(message.from, chatKey, incoming, hasPhoto)
+    // Bo'sh xabarga (stiker, joylashuv va h.k.) javob ham, uzatish ham kerak emas
+    if (incoming || media) {
+      await forwardToAdmins(message.from, chatKey, message.message_id, incoming, media)
       await reply(
         chatId,
         'Раҳмат! Хабарингиз қабул қилинди ва жамоага юборилди.\n\n' +
